@@ -13,9 +13,12 @@ namespace Tuio.Tuio20
 
         private OSCMessage _frmMessage = null;
         private List<OSCMessage> _otherMessages = new List<OSCMessage>();
-
-        private uint _currentFrameId = 0;
-        private TuioTime _currentFrameTime = null;
+        
+        private uint _bundleFrameId = 0;
+        private uint _nextFrameId = 0;
+        
+        private uint _prevFrameId = 0;
+        private TuioTime _prevFrameTime = null;
 
         private uint _dim = 0;
         private string _source = null;
@@ -33,7 +36,7 @@ namespace Tuio.Tuio20
 
         public void Connect()
         {
-            _currentFrameTime = new TuioTime(0, 0);
+            _prevFrameTime = new TuioTime(0, 0);
             _tuioReceiver.Connect();
         }
 
@@ -103,18 +106,29 @@ namespace Tuio.Tuio20
         
         private void OnFrm(OSCMessage oscMessage)
         {
-            _otherMessages.Clear();
-            _frmMessage = oscMessage;
+            _bundleFrameId = (uint)(int)oscMessage.Values[0];
+
+            if (_bundleFrameId > _nextFrameId)
+            {
+                _otherMessages.Clear();
+                _nextFrameId = _bundleFrameId;
+                _frmMessage = oscMessage;
+            }
         }
         
         private void OnOther(OSCMessage oscMessage)
         {
+            if (_bundleFrameId != _nextFrameId)
+            {
+                return;
+            }
+
             _otherMessages.Add(oscMessage);
         }
 
         private void OnAlv(OSCMessage oscMessage)
         {
-            if (_frmMessage == null)
+            if (_frmMessage == null || _bundleFrameId != _nextFrameId)
             {
                 return;
             }
@@ -124,11 +138,9 @@ namespace Tuio.Tuio20
             var dim = (uint)(int)_frmMessage.Values[2];
             var source = (string)_frmMessage.Values[3];
             TuioTime currentFrameTime = TuioTime.FromOscTime(frameTime);
-            if (frameId >= _currentFrameId || frameId == 0 || 
-                currentFrameTime.Subtract(_currentFrameTime).GetTotalMilliseconds() >= 1000)
+            if (frameId >= _prevFrameId || frameId == 0 || 
+                currentFrameTime.Subtract(_prevFrameTime).GetTotalMilliseconds() >= 1000)
             {
-                _currentFrameTime = currentFrameTime;
-                _currentFrameId = frameId;
                 _dim = dim;
                 _source = source;
                 HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
@@ -143,7 +155,7 @@ namespace Tuio.Tuio20
                 HashSet<uint> removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
                 foreach (var sId in newSIds)
                 {
-                    var tuioObject = new Tuio20Object(_currentFrameTime, sId);
+                    var tuioObject = new Tuio20Object(_prevFrameTime, sId);
                     _tuioObjects[sId] = tuioObject;
                 }
 
@@ -173,7 +185,7 @@ namespace Tuio.Tuio20
                             if (tuioObject.token == null)
                             {
                                 addedSIds.Add(sId);
-                                tuioObject.SetTuioToken(new Tuio20Token(_currentFrameTime, tuioObject, tuId, cId, xPos,
+                                tuioObject.SetTuioToken(new Tuio20Token(_prevFrameTime, tuioObject, tuId, cId, xPos,
                                     yPos, angle, xVel, yVel, aVel, mAcc, rAcc));
                             }
                             else
@@ -182,7 +194,7 @@ namespace Tuio.Tuio20
                                     yPos, angle, xVel, yVel, aVel, mAcc, rAcc))
                                 {
                                     updatedSIds.Add(sId);
-                                    tuioObject.token._update(_currentFrameTime, tuId, cId, xPos,
+                                    tuioObject.token._update(_prevFrameTime, tuId, cId, xPos,
                                         yPos, angle, xVel, yVel, aVel, mAcc, rAcc);
                                 }
                             }
@@ -215,7 +227,7 @@ namespace Tuio.Tuio20
                             if (tuioObject.pointer == null)
                             {
                                 addedSIds.Add(sId);
-                                tuioObject.SetTuioPointer(new Tuio20Pointer(_currentFrameTime, tuioObject, tuId, cId, 
+                                tuioObject.SetTuioPointer(new Tuio20Pointer(_prevFrameTime, tuioObject, tuId, cId, 
                                     xPos, yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc));
                             }
                             else
@@ -224,7 +236,7 @@ namespace Tuio.Tuio20
                                     yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc))
                                 {
                                     updatedSIds.Add(sId);
-                                    tuioObject.pointer._update(_currentFrameTime, tuId, cId, xPos,
+                                    tuioObject.pointer._update(_prevFrameTime, tuId, cId, xPos,
                                         yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc);
                                 }
                             }
@@ -255,7 +267,7 @@ namespace Tuio.Tuio20
                             if (tuioObject.bounds == null)
                             {
                                 addedSIds.Add(sId);
-                                tuioObject.SetTuioBounds(new Tuio20Bounds(_currentFrameTime, tuioObject, xPos,
+                                tuioObject.SetTuioBounds(new Tuio20Bounds(_prevFrameTime, tuioObject, xPos,
                                     yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc));
                             }
                             else
@@ -264,7 +276,7 @@ namespace Tuio.Tuio20
                                     yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc))
                                 {
                                     updatedSIds.Add(sId);
-                                    tuioObject.bounds._update(_currentFrameTime, xPos,
+                                    tuioObject.bounds._update(_prevFrameTime, xPos,
                                         yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc);
                                 }
                             }
@@ -284,7 +296,7 @@ namespace Tuio.Tuio20
                             if (tuioObject.symbol == null)
                             {
                                 addedSIds.Add(sId);
-                                tuioObject.SetTuioSymbol(new Tuio20Symbol(_currentFrameTime, tuioObject, tuId, cId, 
+                                tuioObject.SetTuioSymbol(new Tuio20Symbol(_prevFrameTime, tuioObject, tuId, cId, 
                                     group, data));
                             }
                             else
@@ -293,7 +305,7 @@ namespace Tuio.Tuio20
                                     data))
                                 {
                                     updatedSIds.Add(sId);
-                                    tuioObject.symbol._update(_currentFrameTime, tuId, cId, group,
+                                    tuioObject.symbol._update(_prevFrameTime, tuId, cId, group,
                                         data);
                                 }
                             }
@@ -323,7 +335,7 @@ namespace Tuio.Tuio20
                 foreach (var sId in removedSIds)
                 {
                     var tuioObject = _tuioObjects[sId];
-                    tuioObject._remove(_currentFrameTime);
+                    tuioObject._remove(_prevFrameTime);
                     foreach (var tuioListener in _tuioListeners)
                     {
                         tuioListener.TuioRemove(tuioObject);
@@ -334,9 +346,12 @@ namespace Tuio.Tuio20
                 
                 foreach (var tuioListener in _tuioListeners)
                 {
-                    tuioListener.TuioRefresh(_currentFrameTime);
+                    tuioListener.TuioRefresh(_prevFrameTime);
                 }
             }
+            _prevFrameTime = currentFrameTime;
+            _prevFrameId = frameId;
+            _frmMessage = null;
         }
 
         public void AddTuioListener(Tuio20Listener tuio20Listener)
