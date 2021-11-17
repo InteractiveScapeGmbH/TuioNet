@@ -86,7 +86,7 @@ namespace Tuio.Tuio11
             }
             else
             {
-                _state = TuioState.Removed;
+                _state = TuioState.Stopped;
             }
         }
 
