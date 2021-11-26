@@ -23,6 +23,8 @@ namespace Tuio.Tuio20
         private uint _dim = 0;
         private string _source = null;
         
+        private object _tuioLock = new object();
+        
         public Tuio20Client(TuioReceiver tuioReceiver)
         {
             _tuioReceiver = tuioReceiver;
@@ -45,6 +47,7 @@ namespace Tuio.Tuio20
             _tuioReceiver.Disconnect();
         }
         
+        public object tuioLock => _tuioLock;
         public uint dim => _dim;
         public string source => _source;
         
@@ -143,205 +146,209 @@ namespace Tuio.Tuio20
             {
                 _dim = dim;
                 _source = source;
-                HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
-                HashSet<uint> aliveSIds = new HashSet<uint>();
-                foreach (var sId in oscMessage.Values)
+                lock (_tuioLock)
                 {
-                    aliveSIds.Add((uint)(int) sId);
+                    HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
+                    HashSet<uint> aliveSIds = new HashSet<uint>();
+                    foreach (var sId in oscMessage.Values)
+                    {
+                        aliveSIds.Add((uint)(int) sId);
+                    }
+                    HashSet<uint> newSIds = new HashSet<uint>(aliveSIds.Except(currentSIds));
+                    HashSet<uint> removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
+                    HashSet<uint> addedTuioObjects = new HashSet<Tuio20Object>();
+                    HashSet<uint> updatedTuioObjects = new HashSet<Tuio20Object>();
+                    HashSet<uint> removedTuioObjects = new HashSet<Tuio20Object>();
+                    foreach (var sId in newSIds)
+                    {
+                        var tuioObject = new Tuio20Object(_prevFrameTime, sId);
+                        _tuioObjects[sId] = tuioObject;
+                    }
+                    foreach (var sId in removedSIds)
+                    {
+                        var tuioObject = _tuioObjects[sId];
+                        removedTuioObjects.Add(tuioObject);
+                        tuioObject._remove(currentFrameTime);
+                        _tuioObjects.Remove(sId);
+                    }
+
+                    foreach (var otherOscMessage in _otherMessages)
+                    {
+                        if (otherOscMessage.Address == "/tuio2/tok")
+                        {
+                            var sId = (uint)(int)otherOscMessage.Values[0];
+                            if (aliveSIds.Contains(sId))
+                            {
+                                var tuId = (uint)(int)otherOscMessage.Values[1];
+                                var cId = (uint)(int)otherOscMessage.Values[2];
+                                var xPos = (float)otherOscMessage.Values[3];
+                                var yPos = (float)otherOscMessage.Values[4];
+                                var angle = (float)otherOscMessage.Values[5];
+                                float xVel = 0, yVel = 0, aVel = 0, mAcc = 0, rAcc = 0;
+                                if (otherOscMessage.Values.Count > 6)
+                                {
+                                    xVel = (float)otherOscMessage.Values[6];
+                                    yVel = (float)otherOscMessage.Values[7];
+                                    aVel = (float)otherOscMessage.Values[8];
+                                    mAcc = (float)otherOscMessage.Values[9];
+                                    rAcc = (float)otherOscMessage.Values[10];
+                                }
+
+                                var tuioObject = _tuioObjects[sId];
+                                if (tuioObject.token == null)
+                                {
+                                    addedTuioObjects.Add(tuioObject);
+                                    tuioObject.SetTuioToken(new Tuio20Token(_prevFrameTime, tuioObject, tuId, cId, xPos,
+                                        yPos, angle, xVel, yVel, aVel, mAcc, rAcc));
+                                }
+                                else
+                                {
+                                    if (tuioObject.token._hasChanged(tuId, cId, xPos,
+                                        yPos, angle, xVel, yVel, aVel, mAcc, rAcc))
+                                    {
+                                        updatedTuioObjects.Add(tuioObject);
+                                        tuioObject.token._update(_prevFrameTime, tuId, cId, xPos,
+                                            yPos, angle, xVel, yVel, aVel, mAcc, rAcc);
+                                    }
+                                }
+                            }
+                        }
+                        else if (otherOscMessage.Address == "/tuio2/ptr")
+                        {
+                            var sId = (uint)(int)otherOscMessage.Values[0];
+                            if (aliveSIds.Contains(sId))
+                            {
+                                var tuId = (uint)(int)otherOscMessage.Values[1];
+                                var cId = (uint)(int)otherOscMessage.Values[2];
+                                var xPos = (float)otherOscMessage.Values[3];
+                                var yPos = (float)otherOscMessage.Values[4];
+                                var angle = (float)otherOscMessage.Values[5];
+                                var shear = (float)otherOscMessage.Values[6];
+                                var radius = (float)otherOscMessage.Values[7];
+                                var press = (float)otherOscMessage.Values[8];
+                                float xVel = 0, yVel = 0, pVel = 0, mAcc = 0, pAcc = 0;
+                                if (otherOscMessage.Values.Count > 9)
+                                {
+                                    xVel = (float)otherOscMessage.Values[6];
+                                    yVel = (float)otherOscMessage.Values[7];
+                                    pVel = (float)otherOscMessage.Values[8];
+                                    mAcc = (float)otherOscMessage.Values[9];
+                                    pAcc = (float)otherOscMessage.Values[10];
+                                }
+
+                                var tuioObject = _tuioObjects[sId];
+                                if (tuioObject.pointer == null)
+                                {
+                                    addedTuioObjects.Add(tuioObject);
+                                    tuioObject.SetTuioPointer(new Tuio20Pointer(_prevFrameTime, tuioObject, tuId, cId, 
+                                        xPos, yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc));
+                                }
+                                else
+                                {
+                                    if (tuioObject.pointer._hasChanged(tuId, cId, xPos,
+                                        yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc))
+                                    {
+                                        updatedTuioObjects.Add(tuioObject);
+                                        tuioObject.pointer._update(_prevFrameTime, tuId, cId, xPos,
+                                            yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc);
+                                    }
+                                }
+                            }
+                        }
+                        else if (otherOscMessage.Address == "/tuio2/bnd")
+                        {
+                            var sId = (uint)(int)otherOscMessage.Values[0];
+                            if (aliveSIds.Contains(sId))
+                            {
+                                var xPos = (float)otherOscMessage.Values[1];
+                                var yPos = (float)otherOscMessage.Values[2];
+                                var angle = (float)otherOscMessage.Values[3];
+                                var width = (float)otherOscMessage.Values[4];
+                                var height = (float)otherOscMessage.Values[5];
+                                var area = (float)otherOscMessage.Values[6];
+                                float xVel = 0, yVel = 0, aVel = 0, mAcc = 0, rAcc = 0;
+                                if (otherOscMessage.Values.Count > 7)
+                                {
+                                    xVel = (float)otherOscMessage.Values[7];
+                                    yVel = (float)otherOscMessage.Values[8];
+                                    aVel = (float)otherOscMessage.Values[9];
+                                    mAcc = (float)otherOscMessage.Values[10];
+                                    rAcc = (float)otherOscMessage.Values[11];
+                                }
+
+                                var tuioObject = _tuioObjects[sId];
+                                if (tuioObject.bounds == null)
+                                {
+                                    addedTuioObjects.Add(tuioObject);
+                                    tuioObject.SetTuioBounds(new Tuio20Bounds(_prevFrameTime, tuioObject, xPos,
+                                        yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc));
+                                }
+                                else
+                                {
+                                    if (tuioObject.bounds._hasChanged(xPos,
+                                        yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc))
+                                    {
+                                        updatedTuioObjects.Add(tuioObject);
+                                        tuioObject.bounds._update(_prevFrameTime, xPos,
+                                            yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc);
+                                    }
+                                }
+                            }
+                        }
+                        else if (otherOscMessage.Address == "/tuio2/sym")
+                        {
+                            var sId = (uint)(int)otherOscMessage.Values[0];
+                            if (aliveSIds.Contains(sId))
+                            {
+                                var tuId = (uint)(int)otherOscMessage.Values[1];
+                                var cId = (uint)(int)otherOscMessage.Values[2];
+                                string group = (string)otherOscMessage.Values[3];
+                                string data = (string)otherOscMessage.Values[4];
+
+                                var tuioObject = _tuioObjects[sId];
+                                if (tuioObject.symbol == null)
+                                {
+                                    addedTuioObjects.Add(tuioObject);
+                                    tuioObject.SetTuioSymbol(new Tuio20Symbol(_prevFrameTime, tuioObject, tuId, cId, 
+                                        group, data));
+                                }
+                                else
+                                {
+                                    if (tuioObject.symbol._hasChanged(tuId, cId, group,
+                                        data))
+                                    {
+                                        updatedTuioObjects.Add(tuioObject);
+                                        tuioObject.symbol._update(_prevFrameTime, tuId, cId, group,
+                                            data);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                HashSet<uint> newSIds = new HashSet<uint>(aliveSIds.Except(currentSIds));
-                HashSet<uint> addedSIds = new HashSet<uint>(newSIds);
-                HashSet<uint> updatedSIds = new HashSet<uint>();
-                HashSet<uint> removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
-                foreach (var sId in newSIds)
+
+                foreach (var tuioObject in addedTuioObjects)
                 {
-                    var tuioObject = new Tuio20Object(_prevFrameTime, sId);
-                    _tuioObjects[sId] = tuioObject;
-                }
-
-                foreach (var otherOscMessage in _otherMessages)
-                {
-                    if (otherOscMessage.Address == "/tuio2/tok")
-                    {
-                        var sId = (uint)(int)otherOscMessage.Values[0];
-                        if (aliveSIds.Contains(sId))
-                        {
-                            var tuId = (uint)(int)otherOscMessage.Values[1];
-                            var cId = (uint)(int)otherOscMessage.Values[2];
-                            var xPos = (float)otherOscMessage.Values[3];
-                            var yPos = (float)otherOscMessage.Values[4];
-                            var angle = (float)otherOscMessage.Values[5];
-                            float xVel = 0, yVel = 0, aVel = 0, mAcc = 0, rAcc = 0;
-                            if (otherOscMessage.Values.Count > 6)
-                            {
-                                xVel = (float)otherOscMessage.Values[6];
-                                yVel = (float)otherOscMessage.Values[7];
-                                aVel = (float)otherOscMessage.Values[8];
-                                mAcc = (float)otherOscMessage.Values[9];
-                                rAcc = (float)otherOscMessage.Values[10];
-                            }
-
-                            var tuioObject = _tuioObjects[sId];
-                            if (tuioObject.token == null)
-                            {
-                                addedSIds.Add(sId);
-                                tuioObject.SetTuioToken(new Tuio20Token(_prevFrameTime, tuioObject, tuId, cId, xPos,
-                                    yPos, angle, xVel, yVel, aVel, mAcc, rAcc));
-                            }
-                            else
-                            {
-                                if (tuioObject.token._hasChanged(tuId, cId, xPos,
-                                    yPos, angle, xVel, yVel, aVel, mAcc, rAcc))
-                                {
-                                    updatedSIds.Add(sId);
-                                    tuioObject.token._update(_prevFrameTime, tuId, cId, xPos,
-                                        yPos, angle, xVel, yVel, aVel, mAcc, rAcc);
-                                }
-                            }
-                        }
-                    }
-                    else if (otherOscMessage.Address == "/tuio2/ptr")
-                    {
-                        var sId = (uint)(int)otherOscMessage.Values[0];
-                        if (aliveSIds.Contains(sId))
-                        {
-                            var tuId = (uint)(int)otherOscMessage.Values[1];
-                            var cId = (uint)(int)otherOscMessage.Values[2];
-                            var xPos = (float)otherOscMessage.Values[3];
-                            var yPos = (float)otherOscMessage.Values[4];
-                            var angle = (float)otherOscMessage.Values[5];
-                            var shear = (float)otherOscMessage.Values[6];
-                            var radius = (float)otherOscMessage.Values[7];
-                            var press = (float)otherOscMessage.Values[8];
-                            float xVel = 0, yVel = 0, pVel = 0, mAcc = 0, pAcc = 0;
-                            if (otherOscMessage.Values.Count > 9)
-                            {
-                                xVel = (float)otherOscMessage.Values[6];
-                                yVel = (float)otherOscMessage.Values[7];
-                                pVel = (float)otherOscMessage.Values[8];
-                                mAcc = (float)otherOscMessage.Values[9];
-                                pAcc = (float)otherOscMessage.Values[10];
-                            }
-
-                            var tuioObject = _tuioObjects[sId];
-                            if (tuioObject.pointer == null)
-                            {
-                                addedSIds.Add(sId);
-                                tuioObject.SetTuioPointer(new Tuio20Pointer(_prevFrameTime, tuioObject, tuId, cId, 
-                                    xPos, yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc));
-                            }
-                            else
-                            {
-                                if (tuioObject.pointer._hasChanged(tuId, cId, xPos,
-                                    yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc))
-                                {
-                                    updatedSIds.Add(sId);
-                                    tuioObject.pointer._update(_prevFrameTime, tuId, cId, xPos,
-                                        yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc);
-                                }
-                            }
-                        }
-                    }
-                    else if (otherOscMessage.Address == "/tuio2/bnd")
-                    {
-                        var sId = (uint)(int)otherOscMessage.Values[0];
-                        if (aliveSIds.Contains(sId))
-                        {
-                            var xPos = (float)otherOscMessage.Values[1];
-                            var yPos = (float)otherOscMessage.Values[2];
-                            var angle = (float)otherOscMessage.Values[3];
-                            var width = (float)otherOscMessage.Values[4];
-                            var height = (float)otherOscMessage.Values[5];
-                            var area = (float)otherOscMessage.Values[6];
-                            float xVel = 0, yVel = 0, aVel = 0, mAcc = 0, rAcc = 0;
-                            if (otherOscMessage.Values.Count > 7)
-                            {
-                                xVel = (float)otherOscMessage.Values[7];
-                                yVel = (float)otherOscMessage.Values[8];
-                                aVel = (float)otherOscMessage.Values[9];
-                                mAcc = (float)otherOscMessage.Values[10];
-                                rAcc = (float)otherOscMessage.Values[11];
-                            }
-
-                            var tuioObject = _tuioObjects[sId];
-                            if (tuioObject.bounds == null)
-                            {
-                                addedSIds.Add(sId);
-                                tuioObject.SetTuioBounds(new Tuio20Bounds(_prevFrameTime, tuioObject, xPos,
-                                    yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc));
-                            }
-                            else
-                            {
-                                if (tuioObject.bounds._hasChanged(xPos,
-                                    yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc))
-                                {
-                                    updatedSIds.Add(sId);
-                                    tuioObject.bounds._update(_prevFrameTime, xPos,
-                                        yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc);
-                                }
-                            }
-                        }
-                    }
-                    else if (otherOscMessage.Address == "/tuio2/sym")
-                    {
-                        var sId = (uint)(int)otherOscMessage.Values[0];
-                        if (aliveSIds.Contains(sId))
-                        {
-                            var tuId = (uint)(int)otherOscMessage.Values[1];
-                            var cId = (uint)(int)otherOscMessage.Values[2];
-                            string group = (string)otherOscMessage.Values[3];
-                            string data = (string)otherOscMessage.Values[4];
-
-                            var tuioObject = _tuioObjects[sId];
-                            if (tuioObject.symbol == null)
-                            {
-                                addedSIds.Add(sId);
-                                tuioObject.SetTuioSymbol(new Tuio20Symbol(_prevFrameTime, tuioObject, tuId, cId, 
-                                    group, data));
-                            }
-                            else
-                            {
-                                if (tuioObject.symbol._hasChanged(tuId, cId, group,
-                                    data))
-                                {
-                                    updatedSIds.Add(sId);
-                                    tuioObject.symbol._update(_prevFrameTime, tuId, cId, group,
-                                        data);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                foreach (var sId in addedSIds)
-                {
-                    var tuioObject = _tuioObjects[sId];
                     foreach (var tuioListener in _tuioListeners)
                     {
                         tuioListener.TuioAdd(tuioObject);
                     }
                 }
 
-                updatedSIds = new HashSet<uint>(updatedSIds.Except(newSIds));
-                foreach (var sId in updatedSIds)
+                foreach (var tuioObject in updatedTuioObjects)
                 {
-                    var tuioObject = _tuioObjects[sId];
                     foreach (var tuioListener in _tuioListeners)
                     {
                         tuioListener.TuioUpdate(tuioObject);
                     }
                 }
 
-                foreach (var sId in removedSIds)
+                foreach (var tuioObject in removedTuioObjects)
                 {
-                    var tuioObject = _tuioObjects[sId];
-                    tuioObject._remove(_prevFrameTime);
                     foreach (var tuioListener in _tuioListeners)
                     {
                         tuioListener.TuioRemove(tuioObject);
                     }
-
-                    _tuioObjects.Remove(sId);
                 }
                 
                 foreach (var tuioListener in _tuioListeners)
