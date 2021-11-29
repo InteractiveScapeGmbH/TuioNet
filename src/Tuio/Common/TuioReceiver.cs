@@ -19,13 +19,13 @@ namespace Tuio.Common
             _isAutoProcess = isAutoProcess;
         }
 
-        public static TuioReceiver FromConnectionType(TuioConnectionType tuioConnectionType, string address="0.0.0.0", string port=0, bool isAutoProcess=True){
+        public static TuioReceiver FromConnectionType(TuioConnectionType tuioConnectionType, string address="0.0.0.0", int port=0, bool isAutoProcess=true){
             switch(tuioConnectionType)
             {
                 case TuioConnectionType.UDP:
-                    return UdpTuioReceiver(port, isAutoProcess);
+                    return new UdpTuioReceiver(port, isAutoProcess);
                 case TuioConnectionType.Websocket:
-                    return WebsocketTuioReceiver(port, isAutoProcess);
+                    return new WebsocketTuioReceiver(address, port, isAutoProcess);
             }
             return null;
         }
@@ -48,24 +48,27 @@ namespace Tuio.Common
                 {
                     packet.Values.ForEach(oscMessage =>
                     {
-                        OnOscMessage((OSCMessage)oscMessage);
+                        lock (_queuedMessages)
+                        {
+                            _queuedMessages.Enqueue((OSCMessage)oscMessage);
+                        }
                     });
                 }
                 else
                 {
-                    OnOscMessage((OSCMessage)packet);
+                    lock (_queuedMessages)
+                    {
+                        _queuedMessages.Enqueue((OSCMessage)packet);
+                    }
                 }
+            }
+
+            if (_isAutoProcess)
+            {
+                ProcessMessages();
             }
         }
 
-        private void OnOscMessage(OSCMessage oscMessage)
-        {
-            lock (_queuedMessages)
-            {
-                _queuedMessages.Enqueue((OSCMessage)oscMessage);
-            }
-        }
-        
         public void ProcessMessages()
         {
             lock (_queuedMessages)

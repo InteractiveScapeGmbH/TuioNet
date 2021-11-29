@@ -166,9 +166,9 @@ namespace Tuio.Tuio20
                 }
                 HashSet<uint> newSIds = new HashSet<uint>(aliveSIds.Except(currentSIds));
                 HashSet<uint> removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
-                HashSet<uint> addedTuioObjects = new HashSet<Tuio20Object>();
-                HashSet<uint> updatedTuioObjects = new HashSet<Tuio20Object>();
-                HashSet<uint> removedTuioObjects = new HashSet<Tuio20Object>();
+                HashSet<Tuio20Object> addedTuioObjects = new HashSet<Tuio20Object>();
+                HashSet<Tuio20Object> updatedTuioObjects = new HashSet<Tuio20Object>();
+                HashSet<Tuio20Object> removedTuioObjects = new HashSet<Tuio20Object>();
                 lock (_tuioObjectLock)
                 {
                     foreach (var sId in newSIds)
