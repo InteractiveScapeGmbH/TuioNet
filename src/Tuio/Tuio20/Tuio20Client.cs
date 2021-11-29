@@ -23,7 +23,7 @@ namespace Tuio.Tuio20
         private uint _dim = 0;
         private string _source = null;
         
-        private object _tuioLock = new object();
+        private object _tuioObjectLock = new object();
         
         public Tuio20Client(TuioReceiver tuioReceiver)
         {
@@ -47,64 +47,76 @@ namespace Tuio.Tuio20
             _tuioReceiver.Disconnect();
         }
         
-        public object tuioLock => _tuioLock;
+        public object tuioObjectLock => _tuioObjectLock;
         public uint dim => _dim;
         public string source => _source;
         
         public List<Tuio20Token> GetTuioTokenList()
         {
-            var tuioTokenList = new List<Tuio20Token>();
-            foreach (var entry in _tuioObjects)
+            lock (_tuioObjectLock)
             {
-                if (entry.Value.ContainsTuioToken())
+                var tuioTokenList = new List<Tuio20Token>();
+                foreach (var entry in _tuioObjects)
                 {
-                    tuioTokenList.Add(entry.Value.token);
+                    if (entry.Value.ContainsTuioToken())
+                    {
+                        tuioTokenList.Add(entry.Value.token);
+                    }
                 }
-            }
 
-            return tuioTokenList;
+                return tuioTokenList;
+            }
         }
 
         public List<Tuio20Pointer> GetTuioPointerList()
         {
-            var tuioPointerList = new List<Tuio20Pointer>();
-            foreach (var entry in _tuioObjects)
+            lock (_tuioObjectLock)
             {
-                if (entry.Value.ContainsTuioPointer())
+                var tuioPointerList = new List<Tuio20Pointer>();
+                foreach (var entry in _tuioObjects)
                 {
-                    tuioPointerList.Add(entry.Value.pointer);
+                    if (entry.Value.ContainsTuioPointer())
+                    {
+                        tuioPointerList.Add(entry.Value.pointer);
+                    }
                 }
-            }
 
-            return tuioPointerList;
+                return tuioPointerList;
+            }
         }
 
         public List<Tuio20Bounds> GetTuioBoundsList()
         {
-            var tuioBoundsList = new List<Tuio20Bounds>();
-            foreach (var entry in _tuioObjects)
+            lock (_tuioObjectLock)
             {
-                if (entry.Value.ContainsTuioBounds())
+                var tuioBoundsList = new List<Tuio20Bounds>();
+                foreach (var entry in _tuioObjects)
                 {
-                    tuioBoundsList.Add(entry.Value.bounds);
+                    if (entry.Value.ContainsTuioBounds())
+                    {
+                        tuioBoundsList.Add(entry.Value.bounds);
+                    }
                 }
-            }
 
-            return tuioBoundsList;
+                return tuioBoundsList;
+            }
         }
 
         public List<Tuio20Symbol> GetTuioSymbolList()
         {
-            var tuioSymbolList = new List<Tuio20Symbol>();
-            foreach (var entry in _tuioObjects)
+            lock (_tuioObjectLock)
             {
-                if (entry.Value.ContainsTuioSymbol())
+                var tuioSymbolList = new List<Tuio20Symbol>();
+                foreach (var entry in _tuioObjects)
                 {
-                    tuioSymbolList.Add(entry.Value.symbol);
+                    if (entry.Value.ContainsTuioSymbol())
+                    {
+                        tuioSymbolList.Add(entry.Value.symbol);
+                    }
                 }
-            }
 
-            return tuioSymbolList;
+                return tuioSymbolList;
+            }
         }
         
         private void OnFrm(OSCMessage oscMessage)
@@ -146,19 +158,19 @@ namespace Tuio.Tuio20
             {
                 _dim = dim;
                 _source = source;
-                lock (_tuioLock)
+                HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
+                HashSet<uint> aliveSIds = new HashSet<uint>();
+                foreach (var sId in oscMessage.Values)
                 {
-                    HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
-                    HashSet<uint> aliveSIds = new HashSet<uint>();
-                    foreach (var sId in oscMessage.Values)
-                    {
-                        aliveSIds.Add((uint)(int) sId);
-                    }
-                    HashSet<uint> newSIds = new HashSet<uint>(aliveSIds.Except(currentSIds));
-                    HashSet<uint> removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
-                    HashSet<uint> addedTuioObjects = new HashSet<Tuio20Object>();
-                    HashSet<uint> updatedTuioObjects = new HashSet<Tuio20Object>();
-                    HashSet<uint> removedTuioObjects = new HashSet<Tuio20Object>();
+                    aliveSIds.Add((uint)(int) sId);
+                }
+                HashSet<uint> newSIds = new HashSet<uint>(aliveSIds.Except(currentSIds));
+                HashSet<uint> removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
+                HashSet<uint> addedTuioObjects = new HashSet<Tuio20Object>();
+                HashSet<uint> updatedTuioObjects = new HashSet<Tuio20Object>();
+                HashSet<uint> removedTuioObjects = new HashSet<Tuio20Object>();
+                lock (_tuioObjectLock)
+                {
                     foreach (var sId in newSIds)
                     {
                         var tuioObject = new Tuio20Object(_prevFrameTime, sId);

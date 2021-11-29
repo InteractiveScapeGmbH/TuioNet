@@ -9,7 +9,7 @@ namespace Tuio.Common
     {
         private int _port;
 
-        public UdpTuioReceiver(int port)
+        public UdpTuioReceiver(int port, bool isAutoProcess) : base(isAutoProcess)
         {
             _port = port;
         }

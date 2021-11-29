@@ -11,7 +11,25 @@ namespace Tuio.Common
         private Dictionary<string, List<Action<OSCMessage>>> _messageListeners = new Dictionary<string, List<Action<OSCMessage>>>();
         private Queue<OSCMessage> _queuedMessages = new Queue<OSCMessage>();
         protected CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        
+
+        private bool _isAutoProcess;
+
+        public TuioReceiver(bool isAutoProcess)
+        {
+            _isAutoProcess = isAutoProcess;
+        }
+
+        public static TuioReceiver FromConnectionType(TuioConnectionType tuioConnectionType, string address="0.0.0.0", string port=0, bool isAutoProcess=True){
+            switch(tuioConnectionType)
+            {
+                case TuioConnectionType.UDP:
+                    return UdpTuioReceiver(port, isAutoProcess);
+                case TuioConnectionType.Websocket:
+                    return WebsocketTuioReceiver(port, isAutoProcess);
+            }
+            return null;
+        }
+
         public abstract void Connect();
 
         public void Disconnect()
@@ -30,19 +48,21 @@ namespace Tuio.Common
                 {
                     packet.Values.ForEach(oscMessage =>
                     {
-                        lock (_queuedMessages)
-                        {
-                            _queuedMessages.Enqueue((OSCMessage)oscMessage);
-                        }
+                        OnOscMessage((OSCMessage)oscMessage);
                     });
                 }
                 else
                 {
-                    lock (_queuedMessages)
-                    {
-                        _queuedMessages.Enqueue((OSCMessage)packet);
-                    }
+                    OnOscMessage((OSCMessage)packet);
                 }
+            }
+        }
+
+        private void OnOscMessage(OSCMessage oscMessage)
+        {
+            lock (_queuedMessages)
+            {
+                _queuedMessages.Enqueue((OSCMessage)oscMessage);
             }
         }
         
@@ -52,18 +72,14 @@ namespace Tuio.Common
             {
                 while (_queuedMessages.Count > 0)
                 {
-                    OnOscMessage(_queuedMessages.Dequeue());
-                }
-            }
-        }
-        
-        private void OnOscMessage(OSCMessage oscMessage)
-        {
-            if (_messageListeners.TryGetValue(oscMessage.Address, out var messageListenersForAddress))
-            {
-                foreach (var messageListener in messageListenersForAddress)
-                {
-                    messageListener.Invoke(oscMessage);
+                    var oscMessage = _queuedMessages.Dequeue();
+                    if (_messageListeners.TryGetValue(oscMessage.Address, out var messageListenersForAddress))
+                    {
+                        foreach (var messageListener in messageListenersForAddress)
+                        {
+                            messageListener.Invoke(oscMessage);
+                        }
+                    }
                 }
             }
         }

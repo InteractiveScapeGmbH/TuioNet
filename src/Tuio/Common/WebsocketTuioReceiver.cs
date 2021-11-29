@@ -10,7 +10,7 @@ namespace Tuio.Common
         private string _address;
         private int _port;
 
-        public WebsocketTuioReceiver(string address, int port)
+        public WebsocketTuioReceiver(string address, int port, bool isAutoProcess) : base(isAutoProcess)
         {
             _address = address;
             _port = port;

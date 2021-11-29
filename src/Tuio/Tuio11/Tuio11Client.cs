@@ -22,6 +22,10 @@ namespace Tuio.Tuio11
         private OSCMessage _cursorAliveMessage = null;
         private OSCMessage _blobAliveMessage = null;
 
+        private object _objectLock = new object();
+        private object _cursorLock = new object();
+        private object _blobLock = new object();
+
         private List<uint> _freeCursorIds = new List<uint>();
         private List<uint> _freeBlobIds = new List<uint>();
 
@@ -47,6 +51,10 @@ namespace Tuio.Tuio11
         {
             _tuioReceiver.Disconnect();
         }
+
+        public object objectLock => _objectLock;
+        public object cursorLock => _cursorLock;
+        public object blobLock => _blobLock;
 
         public bool IsConnected()
         {
