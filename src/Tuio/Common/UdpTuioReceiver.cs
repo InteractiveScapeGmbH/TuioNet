@@ -29,7 +29,7 @@ namespace Tuio.Common
                             var receivedResults = await udpClient.ReceiveAsync();
                             OnBuffer(receivedResults.Buffer, receivedResults.Buffer.Length);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             break;
                         }

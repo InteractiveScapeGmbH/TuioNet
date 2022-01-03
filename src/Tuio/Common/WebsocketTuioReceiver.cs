@@ -29,7 +29,7 @@ namespace Tuio.Common
                     {
                         await socket.ConnectAsync(serverUri, cancellationToken);
                     }
-                    catch (OperationCanceledException ex)
+                    catch (OperationCanceledException)
                     {
                         return;
                     }
@@ -54,7 +54,7 @@ namespace Tuio.Common
                                 if (result.EndOfMessage)
                                     break;
                             }
-                            catch (Exception e)
+                            catch (Exception)
                             {
                                 break;
                             }
