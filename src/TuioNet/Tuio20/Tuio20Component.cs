@@ -39,6 +39,8 @@ namespace TuioNet.Tuio20
             PrevPoints.Enqueue(new Tuio20Point(startTime, xPos, yPos));
         }
         
+        public uint SessionId => Container.SessionId;
+        
         public List<Tuio20Point> GetPath()
         {
             return PrevPoints.ToList();
