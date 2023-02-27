@@ -175,7 +175,7 @@ namespace TuioNet.Tuio11
                         foreach (var setMessage in _objectSetMessages)
                         {
                             var sessionId = (uint)(int)setMessage.Values[1];
-                            var classId = (uint)(int)setMessage.Values[2];
+                            var symbolId = (uint)(int)setMessage.Values[2];
                             var posX = (float)setMessage.Values[3];
                             var posY = (float)setMessage.Values[4];
                             var position = new Vector2(posX, posY);
@@ -203,7 +203,7 @@ namespace TuioNet.Tuio11
                                 }
                                 else
                                 {
-                                    var tuioObject = new Tuio11Object(_currentTime, sessionId, classId, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
+                                    var tuioObject = new Tuio11Object(_currentTime, sessionId, symbolId, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
                                     _tuioObjects[sessionId] = tuioObject;
                                     foreach (var tuioListener in _tuioListeners)
                                     {
