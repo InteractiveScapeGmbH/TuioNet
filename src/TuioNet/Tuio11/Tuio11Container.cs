@@ -16,6 +16,9 @@ namespace TuioNet.Tuio11
         public float MotionSpeed { get; protected set; }
         public float MotionAccel { get; protected set; }
         public TuioState State { get; protected set; }
+
+        public event Action OnUpdate;
+        public event Action OnRemove;
         
         protected readonly List<Tuio11Point> PrevPoints = new List<Tuio11Point>();
         
@@ -85,11 +88,14 @@ namespace TuioNet.Tuio11
             {
                 State = TuioState.Stopped;
             }
+            
+            OnUpdate?.Invoke();
         }
 
         internal void Remove()
         {
             State = TuioState.Removed;
+            OnRemove?.Invoke();
         }
     }
 }
