@@ -20,4 +20,9 @@
       <ProjectReference Include="..\..\src\TuioNet\TuioNet.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Tuio11" />
+      <Folder Include="Tuio20" />
+    </ItemGroup>
+
 </Project>
