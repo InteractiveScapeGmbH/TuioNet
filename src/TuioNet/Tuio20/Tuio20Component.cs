@@ -49,7 +49,7 @@ namespace TuioNet.Tuio20
             return PrevPoints.ToList();
         }
 
-        public void UpdateComponent(TuioTime currentTime, float xPos, float yPos, float angle,
+        internal void UpdateComponent(TuioTime currentTime, float xPos, float yPos, float angle,
             float xVel, float yVel, float aVel, float mAcc, float rAcc)
         {
             CurrentTime = currentTime;

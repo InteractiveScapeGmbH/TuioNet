@@ -13,14 +13,14 @@ namespace TuioNet.Tuio20
             CId = cId;
         }
         
-        public bool HasChanged(uint tuId, uint cId, float xPos, float yPos, float angle, float xVel, float yVel,
+        internal bool HasChanged(uint tuId, uint cId, float xPos, float yPos, float angle, float xVel, float yVel,
             float aVel, float mAcc, float rAcc)
         {
             return !(tuId == TuId && cId == CId && xPos == this.xPos && yPos == this.yPos && angle == Angle &&
                      xVel == base.xVel && yVel == base.yVel && aVel == base.aVel && mAcc == base.mAcc && rAcc == base.rAcc);
         }
 
-        public void Update(TuioTime currentTime, uint tuId, uint cId, float xPos, float yPos, float angle,
+        internal void Update(TuioTime currentTime, uint tuId, uint cId, float xPos, float yPos, float angle,
             float xVel, float yVel,
             float aVel, float mAcc, float rAcc)
         {

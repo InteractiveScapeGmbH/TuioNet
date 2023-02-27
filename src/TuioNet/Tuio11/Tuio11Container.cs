@@ -21,7 +21,7 @@ namespace TuioNet.Tuio11
         public event Action OnRemove;
         
         protected readonly List<Tuio11Point> PrevPoints = new List<Tuio11Point>();
-        
+
         public Tuio11Container(TuioTime startTime, uint sessionId, float xPos, float yPos, float xSpeed, float ySpeed, float motionAccel) : base(startTime, xPos, yPos)
         {
             CurrentTime = startTime;

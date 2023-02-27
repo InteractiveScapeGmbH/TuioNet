@@ -89,13 +89,13 @@ namespace TuioNet.Tuio20
             return Symbol is {State: TuioState.Added};
         }
         
-        public void Update(TuioTime currentTime)
+        internal void Update(TuioTime currentTime)
         {
             CurrentTime = currentTime;
             State = TuioState.Idle;
         }
 
-        public void Remove(TuioTime currentTime)
+        internal void Remove(TuioTime currentTime)
         {
             CurrentTime = currentTime;
             Token?._remove(currentTime);

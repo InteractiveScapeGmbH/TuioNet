@@ -23,13 +23,13 @@ namespace TuioNet.Tuio20
             this.pAcc = pAcc;
         }
         
-        public bool HasChanged(uint tuId, uint cId, float xPos, float yPos, float angle, float shear, float radius, float press, float xVel, float yVel, float pVel, float mAcc, float pAcc)
+        internal bool HasChanged(uint tuId, uint cId, float xPos, float yPos, float angle, float shear, float radius, float press, float xVel, float yVel, float pVel, float mAcc, float pAcc)
         {
             return !(tuId == TuId && cId == CId && xPos == this.xPos && yPos == this.yPos && angle == Angle && shear == Shear &&radius == Radius &&press == Press &&
                      xVel == base.xVel && yVel == base.yVel && pVel == this.pVel && mAcc == base.mAcc && pAcc == this.pAcc);
         }
 
-        public void Update(TuioTime currentTime, uint tuId, uint cId, float xPos, float yPos, float angle, float shear, float radius, float press, float xVel, float yVel, float pVel, float mAcc, float pAcc)
+        internal void Update(TuioTime currentTime, uint tuId, uint cId, float xPos, float yPos, float angle, float shear, float radius, float press, float xVel, float yVel, float pVel, float mAcc, float pAcc)
         {
             UpdateComponent(currentTime, xPos, yPos, angle, xVel, yVel, 0, mAcc, 0);
             TuId = tuId;

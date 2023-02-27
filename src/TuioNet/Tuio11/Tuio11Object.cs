@@ -18,13 +18,13 @@ namespace TuioNet.Tuio11
             RotationAccel = rotationAccel;
         }
         
-        public bool HasChanged(float xPos, float yPos, float angle, float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel)
+        internal bool HasChanged(float xPos, float yPos, float angle, float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel)
         {
             return !(xPos == ((Tuio11Point)this).xPos && yPos == ((Tuio11Point)this).yPos && angle == Angle && xSpeed == base.xSpeed && ySpeed == base.ySpeed &&
                      rotationSpeed == RotationSpeed && motionAccel == MotionAccel && rotationAccel == RotationAccel);
         }
 
-        public void Update(TuioTime currentTime, float xPos, float yPos, float angle,
+        internal void Update(TuioTime currentTime, float xPos, float yPos, float angle,
             float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel)
         {
             var lastPoint = PrevPoints[PrevPoints.Count - 1];

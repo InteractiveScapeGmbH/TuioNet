@@ -7,7 +7,7 @@ namespace TuioNet.Tuio11
         public TuioTime StartTime { get; protected set; }
         public float xPos { get; protected set; }
         public float yPos { get; protected set; }
-        
+
         public Tuio11Point(TuioTime startTime, float xPos, float yPos)
         {
             StartTime = startTime;

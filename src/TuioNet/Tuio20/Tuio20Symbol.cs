@@ -17,12 +17,12 @@ namespace TuioNet.Tuio20
             Data = data;
         }
         
-        public bool HasChanged(uint tuId, uint cId, string group, string data)
+        internal bool HasChanged(uint tuId, uint cId, string group, string data)
         {
             return !(tuId == TuId && cId == CId && group == Group && data == Data);
         }
 
-        public void Update(TuioTime currentTime, uint tuId, uint cId, string group, string data)
+        internal void Update(TuioTime currentTime, uint tuId, uint cId, string group, string data)
         {
             UpdateComponent(currentTime, 0, 0, 0, 0, 0, 0, 0, 0);
             TuId = tuId;
