@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio11
@@ -20,14 +21,9 @@ namespace TuioNet.Tuio11
         public uint SessionId { get; protected set; }
         
         /// <summary>
-        /// The x-Component of the velocity vector.
+        /// The velocity-vector of the TuioContainer.
         /// </summary>
-        public float SpeedX { get; protected set; }
-        
-        /// <summary>
-        /// The y-Component of the velocity vector.
-        /// </summary>
-        public float SpeedY { get; protected set; }
+        public Vector2 Velocity { get; protected set; }
         
         /// <summary>
         /// Calculated length of the velocity vector.
@@ -56,14 +52,13 @@ namespace TuioNet.Tuio11
         
         protected readonly List<Tuio11Point> PrevPoints = new List<Tuio11Point>();
 
-        public Tuio11Container(TuioTime startTime, uint sessionId, float posX, float posY, float speedX, float speedY, float motionAccel) : base(startTime, posX, posY)
+        public Tuio11Container(TuioTime startTime, uint sessionId, Vector2 position, Vector2 velocity, float motionAccel) : base(startTime, position)
         {
             CurrentTime = startTime;
             SessionId = sessionId;
-            SpeedX = speedX;
-            SpeedY = speedY;
-            MotionSpeed = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
-            PrevPoints.Add(new Tuio11Point(CurrentTime, posX, posY));
+            Velocity = velocity;
+            MotionSpeed = Velocity.Length();
+            PrevPoints.Add(new Tuio11Point(CurrentTime, position));
         }
         
         public List<Tuio11Point> GetPath()
@@ -76,35 +71,31 @@ namespace TuioNet.Tuio11
             CurrentTime = currentTime - StartTime;
         }
 
-        internal void UpdateContainer(TuioTime currentTime, float posX, float posY, float speedX, float speedY, float motionAccel, bool isCalculateSpeeds)
+        internal void UpdateContainer(TuioTime currentTime, Vector2 position, Vector2 velocity, float motionAccel, bool isCalculateSpeeds)
         {
             var lastPoint = PrevPoints[PrevPoints.Count - 1];
-            PosX = posX;
-            PosY = posY;
+            Position = position;
             if (isCalculateSpeeds)
             {
                 var dt = (currentTime - lastPoint.StartTime).GetTotalMilliseconds() / 1000.0f;
-                var dx = posX - lastPoint.PosX;
-                var dy = posY - lastPoint.PosY;
-                var dist = (float)Math.Sqrt(dx * dx + dy * dy);
+                var deltaPosition = Position - lastPoint.Position;
+                var distance = deltaPosition.Length();
                 var lastMotionSpeed = MotionSpeed;
                 if(dt > 0)
                 {
-                    this.SpeedX = dx / dt;
-                    this.SpeedY = dy / dt;
-                    MotionSpeed = dist / dt;
+                    Velocity = deltaPosition / dt;
+                    MotionSpeed = distance / dt;
                     MotionAccel = (MotionSpeed - lastMotionSpeed) / dt;
                 }
             }
             else
             {
-                SpeedX = speedX;
-                SpeedY = speedY;
-                MotionSpeed = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
+                Velocity = velocity;
+                MotionSpeed = Velocity.Length();
                 MotionAccel = motionAccel;
             }
 
-            PrevPoints.Add(new Tuio11Point(currentTime, posX, posY));
+            PrevPoints.Add(new Tuio11Point(currentTime, position));
             if (PrevPoints.Count > MAX_PATH_LENGTH)
             {
                 PrevPoints.RemoveAt(0);

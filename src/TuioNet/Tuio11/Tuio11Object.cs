@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio11
@@ -25,7 +26,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         public float RotationAccel { get; protected set; }
         
-        public Tuio11Object(TuioTime startTime, uint sessionId, uint symbolId, float posX, float posY, float angle, float speedX, float speedY, float rotationSpeed, float motionAccel, float rotationAccel) : base(startTime, sessionId, posX, posY, speedX, speedY, motionAccel)
+        public Tuio11Object(TuioTime startTime, uint sessionId, uint symbolId, Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float motionAccel, float rotationAccel) : base(startTime, sessionId, position, velocity, motionAccel)
         {
             SymbolId = symbolId;
             Angle = angle;
@@ -33,18 +34,18 @@ namespace TuioNet.Tuio11
             RotationAccel = rotationAccel;
         }
         
-        internal bool HasChanged(float posX, float posY, float angle, float speedX, float speedY, float rotationSpeed, float motionAccel, float rotationAccel)
+        internal bool HasChanged(Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float motionAccel, float rotationAccel)
         {
-            return !(posX == ((Tuio11Point)this).PosX && posY == ((Tuio11Point)this).PosY && angle == Angle && speedX == base.SpeedX && speedY == base.SpeedY &&
+            return !(position.X == ((Tuio11Point)this).Position.X && position.Y == ((Tuio11Point)this).Position.Y && angle == Angle && velocity.X == base.Velocity.X && velocity.Y == base.Velocity.Y &&
                      rotationSpeed == RotationSpeed && motionAccel == MotionAccel && rotationAccel == RotationAccel);
         }
 
-        internal void Update(TuioTime currentTime, float posX, float posY, float angle,
-            float speedX, float speedY, float rotationSpeed, float motionAccel, float rotationAccel)
+        internal void Update(TuioTime currentTime, Vector2 position, float angle,
+            Vector2 velocity, float rotationSpeed, float motionAccel, float rotationAccel)
         {
             var lastPoint = PrevPoints[PrevPoints.Count - 1];
-            var isCalculateSpeeds = (posX != ((Tuio11Point)this).PosX && speedX == 0) || (posY != ((Tuio11Point)this).PosY && speedY == 0);
-            UpdateContainer(currentTime, posX, posY, speedX, speedY, motionAccel, isCalculateSpeeds);
+            var isCalculateSpeeds = (position.X != ((Tuio11Point)this).Position.X && velocity.X == 0) || (position.Y != ((Tuio11Point)this).Position.Y && velocity.Y == 0);
+            UpdateContainer(currentTime, position, velocity, motionAccel, isCalculateSpeeds);
 
             var isCalculateRotation = angle != Angle && rotationSpeed == 0;
             if(isCalculateRotation)
