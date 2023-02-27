@@ -21,6 +21,9 @@ namespace TuioNet.Tuio20
         public TuioState State { get; protected set; }
         public Queue<Tuio20Point> PrevPoints = new Queue<Tuio20Point>();
 
+        public event Action OnUpdate;
+        public event Action OnRemove;
+
         public Tuio20Component(TuioTime startTime, Tuio20Object container, float xPos, float yPos, float angle,
             float xVel, float yVel, float aVel, float mAcc, float rAcc) : base(startTime, xPos, yPos)
         {
@@ -81,12 +84,14 @@ namespace TuioNet.Tuio20
                 State = TuioState.Stopped;
             }
             Container.Update(currentTime);
+            OnUpdate?.Invoke();
         }
         
         internal void _remove(TuioTime currentTime)
         {
             CurrentTime = currentTime;
             State = TuioState.Removed;
+            OnRemove?.Invoke();
         }
     }
 }
