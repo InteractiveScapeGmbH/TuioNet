@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet", "src\TuioNet\TuioNet.csproj", "{EFDD9110-B8A4-4B11-A30D-29F14A0F03BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27849E57-89D4-4037-856D-F2869FA2DD04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27849E57-89D4-4037-856D-F2869FA2DD04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27849E57-89D4-4037-856D-F2869FA2DD04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27849E57-89D4-4037-856D-F2869FA2DD04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFDD9110-B8A4-4B11-A30D-29F14A0F03BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFDD9110-B8A4-4B11-A30D-29F14A0F03BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFDD9110-B8A4-4B11-A30D-29F14A0F03BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFDD9110-B8A4-4B11-A30D-29F14A0F03BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
