@@ -25,7 +25,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         public float RotationAccel { get; protected set; }
         
-        public Tuio11Object(TuioTime startTime, uint sessionId, uint symbolId, float xPos, float yPos, float angle, float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel) : base(startTime, sessionId, xPos, yPos, xSpeed, ySpeed, motionAccel)
+        public Tuio11Object(TuioTime startTime, uint sessionId, uint symbolId, float posX, float posY, float angle, float speedX, float speedY, float rotationSpeed, float motionAccel, float rotationAccel) : base(startTime, sessionId, posX, posY, speedX, speedY, motionAccel)
         {
             SymbolId = symbolId;
             Angle = angle;
@@ -33,18 +33,18 @@ namespace TuioNet.Tuio11
             RotationAccel = rotationAccel;
         }
         
-        internal bool HasChanged(float xPos, float yPos, float angle, float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel)
+        internal bool HasChanged(float posX, float posY, float angle, float speedX, float speedY, float rotationSpeed, float motionAccel, float rotationAccel)
         {
-            return !(xPos == ((Tuio11Point)this).xPos && yPos == ((Tuio11Point)this).yPos && angle == Angle && xSpeed == base.xSpeed && ySpeed == base.ySpeed &&
+            return !(posX == ((Tuio11Point)this).PosX && posY == ((Tuio11Point)this).PosY && angle == Angle && speedX == base.SpeedX && speedY == base.SpeedY &&
                      rotationSpeed == RotationSpeed && motionAccel == MotionAccel && rotationAccel == RotationAccel);
         }
 
-        internal void Update(TuioTime currentTime, float xPos, float yPos, float angle,
-            float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel)
+        internal void Update(TuioTime currentTime, float posX, float posY, float angle,
+            float speedX, float speedY, float rotationSpeed, float motionAccel, float rotationAccel)
         {
             var lastPoint = PrevPoints[PrevPoints.Count - 1];
-            var isCalculateSpeeds = (xPos != ((Tuio11Point)this).xPos && xSpeed == 0) || (yPos != ((Tuio11Point)this).yPos && ySpeed == 0);
-            UpdateContainer(currentTime, xPos, yPos, xSpeed, ySpeed, motionAccel, isCalculateSpeeds);
+            var isCalculateSpeeds = (posX != ((Tuio11Point)this).PosX && speedX == 0) || (posY != ((Tuio11Point)this).PosY && speedY == 0);
+            UpdateContainer(currentTime, posX, posY, speedX, speedY, motionAccel, isCalculateSpeeds);
 
             var isCalculateRotation = angle != Angle && rotationSpeed == 0;
             if(isCalculateRotation)

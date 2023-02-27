@@ -32,7 +32,7 @@ namespace TuioNet.Tuio11
         public float RotationSpeed { get; protected set; }
         public float RotationAccel { get; protected set; }
         
-        public Tuio11Blob(TuioTime startTime, uint sessionId, uint blobId, float xPos, float yPos, float angle, float width, float height, float area, float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel) : base(startTime, sessionId, xPos, yPos, xSpeed, ySpeed, motionAccel)
+        public Tuio11Blob(TuioTime startTime, uint sessionId, uint blobId, float posX, float posY, float angle, float width, float height, float area, float speedX, float speedY, float rotationSpeed, float motionAccel, float rotationAccel) : base(startTime, sessionId, posX, posY, speedX, speedY, motionAccel)
         {
             BlobId = blobId;
             Angle = angle;
@@ -43,20 +43,20 @@ namespace TuioNet.Tuio11
             RotationAccel = rotationAccel;
         }
         
-        public bool HasChanged(float xPos, float yPos, float angle, float width, float height, float area,
-            float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel)
+        public bool HasChanged(float posX, float posY, float angle, float width, float height, float area,
+            float speedX, float speedY, float rotationSpeed, float motionAccel, float rotationAccel)
         {
-            return !(xPos == ((Tuio11Point)this).xPos && yPos == ((Tuio11Point)this).yPos && angle == Angle && width == Width && height == Height && area == Area && xSpeed == base.xSpeed && ySpeed == base.ySpeed &&
+            return !(posX == ((Tuio11Point)this).PosX && posY == ((Tuio11Point)this).PosY && angle == Angle && width == Width && height == Height && area == Area && speedX == base.SpeedX && speedY == base.SpeedY &&
                      rotationSpeed == RotationSpeed && motionAccel == MotionAccel && rotationAccel == RotationAccel);
         }
 
-        public void Update(TuioTime currentTime, float xPos, float yPos, float angle, float width, float height,
+        public void Update(TuioTime currentTime, float posX, float posY, float angle, float width, float height,
             float area,
-            float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel)
+            float speedX, float speedY, float rotationSpeed, float motionAccel, float rotationAccel)
         {
             var lastPoint = PrevPoints[PrevPoints.Count - 1];
-            var isCalculateSpeeds = (xPos != ((Tuio11Point)this).xPos && xSpeed == 0) || (yPos != ((Tuio11Point)this).yPos && ySpeed == 0);
-            UpdateContainer(currentTime, xPos, yPos, xSpeed, ySpeed, motionAccel, isCalculateSpeeds);
+            var isCalculateSpeeds = (posX != ((Tuio11Point)this).PosX && speedX == 0) || (posY != ((Tuio11Point)this).PosY && speedY == 0);
+            UpdateContainer(currentTime, posX, posY, speedX, speedY, motionAccel, isCalculateSpeeds);
 
             var isCalculateRotation = angle != Angle && rotationSpeed == 0;
             if(isCalculateRotation)

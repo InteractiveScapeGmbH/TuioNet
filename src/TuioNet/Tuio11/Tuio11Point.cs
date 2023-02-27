@@ -1,4 +1,5 @@
-﻿using TuioNet.Common;
+﻿using System.Numerics;
+using TuioNet.Common;
 
 namespace TuioNet.Tuio11
 {
@@ -8,20 +9,25 @@ namespace TuioNet.Tuio11
         /// Creation time of the TuioPoint as TuioTime.
         /// </summary>
         public TuioTime StartTime { get; protected set; }
+        
         /// <summary>
         /// The normalized x-Positon of the TuioPoint. [0..1]
         /// </summary>
-        public float xPos { get; protected set; }
+        public float PosX { get; protected set; }
+        
         /// <summary>
         /// The normalized y-Position of the TuioPoint. [0..1]
         /// </summary>
-        public float yPos { get; protected set; }
+        public float PosY { get; protected set; }
+        
+        public Vector2 Position { get; protected set; }
 
-        public Tuio11Point(TuioTime startTime, float xPos, float yPos)
+        public Tuio11Point(TuioTime startTime, float posX, float posY)
         {
             StartTime = startTime;
-            this.xPos = xPos;
-            this.yPos = yPos;
+            PosX = posX;
+            PosY = posY;
+            Position = new Vector2(posX, posY);
         }
     }
 }
