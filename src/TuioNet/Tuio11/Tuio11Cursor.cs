@@ -1,7 +1,6 @@
-﻿using System;
-using Tuio.Common;
+﻿using TuioNet.Common;
 
-namespace Tuio.Tuio11
+namespace TuioNet.Tuio11
 {
     public class Tuio11Cursor : Tuio11Container
     {

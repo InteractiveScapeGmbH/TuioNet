@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using OSC.NET;
+using TuioNet.Common;
 
 namespace Tuio.Common
 {

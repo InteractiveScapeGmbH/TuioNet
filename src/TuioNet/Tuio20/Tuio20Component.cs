@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tuio.Common;
+using TuioNet.Common;
 
-namespace Tuio.Tuio20
+namespace TuioNet.Tuio20
 {
     public class Tuio20Component : Tuio20Point
     {

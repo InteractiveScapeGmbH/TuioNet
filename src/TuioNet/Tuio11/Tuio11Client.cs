@@ -2,8 +2,9 @@
 using System.Linq;
 using OSC.NET;
 using Tuio.Common;
+using TuioNet.Common;
 
-namespace Tuio.Tuio11
+namespace TuioNet.Tuio11
 {
     public class Tuio11Client
     {

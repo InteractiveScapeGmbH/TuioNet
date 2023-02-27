@@ -1,6 +1,6 @@
-﻿using Tuio.Common;
+﻿using TuioNet.Common;
 
-namespace Tuio.Tuio20
+namespace TuioNet.Tuio20
 {
     public class Tuio20Token : Tuio20Component
     {

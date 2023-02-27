@@ -1,7 +1,7 @@
 ﻿using System;
 using OSC.NET;
 
-namespace Tuio.Common
+namespace TuioNet.Common
 {
     public class TuioTime
     {

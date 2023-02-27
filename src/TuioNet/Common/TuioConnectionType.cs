@@ -1,4 +1,4 @@
-﻿namespace Tuio.Common
+﻿namespace TuioNet.Common
 {
     public enum TuioConnectionType
     {
