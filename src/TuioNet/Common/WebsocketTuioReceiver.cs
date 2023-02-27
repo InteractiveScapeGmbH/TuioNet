@@ -2,14 +2,13 @@
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Tuio.Common;
 
 namespace TuioNet.Common
 {
     public class WebsocketTuioReceiver : TuioReceiver
     {
-        private string _address;
-        private int _port;
+        private readonly string _address;
+        private readonly int _port;
 
         public WebsocketTuioReceiver(string address, int port, bool isAutoProcess) : base(isAutoProcess)
         {
@@ -19,7 +18,7 @@ namespace TuioNet.Common
         
         public override void Connect()
         {
-            CancellationToken cancellationToken = _cancellationTokenSource.Token;
+            CancellationToken cancellationToken = CancellationTokenSource.Token;
             Task.Run(async () =>
             {
                 Uri serverUri = new Uri("ws://" + _address + ":" + _port);
@@ -36,7 +35,7 @@ namespace TuioNet.Common
                     }
                     if (socket.State == WebSocketState.Open)
                     {
-                        _isConnected = true;
+                        IsConnected = true;
                     }
                     while (socket.State == WebSocketState.Open)
                     {
@@ -64,7 +63,7 @@ namespace TuioNet.Common
                         OnBuffer(buffer, offset);
                     }
                 }
-                _isConnected = false;
+                IsConnected = false;
             });
         }
     }

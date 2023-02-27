@@ -2,13 +2,12 @@
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Tuio.Common;
 
 namespace TuioNet.Common
 {
     public class UdpTuioReceiver : TuioReceiver
     {
-        private int _port;
+        private readonly int _port;
 
         public UdpTuioReceiver(int port, bool isAutoProcess) : base(isAutoProcess)
         {
@@ -17,12 +16,12 @@ namespace TuioNet.Common
         
         public override void Connect()
         {
-            CancellationToken cancellationToken = _cancellationTokenSource.Token;
+            CancellationToken cancellationToken = CancellationTokenSource.Token;
             Task.Run(async () =>
             {
                 using (var udpClient = new UdpClient(_port))
                 {
-                    _isConnected = true;
+                    IsConnected = true;
                     while (true)
                     {
                         try
@@ -38,7 +37,7 @@ namespace TuioNet.Common
                     }
                 }
             });
-            _isConnected = false;
+            IsConnected = false;
         }
     }
 }

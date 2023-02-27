@@ -4,19 +4,15 @@ namespace TuioNet.Tuio11
 {
     public class Tuio11Point
     {
-        protected TuioTime _startTime;
-        protected float _xPos;
-        protected float _yPos;
+        public TuioTime StartTime { get; protected set; }
+        public float xPos { get; protected set; }
+        public float yPos { get; protected set; }
         
         public Tuio11Point(TuioTime startTime, float xPos, float yPos)
         {
-            _startTime = startTime;
-            _xPos = xPos;
-            _yPos = yPos;
+            StartTime = startTime;
+            this.xPos = xPos;
+            this.yPos = yPos;
         }
-        
-        public TuioTime startTime => _startTime;
-        public float xPos => _xPos;
-        public float yPos => _yPos;
     }
 }

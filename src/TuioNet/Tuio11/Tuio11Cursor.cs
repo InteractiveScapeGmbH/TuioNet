@@ -4,24 +4,22 @@ namespace TuioNet.Tuio11
 {
     public class Tuio11Cursor : Tuio11Container
     {
-        protected uint _cursorId;
+        public uint CursorId { get; protected set; }
         
         public Tuio11Cursor(TuioTime startTime, uint sessionId, uint cursorId, float xPos, float yPos, float xSpeed, float ySpeed, float motionAccel) : base(startTime, sessionId, xPos, yPos, xSpeed, ySpeed, motionAccel)
         {
-            _cursorId = cursorId;
+            CursorId = cursorId;
         }
         
-        public uint cursorId => _cursorId;
-
-        internal bool _hasChanged(float xPos, float yPos, float xSpeed, float ySpeed, float motionAccel)
+        public bool HasChanged(float xPos, float yPos, float xSpeed, float ySpeed, float motionAccel)
         {
-            return !(xPos == _xPos && yPos == _yPos && xSpeed == _xSpeed && ySpeed == _ySpeed && motionAccel == _motionAccel);
+            return !(xPos == ((Tuio11Point)this).xPos && yPos == ((Tuio11Point)this).yPos && xSpeed == base.xSpeed && ySpeed == base.ySpeed && motionAccel == MotionAccel);
         }
 
-        internal void _update(TuioTime currentTime, float xPos, float yPos, float xSpeed, float ySpeed, float motionAccel)
+        public void Update(TuioTime currentTime, float xPos, float yPos, float xSpeed, float ySpeed, float motionAccel)
         {
-            var isCalculateSpeeds = (xPos != _xPos && xSpeed == 0) || (yPos != _yPos && ySpeed == 0);
-            _updateContainer(currentTime, xPos, yPos, xSpeed, ySpeed, motionAccel, isCalculateSpeeds);
+            var isCalculateSpeeds = (xPos != ((Tuio11Point)this).xPos && xSpeed == 0) || (yPos != ((Tuio11Point)this).yPos && ySpeed == 0);
+            UpdateContainer(currentTime, xPos, yPos, xSpeed, ySpeed, motionAccel, isCalculateSpeeds);
         }
     }
 }

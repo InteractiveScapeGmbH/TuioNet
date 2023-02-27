@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using OSC.NET;
-using Tuio.Common;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20
@@ -61,7 +60,7 @@ namespace TuioNet.Tuio20
                 {
                     if (entry.Value.ContainsTuioToken())
                     {
-                        tuioTokenList.Add(entry.Value.token);
+                        tuioTokenList.Add(entry.Value.Token);
                     }
                 }
 
@@ -78,7 +77,7 @@ namespace TuioNet.Tuio20
                 {
                     if (entry.Value.ContainsTuioPointer())
                     {
-                        tuioPointerList.Add(entry.Value.pointer);
+                        tuioPointerList.Add(entry.Value.Pointer);
                     }
                 }
 
@@ -95,7 +94,7 @@ namespace TuioNet.Tuio20
                 {
                     if (entry.Value.ContainsTuioBounds())
                     {
-                        tuioBoundsList.Add(entry.Value.bounds);
+                        tuioBoundsList.Add(entry.Value.Bounds);
                     }
                 }
 
@@ -112,7 +111,7 @@ namespace TuioNet.Tuio20
                 {
                     if (entry.Value.ContainsTuioSymbol())
                     {
-                        tuioSymbolList.Add(entry.Value.symbol);
+                        tuioSymbolList.Add(entry.Value.Symbol);
                     }
                 }
 
@@ -181,7 +180,7 @@ namespace TuioNet.Tuio20
                     {
                         var tuioObject = _tuioObjects[sId];
                         removedTuioObjects.Add(tuioObject);
-                        tuioObject._remove(currentFrameTime);
+                        tuioObject.Remove(currentFrameTime);
                         _tuioObjects.Remove(sId);
                     }
 
@@ -208,7 +207,7 @@ namespace TuioNet.Tuio20
                                 }
 
                                 var tuioObject = _tuioObjects[sId];
-                                if (tuioObject.token == null)
+                                if (tuioObject.Token == null)
                                 {
                                     addedTuioObjects.Add(tuioObject);
                                     tuioObject.SetTuioToken(new Tuio20Token(_prevFrameTime, tuioObject, tuId, cId, xPos,
@@ -216,11 +215,11 @@ namespace TuioNet.Tuio20
                                 }
                                 else
                                 {
-                                    if (tuioObject.token._hasChanged(tuId, cId, xPos,
+                                    if (tuioObject.Token.HasChanged(tuId, cId, xPos,
                                         yPos, angle, xVel, yVel, aVel, mAcc, rAcc))
                                     {
                                         updatedTuioObjects.Add(tuioObject);
-                                        tuioObject.token._update(_prevFrameTime, tuId, cId, xPos,
+                                        tuioObject.Token.Update(_prevFrameTime, tuId, cId, xPos,
                                             yPos, angle, xVel, yVel, aVel, mAcc, rAcc);
                                     }
                                 }
@@ -250,7 +249,7 @@ namespace TuioNet.Tuio20
                                 }
 
                                 var tuioObject = _tuioObjects[sId];
-                                if (tuioObject.pointer == null)
+                                if (tuioObject.Pointer == null)
                                 {
                                     addedTuioObjects.Add(tuioObject);
                                     tuioObject.SetTuioPointer(new Tuio20Pointer(_prevFrameTime, tuioObject, tuId, cId, 
@@ -258,11 +257,11 @@ namespace TuioNet.Tuio20
                                 }
                                 else
                                 {
-                                    if (tuioObject.pointer._hasChanged(tuId, cId, xPos,
+                                    if (tuioObject.Pointer.HasChanged(tuId, cId, xPos,
                                         yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc))
                                     {
                                         updatedTuioObjects.Add(tuioObject);
-                                        tuioObject.pointer._update(_prevFrameTime, tuId, cId, xPos,
+                                        tuioObject.Pointer.Update(_prevFrameTime, tuId, cId, xPos,
                                             yPos, angle, shear, radius, press, xVel, yVel, pVel, mAcc, pAcc);
                                     }
                                 }
@@ -290,7 +289,7 @@ namespace TuioNet.Tuio20
                                 }
 
                                 var tuioObject = _tuioObjects[sId];
-                                if (tuioObject.bounds == null)
+                                if (tuioObject.Bounds == null)
                                 {
                                     addedTuioObjects.Add(tuioObject);
                                     tuioObject.SetTuioBounds(new Tuio20Bounds(_prevFrameTime, tuioObject, xPos,
@@ -298,11 +297,11 @@ namespace TuioNet.Tuio20
                                 }
                                 else
                                 {
-                                    if (tuioObject.bounds._hasChanged(xPos,
+                                    if (tuioObject.Bounds.HasChanged(xPos,
                                         yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc))
                                     {
                                         updatedTuioObjects.Add(tuioObject);
-                                        tuioObject.bounds._update(_prevFrameTime, xPos,
+                                        tuioObject.Bounds.Update(_prevFrameTime, xPos,
                                             yPos, angle, width, height, area, xVel, yVel, aVel, mAcc, rAcc);
                                     }
                                 }
@@ -319,7 +318,7 @@ namespace TuioNet.Tuio20
                                 string data = (string)otherOscMessage.Values[4];
 
                                 var tuioObject = _tuioObjects[sId];
-                                if (tuioObject.symbol == null)
+                                if (tuioObject.Symbol == null)
                                 {
                                     addedTuioObjects.Add(tuioObject);
                                     tuioObject.SetTuioSymbol(new Tuio20Symbol(_prevFrameTime, tuioObject, tuId, cId, 
@@ -327,11 +326,11 @@ namespace TuioNet.Tuio20
                                 }
                                 else
                                 {
-                                    if (tuioObject.symbol._hasChanged(tuId, cId, group,
+                                    if (tuioObject.Symbol.HasChanged(tuId, cId, group,
                                         data))
                                     {
                                         updatedTuioObjects.Add(tuioObject);
-                                        tuioObject.symbol._update(_prevFrameTime, tuId, cId, group,
+                                        tuioObject.Symbol.Update(_prevFrameTime, tuId, cId, group,
                                             data);
                                     }
                                 }

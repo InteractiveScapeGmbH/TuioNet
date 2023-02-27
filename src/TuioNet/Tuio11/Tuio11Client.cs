@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using OSC.NET;
-using Tuio.Common;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio11
@@ -59,7 +58,7 @@ namespace TuioNet.Tuio11
 
         public bool IsConnected()
         {
-            return _tuioReceiver._isConnected;
+            return _tuioReceiver.IsConnected;
         }
 
         public void AddTuioListener(Tuio11Listener tuio11Listener)
@@ -163,7 +162,7 @@ namespace TuioNet.Tuio11
                         foreach (var sId in removedSIds)
                         {
                             var tuioObject = _tuioObjects[sId];
-                            tuioObject._remove();
+                            tuioObject.Remove();
                             foreach (var tuioListener in _tuioListeners)
                             {
                                 tuioListener.RemoveTuioObject(tuioObject);
@@ -189,10 +188,10 @@ namespace TuioNet.Tuio11
                                 if (currentSIds.Contains(s))
                                 {
                                     var tuioObject = _tuioObjects[s];
-                                    tuioObject._updateTime(_currentTime);
-                                    if (tuioObject._hasChanged(x, y, a, X, Y, A, m, r))
+                                    tuioObject.UpdateTime(_currentTime);
+                                    if (tuioObject.HasChanged(x, y, a, X, Y, A, m, r))
                                     {
-                                        tuioObject._update(_currentTime, x, y, a, X, Y, A, m, r);
+                                        tuioObject.Update(_currentTime, x, y, a, X, Y, A, m, r);
                                         foreach (var tuioListener in _tuioListeners)
                                         {
                                             tuioListener.UpdateTuioObject(tuioObject);
@@ -253,14 +252,14 @@ namespace TuioNet.Tuio11
                         foreach (var sId in removedSIds)
                         {
                             var tuioCursor = _tuioCursors[sId];
-                            tuioCursor._remove();
+                            tuioCursor.Remove();
                             foreach (var tuioListener in _tuioListeners)
                             {
                                 tuioListener.RemoveTuioCursor(tuioCursor);
                             }
 
                             _tuioCursors.Remove(sId);
-                            _freeCursorIds.Add(tuioCursor.cursorId);
+                            _freeCursorIds.Add(tuioCursor.CursorId);
                         }
                         _freeCursorIds.Sort();
                         foreach (var setMessage in _cursorSetMessages)
@@ -276,9 +275,9 @@ namespace TuioNet.Tuio11
                                 if (currentSIds.Contains(s))
                                 {
                                     var tuioCursor = _tuioCursors[s];
-                                    if (tuioCursor._hasChanged(x, y, X, Y, m))
+                                    if (tuioCursor.HasChanged(x, y, X, Y, m))
                                     {
-                                        tuioCursor._update(_currentTime, x, y, X, Y, m);
+                                        tuioCursor.Update(_currentTime, x, y, X, Y, m);
                                         foreach (var tuioListener in _tuioListeners)
                                         {
                                             tuioListener.UpdateTuioCursor(tuioCursor);
@@ -346,14 +345,14 @@ namespace TuioNet.Tuio11
                         foreach (var sId in removedSIds)
                         {
                             var tuioBlob = _tuioBlobs[sId];
-                            tuioBlob._remove();
+                            tuioBlob.Remove();
                             foreach (var tuioListener in _tuioListeners)
                             {
                                 tuioListener.RemoveTuioBlob(tuioBlob);
                             }
 
                             _tuioBlobs.Remove(sId);
-                            _freeBlobIds.Add(tuioBlob.blobId);
+                            _freeBlobIds.Add(tuioBlob.BlobId);
                         }
                         _freeBlobIds.Sort();
                         foreach (var setMessage in _blobSetMessages)
@@ -375,9 +374,9 @@ namespace TuioNet.Tuio11
                                 if (currentSIds.Contains(s))
                                 {
                                     var tuioBlob = _tuioBlobs[s];
-                                    if (tuioBlob._hasChanged(x, y, a, w, h, f, X, Y, A, m, r))
+                                    if (tuioBlob.HasChanged(x, y, a, w, h, f, X, Y, A, m, r))
                                     {
-                                        tuioBlob._update(_currentTime, x, y, a, w, h, f, X, Y, A, m, r);
+                                        tuioBlob.Update(_currentTime, x, y, a, w, h, f, X, Y, A, m, r);
                                         foreach (var tuioListener in _tuioListeners)
                                         {
                                             tuioListener.UpdateTuioBlob(tuioBlob);

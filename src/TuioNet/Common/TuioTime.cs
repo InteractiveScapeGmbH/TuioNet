@@ -157,7 +157,7 @@ namespace TuioNet.Common
 
         public static TuioTime GetCurrentTime()
         {
-            return GetSystemTime() -StartTime;
+            return GetSystemTime() - StartTime;
         }
     }
 }

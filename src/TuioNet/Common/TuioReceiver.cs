@@ -2,20 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using OSC.NET;
-using TuioNet.Common;
 
-namespace Tuio.Common
+namespace TuioNet.Common
 {
     public abstract class TuioReceiver
     {
-        internal bool _isConnected;
-        private Dictionary<string, List<Action<OSCMessage>>> _messageListeners = new Dictionary<string, List<Action<OSCMessage>>>();
-        private Queue<OSCMessage> _queuedMessages = new Queue<OSCMessage>();
-        protected CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        public bool IsConnected;
+        private readonly Dictionary<string, List<Action<OSCMessage>>> _messageListeners = new Dictionary<string, List<Action<OSCMessage>>>();
+        private readonly Queue<OSCMessage> _queuedMessages = new Queue<OSCMessage>();
+        protected readonly CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
 
-        private bool _isAutoProcess;
+        private readonly bool _isAutoProcess;
 
-        public TuioReceiver(bool isAutoProcess)
+        protected TuioReceiver(bool isAutoProcess)
         {
             _isAutoProcess = isAutoProcess;
         }
@@ -35,7 +34,7 @@ namespace Tuio.Common
 
         public void Disconnect()
         {
-            _cancellationTokenSource.Cancel();
+            CancellationTokenSource.Cancel();
         }
         
         public void OnBuffer(byte[] buffer, int end)

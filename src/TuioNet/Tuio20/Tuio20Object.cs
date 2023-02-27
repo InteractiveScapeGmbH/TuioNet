@@ -4,114 +4,105 @@ namespace TuioNet.Tuio20
 {
     public class Tuio20Object
     {
-        private TuioTime _startTime;
-        private TuioTime _currentTime;
-        private uint _sessionId;
-        private Tuio20Token _token;
-        private Tuio20Pointer _pointer;
-        private Tuio20Bounds _bounds;
-        private Tuio20Symbol _symbol;
-        private TuioState _state;
+        public TuioTime StartTime { get; private set; }
+        public TuioTime CurrentTime { get; private set; }
+        public uint SessionId { get; private set; }
+        public Tuio20Token Token { get; private set; }
+        public Tuio20Pointer Pointer { get; private set; }
+        public Tuio20Bounds Bounds { get; private set; }
+        public Tuio20Symbol Symbol { get; private set; }
+        public TuioState State { get; private set; }
 
         public Tuio20Object(TuioTime startTime, uint sessionId)
         {
-            _startTime = startTime;
-            _currentTime = startTime;
-            _sessionId = sessionId;
-            _token = null;
-            _pointer = null;
-            _bounds = null;
-            _symbol = null;
-            _state = TuioState.Added;
+            StartTime = startTime;
+            CurrentTime = startTime;
+            SessionId = sessionId;
+            Token = null;
+            Pointer = null;
+            Bounds = null;
+            Symbol = null;
+            State = TuioState.Added;
         }
         
-        public TuioTime startTime => _startTime;
-        public TuioTime currentTime => _currentTime;
-        public uint sessionId => _sessionId;
-        public Tuio20Token token => _token;
-        public Tuio20Pointer pointer => _pointer;
-        public Tuio20Bounds bounds => _bounds;
-        public Tuio20Symbol symbol => _symbol;
-        public TuioState state => _state;
-
         public void SetTuioToken(Tuio20Token token)
         {
-            _token = token;
-            _state = TuioState.Added;
+            Token = token;
+            State = TuioState.Added;
         }
 
         public void SetTuioPointer(Tuio20Pointer pointer)
         {
-            _pointer = pointer;
-            _state = TuioState.Added;
+            Pointer = pointer;
+            State = TuioState.Added;
         }
 
         public void SetTuioBounds(Tuio20Bounds bounds)
         {
-            _bounds = bounds;
-            _state = TuioState.Added;
+            Bounds = bounds;
+            State = TuioState.Added;
         }
 
         public void SetTuioSymbol(Tuio20Symbol symbol)
         {
-            _symbol = symbol;
-            _state = TuioState.Added;
+            Symbol = symbol;
+            State = TuioState.Added;
         }
         
         public bool ContainsTuioToken()
         {
-            return _token != null;
+            return Token != null;
         }
 
         public bool ContainsTuioPointer()
         {
-            return _pointer != null;
+            return Pointer != null;
         }
 
         public bool ContainsTuioBounds()
         {
-            return _bounds != null;
+            return Bounds != null;
         }
 
         public bool ContainsTuioSymbol()
         {
-            return _symbol != null;
+            return Symbol != null;
         }
         
         public bool ContainsNewTuioToken()
         {
-            return _token is {state: TuioState.Added};
+            return Token is {State: TuioState.Added};
         }
 
         public bool ContainsNewTuioPointer()
         {
-            return _pointer is {state: TuioState.Added};
+            return Pointer is {State: TuioState.Added};
         }
 
         public bool ContainsNewTuioBounds()
         {
-            return _bounds is {state: TuioState.Added};
+            return Bounds is {State: TuioState.Added};
         }
 
         public bool ContainsNewTuioSymbol()
         {
-            return _symbol is {state: TuioState.Added};
+            return Symbol is {State: TuioState.Added};
         }
         
-        internal void _update(TuioTime currentTime)
+        public void Update(TuioTime currentTime)
         {
-            _currentTime = currentTime;
-            _state = TuioState.Idle;
+            CurrentTime = currentTime;
+            State = TuioState.Idle;
         }
 
-        internal void _remove(TuioTime currentTime)
+        public void Remove(TuioTime currentTime)
         {
-            _currentTime = currentTime;
-            _token?._remove(currentTime);
-            _pointer?._remove(currentTime);
-            _bounds?._remove(currentTime);
-            _symbol?._remove(currentTime);
-            _state = TuioState.Removed;
+            CurrentTime = currentTime;
+            Token?._remove(currentTime);
+            Pointer?._remove(currentTime);
+            Bounds?._remove(currentTime);
+            Symbol?._remove(currentTime);
+            State = TuioState.Removed;
         }
     }
 }
