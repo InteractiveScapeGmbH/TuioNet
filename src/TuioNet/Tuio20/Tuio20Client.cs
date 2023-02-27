@@ -155,7 +155,7 @@ namespace TuioNet.Tuio20
             var source = (string)_frmMessage.Values[3];
             TuioTime currentFrameTime = TuioTime.FromOscTime(frameTime);
             if (frameId >= _prevFrameId || frameId == 0 || 
-                currentFrameTime.Subtract(_prevFrameTime).GetTotalMilliseconds() >= 1000)
+                (currentFrameTime - _prevFrameTime).GetTotalMilliseconds() >= 1000)
             {
                 _dim = dim;
                 _source = source;

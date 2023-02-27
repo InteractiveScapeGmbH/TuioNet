@@ -126,7 +126,7 @@ namespace TuioNet.Tuio11
                     return false;
                 }
             }
-            else if (currentTime.Subtract(_currentTime).GetTotalMilliseconds() > 100)
+            else if ((currentTime - _currentTime).GetTotalMilliseconds() > 100)
             {
                 _currentTime = currentTime;
             }

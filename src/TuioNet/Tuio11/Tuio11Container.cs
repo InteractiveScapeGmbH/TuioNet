@@ -43,7 +43,7 @@ namespace TuioNet.Tuio11
 
         internal void _updateTime(TuioTime currentTime)
         {
-            _currentTime = currentTime.Subtract(_startTime);
+            _currentTime = currentTime - _startTime;
         }
 
         internal void _updateContainer(TuioTime currentTime, float xPos, float yPos, float xSpeed, float ySpeed, float motionAccel, bool isCalculateSpeeds)
@@ -53,7 +53,7 @@ namespace TuioNet.Tuio11
             _yPos = yPos;
             if (isCalculateSpeeds)
             {
-                var dt = currentTime.Subtract(lastPoint.startTime).GetTotalMilliseconds() / 1000.0f;
+                var dt = (currentTime - lastPoint.startTime).GetTotalMilliseconds() / 1000.0f;
                 var dx = xPos - lastPoint.xPos;
                 var dy = yPos - lastPoint.yPos;
                 var dist = (float)Math.Sqrt(dx * dx + dy * dy);

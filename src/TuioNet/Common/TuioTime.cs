@@ -131,20 +131,6 @@ namespace TuioNet.Common
         {
             return !(timeA == timeB);
         }
-
-        public TuioTime Subtract(TuioTime other)
-        {
-            var seconds = Seconds - other.Seconds;
-            var microseconds = Microseconds - other.Microseconds;
-
-            if (microseconds < 0)
-            {
-                microseconds += MicrosecondsPerSecond;
-                seconds -= 1;
-            }
-
-            return new TuioTime(seconds, microseconds);
-        }
         
         /// <summary>
         /// Returns the total TuioTime in milliseconds.
