@@ -28,12 +28,12 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// Calculated length of the velocity vector.
         /// </summary>
-        public float MotionSpeed { get; protected set; }
+        public float Speed { get; protected set; }
         
         /// <summary>
         /// The current acceleration of the TUIO Container. Can be calculated or given by the TUIO-Sender.
         /// </summary>
-        public float MotionAccel { get; protected set; }
+        public float Acceleration { get; protected set; }
         
         /// <summary>
         /// The current state of the TUIO Container.
@@ -52,12 +52,12 @@ namespace TuioNet.Tuio11
         
         protected readonly List<Tuio11Point> PrevPoints = new List<Tuio11Point>();
 
-        public Tuio11Container(TuioTime startTime, uint sessionId, Vector2 position, Vector2 velocity, float motionAccel) : base(startTime, position)
+        public Tuio11Container(TuioTime startTime, uint sessionId, Vector2 position, Vector2 velocity, float acceleration) : base(startTime, position)
         {
             CurrentTime = startTime;
             SessionId = sessionId;
             Velocity = velocity;
-            MotionSpeed = Velocity.Length();
+            Speed = Velocity.Length();
             PrevPoints.Add(new Tuio11Point(CurrentTime, position));
         }
         
@@ -71,7 +71,7 @@ namespace TuioNet.Tuio11
             CurrentTime = currentTime - StartTime;
         }
 
-        internal void UpdateContainer(TuioTime currentTime, Vector2 position, Vector2 velocity, float motionAccel, bool isCalculateSpeeds)
+        internal void UpdateContainer(TuioTime currentTime, Vector2 position, Vector2 velocity, float acceleration, bool isCalculateSpeeds)
         {
             var lastPoint = PrevPoints[PrevPoints.Count - 1];
             Position = position;
@@ -80,19 +80,19 @@ namespace TuioNet.Tuio11
                 var dt = (currentTime - lastPoint.StartTime).GetTotalMilliseconds() / 1000.0f;
                 var deltaPosition = Position - lastPoint.Position;
                 var distance = deltaPosition.Length();
-                var lastMotionSpeed = MotionSpeed;
+                var lastMotionSpeed = Speed;
                 if(dt > 0)
                 {
                     Velocity = deltaPosition / dt;
-                    MotionSpeed = distance / dt;
-                    MotionAccel = (MotionSpeed - lastMotionSpeed) / dt;
+                    Speed = distance / dt;
+                    Acceleration = (Speed - lastMotionSpeed) / dt;
                 }
             }
             else
             {
                 Velocity = velocity;
-                MotionSpeed = Velocity.Length();
-                MotionAccel = motionAccel;
+                Speed = Velocity.Length();
+                Acceleration = acceleration;
             }
 
             PrevPoints.Add(new Tuio11Point(currentTime, position));
@@ -101,11 +101,11 @@ namespace TuioNet.Tuio11
                 PrevPoints.RemoveAt(0);
             }
 
-            if (MotionAccel > 0)
+            if (Acceleration > 0)
             {
                 State = TuioState.Accelerating;
             } 
-            else if (MotionAccel < 0)
+            else if (Acceleration < 0)
             {
                 State = TuioState.Decelerating;
             }

@@ -184,7 +184,7 @@ namespace TuioNet.Tuio11
                             var speedY = (float)setMessage.Values[7];
                             var velocity = new Vector2(speedX, speedY);
                             var rotationSpeed = (float)setMessage.Values[8];
-                            var motionAcceleration = (float)setMessage.Values[9];
+                            var acceleration = (float)setMessage.Values[9];
                             var rotationAcceleration = (float)setMessage.Values[10];
                             if (aliveSIds.Contains(sessionId))
                             {
@@ -192,9 +192,9 @@ namespace TuioNet.Tuio11
                                 {
                                     var tuioObject = _tuioObjects[sessionId];
                                     tuioObject.UpdateTime(_currentTime);
-                                    if (tuioObject.HasChanged(position, angle, velocity, rotationSpeed, motionAcceleration, rotationAcceleration))
+                                    if (tuioObject.HasChanged(position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration))
                                     {
-                                        tuioObject.Update(_currentTime, position, angle, velocity, rotationSpeed, motionAcceleration, rotationAcceleration);
+                                        tuioObject.Update(_currentTime, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
                                         foreach (var tuioListener in _tuioListeners)
                                         {
                                             tuioListener.UpdateTuioObject(tuioObject);
@@ -203,7 +203,7 @@ namespace TuioNet.Tuio11
                                 }
                                 else
                                 {
-                                    var tuioObject = new Tuio11Object(_currentTime, sessionId, classId, position, angle, velocity, rotationSpeed, motionAcceleration, rotationAcceleration);
+                                    var tuioObject = new Tuio11Object(_currentTime, sessionId, classId, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
                                     _tuioObjects[sessionId] = tuioObject;
                                     foreach (var tuioListener in _tuioListeners)
                                     {
@@ -274,15 +274,15 @@ namespace TuioNet.Tuio11
                             var speedX = (float)setMessage.Values[4];
                             var speedY = (float)setMessage.Values[5];
                             var velocity = new Vector2(speedX, speedY);
-                            var motionAcceleration = (float)setMessage.Values[6];
+                            var acceleration = (float)setMessage.Values[6];
                             if (aliveSIds.Contains(sessionId))
                             {
                                 if (currentSIds.Contains(sessionId))
                                 {
                                     var tuioCursor = _tuioCursors[sessionId];
-                                    if (tuioCursor.HasChanged(position, velocity, motionAcceleration))
+                                    if (tuioCursor.HasChanged(position, velocity, acceleration))
                                     {
-                                        tuioCursor.Update(_currentTime, position, velocity, motionAcceleration);
+                                        tuioCursor.Update(_currentTime, position, velocity, acceleration);
                                         foreach (var tuioListener in _tuioListeners)
                                         {
                                             tuioListener.UpdateTuioCursor(tuioCursor);
@@ -298,7 +298,7 @@ namespace TuioNet.Tuio11
                                         _freeCursorIds.RemoveAt(0);
                                     }
 
-                                    var tuioCursor = new Tuio11Cursor(_currentTime, sessionId, cursorId, position, velocity, motionAcceleration);
+                                    var tuioCursor = new Tuio11Cursor(_currentTime, sessionId, cursorId, position, velocity, acceleration);
                                     _tuioCursors[sessionId] = tuioCursor;
                                     foreach (var tuioListener in _tuioListeners)
                                     {
@@ -375,16 +375,16 @@ namespace TuioNet.Tuio11
                             var speedY = (float)setMessage.Values[9];
                             var velocity = new Vector2(speedX, speedY);
                             var rotationSpeed = (float)setMessage.Values[10];
-                            var motionAcceleration = (float)setMessage.Values[11];
+                            var acceleration = (float)setMessage.Values[11];
                             var rotationAcceleration = (float)setMessage.Values[12];
                             if (aliveSIds.Contains(sessionId))
                             {
                                 if (currentSIds.Contains(sessionId))
                                 {
                                     var tuioBlob = _tuioBlobs[sessionId];
-                                    if (tuioBlob.HasChanged(position, angle, size, area, velocity, rotationSpeed, motionAcceleration, rotationAcceleration))
+                                    if (tuioBlob.HasChanged(position, angle, size, area, velocity, rotationSpeed, acceleration, rotationAcceleration))
                                     {
-                                        tuioBlob.Update(_currentTime, position, angle, size, area, velocity, rotationSpeed, motionAcceleration, rotationAcceleration);
+                                        tuioBlob.Update(_currentTime, position, angle, size, area, velocity, rotationSpeed, acceleration, rotationAcceleration);
                                         foreach (var tuioListener in _tuioListeners)
                                         {
                                             tuioListener.UpdateTuioBlob(tuioBlob);
@@ -400,7 +400,7 @@ namespace TuioNet.Tuio11
                                         _freeBlobIds.RemoveAt(0);
                                     }
 
-                                    var tuioBlob = new Tuio11Blob(_currentTime, sessionId, blobId, position, angle, size, area, velocity, rotationSpeed, motionAcceleration,
+                                    var tuioBlob = new Tuio11Blob(_currentTime, sessionId, blobId, position, angle, size, area, velocity, rotationSpeed, acceleration,
                                         rotationAcceleration);
                                     _tuioBlobs[sessionId] = tuioBlob;
                                     foreach (var tuioListener in _tuioListeners)
