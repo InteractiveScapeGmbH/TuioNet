@@ -1,8 +1,7 @@
-﻿using Tuio.Common;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TuioNet.Common;
 
-namespace Tuio.Net.Tests;
+namespace TuioNet.Tests;
 
 public class TuioTimeTests
 {
