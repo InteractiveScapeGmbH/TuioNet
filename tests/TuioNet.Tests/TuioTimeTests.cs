@@ -104,4 +104,12 @@ public class TuioTimeTests
         Assert.AreEqual(result.Seconds, 2);
         Assert.AreEqual(result.Microseconds, 999999);
     }
+
+    [Test]
+    public void Are_Two_TuioTimes_Equal()
+    {
+        var timeA = new TuioTime(1, 123);
+        var timeB = new TuioTime(1, 123);
+        Assert.AreEqual(true, timeA.Equals(timeB));
+    }
 }
