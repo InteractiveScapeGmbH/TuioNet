@@ -9,15 +9,49 @@ namespace TuioNet.Tuio11
     {
         private const int MAX_PATH_LENGTH = 128;
 
+        /// <summary>
+        /// Time since creation as TuioTime.
+        /// </summary>
         public TuioTime CurrentTime { get; protected set; }
+        
+        /// <summary>
+        /// The Session ID, a temporary object ID.
+        /// </summary>
         public uint SessionId { get; protected set; }
+        
+        /// <summary>
+        /// The x-Component of the velocity vector.
+        /// </summary>
         public float xSpeed { get; protected set; }
+        
+        /// <summary>
+        /// The y-Component of the velocity vector.
+        /// </summary>
         public float ySpeed { get; protected set; }
+        
+        /// <summary>
+        /// Calculated length of the velocity vector.
+        /// </summary>
         public float MotionSpeed { get; protected set; }
+        
+        /// <summary>
+        /// The current acceleration of the TUIO Container. Can be calculated or given by the TUIO-Sender.
+        /// </summary>
         public float MotionAccel { get; protected set; }
+        
+        /// <summary>
+        /// The current state of the TUIO Container.
+        /// </summary>
         public TuioState State { get; protected set; }
-
+        
+        /// <summary>
+        /// Is called every time the container gets updated.
+        /// </summary>
         public event Action OnUpdate;
+        
+        /// <summary>
+        /// Is called once when the state changes to removed.
+        /// </summary>
         public event Action OnRemove;
         
         protected readonly List<Tuio11Point> PrevPoints = new List<Tuio11Point>();

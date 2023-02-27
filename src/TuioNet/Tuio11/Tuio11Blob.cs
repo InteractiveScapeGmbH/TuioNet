@@ -5,10 +5,29 @@ namespace TuioNet.Tuio11
 {
     public class Tuio11Blob : Tuio11Container
     {
+        /// <summary>
+        /// The individual blob ID that is assigned to each TuioBlob.
+        /// </summary>
         public uint BlobId { get; protected set; }
+        
+        /// <summary>
+        /// The rotation angle ob the TuioBlob in radians.
+        /// </summary>
         public float Angle { get; protected set; }
+        
+        /// <summary>
+        /// The normalized width of the TuioBlob. [0..1]
+        /// </summary>
         public float Width { get; protected set; }
+        
+        /// <summary>
+        /// The normalized height of the TuioBlob. [0..1]
+        /// </summary>
         public float Height { get; protected set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public float Area { get; protected set; }
         public float RotationSpeed { get; protected set; }
         public float RotationAccel { get; protected set; }

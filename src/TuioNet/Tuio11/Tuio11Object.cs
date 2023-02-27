@@ -5,9 +5,24 @@ namespace TuioNet.Tuio11
 {
     public class Tuio11Object : Tuio11Container
     {
+        /// <summary>
+        /// The individual symbol ID which is assigned to each TuioObject.
+        /// </summary>
         public uint SymbolId { get; protected set; }
+        
+        /// <summary>
+        /// The rotation angle of the TuioObject in radians.
+        /// </summary>
         public float Angle { get; protected set; }
+        
+        /// <summary>
+        /// The speed of the rotation.
+        /// </summary>
         public float RotationSpeed { get; protected set; }
+        
+        /// <summary>
+        /// The acceleration of the rotation. Amount of rotation change between to updates.
+        /// </summary>
         public float RotationAccel { get; protected set; }
         
         public Tuio11Object(TuioTime startTime, uint sessionId, uint symbolId, float xPos, float yPos, float angle, float xSpeed, float ySpeed, float rotationSpeed, float motionAccel, float rotationAccel) : base(startTime, sessionId, xPos, yPos, xSpeed, ySpeed, motionAccel)

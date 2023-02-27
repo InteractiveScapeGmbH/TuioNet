@@ -4,6 +4,9 @@ namespace TuioNet.Tuio11
 {
     public class Tuio11Cursor : Tuio11Container
     {
+        /// <summary>
+        /// Individual cursor ID assigned to each TuioCursor.
+        /// </summary>
         public uint CursorId { get; protected set; }
         
         public Tuio11Cursor(TuioTime startTime, uint sessionId, uint cursorId, float xPos, float yPos, float xSpeed, float ySpeed, float motionAccel) : base(startTime, sessionId, xPos, yPos, xSpeed, ySpeed, motionAccel)
