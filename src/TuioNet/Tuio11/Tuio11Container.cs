@@ -18,7 +18,7 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// The Session ID, a temporary object ID.
         /// </summary>
-        public uint SessionId { get; protected set; }
+        public uint SessionId { get; }
         
         /// <summary>
         /// The velocity-vector of the TuioContainer.

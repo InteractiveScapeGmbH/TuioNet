@@ -9,7 +9,7 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// The individual blob ID that is assigned to each TuioBlob.
         /// </summary>
-        public uint BlobId { get; protected set; }
+        public uint BlobId { get; }
         
         /// <summary>
         /// The rotation angle ob the TuioBlob in radians.

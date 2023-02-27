@@ -9,7 +9,7 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// The individual symbol ID which is assigned to each TuioObject.
         /// </summary>
-        public uint SymbolId { get; protected set; }
+        public uint SymbolId { get; }
         
         /// <summary>
         /// The rotation angle of the TuioObject in radians.

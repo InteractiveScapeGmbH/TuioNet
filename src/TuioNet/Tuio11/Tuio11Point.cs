@@ -8,7 +8,7 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// Creation time of the TuioPoint as TuioTime.
         /// </summary>
-        public TuioTime StartTime { get; protected set; }
+        public TuioTime StartTime { get; }
         
         /// <summary>
         /// The normalized position of the TuioPoint. [0..1]
