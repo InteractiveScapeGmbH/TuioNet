@@ -2,7 +2,7 @@
 
 namespace TuioNet.Tuio11
 {
-    public interface Tuio11Listener
+    public interface ITuio11Listener
     {
         public void AddTuioObject(Tuio11Object tuio11Object);
         

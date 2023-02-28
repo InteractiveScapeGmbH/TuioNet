@@ -9,7 +9,7 @@ namespace TuioNet.Tuio11
     public class Tuio11Client
     {
         private TuioReceiver _tuioReceiver;
-        private List<Tuio11Listener> _tuioListeners = new List<Tuio11Listener>();
+        private List<ITuio11Listener> _tuioListeners = new List<ITuio11Listener>();
 
         private Dictionary<uint, Tuio11Object> _tuioObjects = new Dictionary<uint, Tuio11Object>();
         private Dictionary<uint, Tuio11Cursor> _tuioCursors = new Dictionary<uint, Tuio11Cursor>();
@@ -62,12 +62,12 @@ namespace TuioNet.Tuio11
             return _tuioReceiver.IsConnected;
         }
 
-        public void AddTuioListener(Tuio11Listener tuio11Listener)
+        public void AddTuioListener(ITuio11Listener tuio11Listener)
         {
             _tuioListeners.Add(tuio11Listener);
         }
 
-        public void RemoveTuioListener(Tuio11Listener tuio11Listener)
+        public void RemoveTuioListener(ITuio11Listener tuio11Listener)
         {
             _tuioListeners.Remove(tuio11Listener);
         }

@@ -3,7 +3,7 @@ using TuioNet.Tuio11;
 
 namespace TuioNet.Demo;
 
-public class TuioListener : Tuio11Listener
+public class TuioListener : ITuio11Listener
 {
     public void AddTuioObject(Tuio11Object tuio11Object)
     {

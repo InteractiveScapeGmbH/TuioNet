@@ -2,7 +2,7 @@
 
 namespace TuioNet.Tuio20
 {
-    public interface Tuio20Listener
+    public interface ITuio20Listener
     {
         public void TuioAdd(Tuio20Object tuio20Object);
         

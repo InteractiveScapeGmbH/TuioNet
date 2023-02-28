@@ -8,7 +8,7 @@ namespace TuioNet.Tuio20
     public class Tuio20Client
     {
         private TuioReceiver _tuioReceiver;
-        private List<Tuio20Listener> _tuioListeners = new List<Tuio20Listener>();
+        private List<ITuio20Listener> _tuioListeners = new List<ITuio20Listener>();
         private Dictionary<uint, Tuio20Object> _tuioObjects = new Dictionary<uint, Tuio20Object>();
 
         private OSCMessage _frmMessage = null;
@@ -373,12 +373,12 @@ namespace TuioNet.Tuio20
             _frmMessage = null;
         }
 
-        public void AddTuioListener(Tuio20Listener tuio20Listener)
+        public void AddTuioListener(ITuio20Listener tuio20Listener)
         {
             _tuioListeners.Add(tuio20Listener);
         }
 
-        public void RemoveTuioListener(Tuio20Listener tuio20Listener)
+        public void RemoveTuioListener(ITuio20Listener tuio20Listener)
         {
             _tuioListeners.Remove(tuio20Listener);
         }
