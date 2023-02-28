@@ -20,13 +20,27 @@ namespace TuioNet.Tuio20
         private uint _prevFrameId = 0;
         private TuioTime _prevFrameTime;
 
-        public uint Dim { get; private set; } = 0;
+        /// <summary>
+        /// The sensor dimension. The first two bytes represent the width. The last two byte represent the height.
+        /// </summary>
+        public uint SensorDimension { get; private set; } = 0;
+        
+        /// <summary>
+        /// Provide additional information about the TUIO source.
+        /// </summary>
         public string Source { get; private set; }
         public object TuioObjectLock { get; } = new object();
         
-        public Tuio20Client(TuioReceiver tuioReceiver)
+        /// <summary>
+        /// Create new client for TUIO 2.0.
+        /// </summary>
+        /// <param name="connectionType">Type of the protocol which gets used to connect to the sender.</param>
+        /// <param name="address">The IP address of the TUIO sender.</param>
+        /// <param name="port">The port the client listen to for new TUIO messages. Default UDP port is 3333.</param>
+        /// <param name="isAutoProcess">If set, the receiver processes incoming messages automatically. Otherwise the ProcessMessages() methods needs to be called manually.</param>
+        public Tuio20Client(TuioConnectionType connectionType, string address = "0.0.0.0", int port = 3333, bool isAutoProcess = true)
         {
-            _tuioReceiver = tuioReceiver;
+            _tuioReceiver = TuioReceiver.FromConnectionType(connectionType, address, port, isAutoProcess);
             _tuioReceiver.AddMessageListener("/tuio2/frm", OnFrm);
             _tuioReceiver.AddMessageListener("/tuio2/alv", OnAlv);
             _tuioReceiver.AddMessageListener("/tuio2/tok", OnOther);
@@ -153,7 +167,7 @@ namespace TuioNet.Tuio20
             if (frameId >= _prevFrameId || frameId == 0 || 
                 (currentFrameTime - _prevFrameTime).GetTotalMilliseconds() >= 1000)
             {
-                Dim = dim;
+                SensorDimension = dim;
                 Source = source;
                 HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
                 HashSet<uint> aliveSIds = new HashSet<uint>();
