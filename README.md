@@ -1,4 +1,22 @@
 ﻿# TuioNet
+TuioNet is a .Net implementation of the TUIO specification by Martin Kaltenbrunner. It supports [TUIO 1.1](http://tuio.org/?specification) and [TUIO 2.0](http://www.tuio.org/?tuio20) for the following message profiles:
+
+**TUIO 1.1**
+```
+/tuio/2Dobj
+/tuio/2Dcur
+/tuio/2Dblb
+```
+
+**TUIO 2.0**
+```
+/tuio2/frm
+/tuio2/alv
+/tuio2/tok 
+/tuio2/ptr 
+/tuio2/bnd 
+/tuio2/sym 
+```
 
 ## Documentation
 A brief overview over the most important classes and how to use them.
@@ -38,7 +56,7 @@ can add the listener to your client via the ```AddTuioListener()``` method. An e
 
 ### TuioReceiver.cs
 An abstract base class for different connection types for receiving messages from a TUIO source. Currently there
-are two types of receivers implemented: ```UdpTuioReceiver.cs``` and ```WebsockeTuioReceiver.cs```.
+are two types of receivers implemented: ```UdpTuioReceiver.cs``` and ```WebsocketTuioReceiver.cs```.
 
 #### Add/Remove Message Listeners
 The TUIO Specification ([1.1](http://tuio.org/?specification) and [2.0](http://www.tuio.org/?tuio20)) defines different kinds of
