@@ -36,8 +36,8 @@ namespace TuioNet.Common
         {
             CancellationTokenSource.Cancel();
         }
-        
-        public void OnBuffer(byte[] buffer, int end)
+
+        protected void OnBuffer(byte[] buffer, int end)
         {
             int start = 0;
 
