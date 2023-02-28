@@ -7,7 +7,11 @@ namespace TuioNet.Common
 {
     public abstract class TuioReceiver
     {
+        /// <summary>
+        /// Returns true if the receiver is connected to the TUIO sender.
+        /// </summary>
         public bool IsConnected { get; protected set; }
+        
         private readonly Dictionary<string, List<Action<OSCMessage>>> _messageListeners = new Dictionary<string, List<Action<OSCMessage>>>();
         private readonly Queue<OSCMessage> _queuedMessages = new Queue<OSCMessage>();
         protected readonly CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
@@ -18,7 +22,15 @@ namespace TuioNet.Common
         {
             _isAutoProcess = isAutoProcess;
         }
-
+        
+        /// <summary>
+        /// Returns a TuioReceiver object based on the given connection type.
+        /// </summary>
+        /// <param name="tuioConnectionType">The connection type which will be used to connect to the TUIO sender.</param>
+        /// <param name="address">The IP address of the TUIO sender.</param>
+        /// <param name="port">The port on which the receiver should listen to.</param>
+        /// <param name="isAutoProcess">If true the TUIO messages gets processed automatically. No need for calling the ProcessMessages() method manually.</param>
+        /// <returns>A TuioReceiver object. </returns>
         public static TuioReceiver FromConnectionType(TuioConnectionType tuioConnectionType, string address="0.0.0.0", int port=0, bool isAutoProcess=true){
             switch(tuioConnectionType)
             {
@@ -29,9 +41,12 @@ namespace TuioNet.Common
             }
             return null;
         }
-
+        
         public abstract void Connect();
 
+        /// <summary>
+        /// Close the connection to the TUIO sender.
+        /// </summary>
         public void Disconnect()
         {
             CancellationTokenSource.Cancel();
@@ -68,7 +83,10 @@ namespace TuioNet.Common
                 ProcessMessages();
             }
         }
-
+        
+        /// <summary>
+        /// Process the TUIO messages in the message queue and invoke callbacks of the associated message listener.
+        /// </summary>
         public void ProcessMessages()
         {
             lock (_queuedMessages)
@@ -86,7 +104,12 @@ namespace TuioNet.Common
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Adds a listener for a given TUIO profile.
+        /// </summary>
+        /// <param name="address">The TUIO profile to listen to.</param>
+        /// <param name="listener">The callback method which gets invoked for the given adress.</param>
         public void AddMessageListener(string address, Action<OSCMessage> listener)
         {
             if (!_messageListeners.ContainsKey(address))
