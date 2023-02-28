@@ -42,12 +42,12 @@ namespace TuioNet.Common
             return null;
         }
         
-        public abstract void Connect();
+        internal abstract void Connect();
 
         /// <summary>
         /// Close the connection to the TUIO sender.
         /// </summary>
-        public void Disconnect()
+        internal void Disconnect()
         {
             CancellationTokenSource.Cancel();
         }

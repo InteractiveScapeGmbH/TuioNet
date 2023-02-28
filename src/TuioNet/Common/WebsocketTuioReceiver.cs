@@ -19,7 +19,7 @@ namespace TuioNet.Common
         /// <summary>
         /// Establish a connection to the TUIO sender via Websocket.
         /// </summary>
-        public override void Connect()
+        internal override void Connect()
         {
             CancellationToken cancellationToken = CancellationTokenSource.Token;
             Task.Run(async () =>
