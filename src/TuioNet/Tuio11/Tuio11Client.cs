@@ -96,7 +96,7 @@ namespace TuioNet.Tuio11
             return _tuioBlobs[sessionId];
         }
 
-        private bool _updateFrame(uint fseq)
+        private bool UpdateFrame(uint fseq)
         {
             var currentTime = TuioTime.GetCurrentTime();
             if (fseq > 0)
@@ -137,7 +137,7 @@ namespace TuioNet.Tuio11
             else if (command == "fseq")
             {
                 var fseq = (uint)(int)oscMessage.Values[1];
-                if (_updateFrame(fseq))
+                if (UpdateFrame(fseq))
                 {
                     if (_objectAliveMessage != null)
                     {
@@ -228,7 +228,7 @@ namespace TuioNet.Tuio11
             else if (command == "fseq")
             {
                 var fseq = (uint)(int)oscMessage.Values[1];
-                if (_updateFrame(fseq))
+                if (UpdateFrame(fseq))
                 {
                     if (_cursorAliveMessage != null)
                     {
@@ -323,7 +323,7 @@ namespace TuioNet.Tuio11
             else if (command == "fseq")
             {
                 var fseq = (uint)(int)oscMessage.Values[1];
-                if (_updateFrame(fseq))
+                if (UpdateFrame(fseq))
                 {
                     if (_blobAliveMessage != null)
                     {
