@@ -8,30 +8,30 @@ namespace TuioNet.Tuio11
 {
     public class Tuio11Client
     {
-        private TuioReceiver _tuioReceiver;
-        private List<ITuio11Listener> _tuioListeners = new List<ITuio11Listener>();
+        private readonly TuioReceiver _tuioReceiver;
+        private readonly List<ITuio11Listener> _tuioListeners = new List<ITuio11Listener>();
 
-        private Dictionary<uint, Tuio11Object> _tuioObjects = new Dictionary<uint, Tuio11Object>();
-        private Dictionary<uint, Tuio11Cursor> _tuioCursors = new Dictionary<uint, Tuio11Cursor>();
-        private Dictionary<uint, Tuio11Blob> _tuioBlobs = new Dictionary<uint, Tuio11Blob>();
+        private readonly Dictionary<uint, Tuio11Object> _tuioObjects = new Dictionary<uint, Tuio11Object>();
+        private readonly Dictionary<uint, Tuio11Cursor> _tuioCursors = new Dictionary<uint, Tuio11Cursor>();
+        private readonly Dictionary<uint, Tuio11Blob> _tuioBlobs = new Dictionary<uint, Tuio11Blob>();
 
-        private List<OSCMessage> _objectSetMessages = new List<OSCMessage>();
-        private List<OSCMessage> _cursorSetMessages = new List<OSCMessage>();
-        private List<OSCMessage> _blobSetMessages = new List<OSCMessage>();
+        private readonly List<OSCMessage> _objectSetMessages = new List<OSCMessage>();
+        private readonly List<OSCMessage> _cursorSetMessages = new List<OSCMessage>();
+        private readonly List<OSCMessage> _blobSetMessages = new List<OSCMessage>();
 
-        private OSCMessage _objectAliveMessage = null;
-        private OSCMessage _cursorAliveMessage = null;
-        private OSCMessage _blobAliveMessage = null;
+        private OSCMessage _objectAliveMessage;
+        private OSCMessage _cursorAliveMessage;
+        private OSCMessage _blobAliveMessage;
 
-        private object _objectLock = new object();
-        private object _cursorLock = new object();
-        private object _blobLock = new object();
+        private readonly object _objectLock = new object();
+        private readonly object _cursorLock = new object();
+        private readonly object _blobLock = new object();
 
-        private List<uint> _freeCursorIds = new List<uint>();
-        private List<uint> _freeBlobIds = new List<uint>();
+        private readonly List<uint> _freeCursorIds = new List<uint>();
+        private readonly List<uint> _freeBlobIds = new List<uint>();
 
         private uint _currentFrame = 0;
-        private TuioTime _currentTime = null;
+        private TuioTime _currentTime;
 
         public Tuio11Client(TuioReceiver tuioReceiver)
         {
