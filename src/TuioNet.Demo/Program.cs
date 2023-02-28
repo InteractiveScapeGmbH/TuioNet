@@ -7,8 +7,7 @@ class Program
 {
     private static void Main(string[] args)
     {
-        var tuioReceiver = new UdpTuioReceiver(3333, true);
-        var tuioClient = new Tuio11Client(tuioReceiver);
+        var tuioClient = new Tuio11Client(TuioConnectionType.UDP);
         tuioClient.AddTuioListener(new TuioListener());
         Console.WriteLine("Connect...");
         tuioClient.Connect();
