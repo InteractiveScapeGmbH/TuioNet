@@ -18,10 +18,30 @@ namespace TuioNet.Tuio20
         /// The Session ID, a temporary unique object ID.
         /// </summary>
         public uint SessionId { get; private set; }
+        
+        /// <summary>
+        /// The token associated with this object.
+        /// </summary>
         public Tuio20Token Token { get; private set; }
+        
+        /// <summary>
+        /// The pointer associated with this object.
+        /// </summary>
         public Tuio20Pointer Pointer { get; private set; }
+        
+        /// <summary>
+        /// The bounds associated with this object.
+        /// </summary>
         public Tuio20Bounds Bounds { get; private set; }
+        
+        /// <summary>
+        /// The symbol associated with this object.
+        /// </summary>
         public Tuio20Symbol Symbol { get; private set; }
+        
+        /// <summary>
+        /// The current state of the TuioContainer.
+        /// </summary>
         public TuioState State { get; private set; }
 
         public Tuio20Object(TuioTime startTime, uint sessionId)
