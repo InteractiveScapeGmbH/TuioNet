@@ -16,6 +16,9 @@ namespace TuioNet.Common
             _port = port;
         }
         
+        /// <summary>
+        /// Establish a connection to the TUIO sender via Websocket.
+        /// </summary>
         public override void Connect()
         {
             CancellationToken cancellationToken = CancellationTokenSource.Token;

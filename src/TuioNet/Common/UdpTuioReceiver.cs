@@ -14,6 +14,9 @@ namespace TuioNet.Common
             _port = port;
         }
         
+        /// <summary>
+        /// Establish a connection to the TUIO sender over UDP.
+        /// </summary>
         public override void Connect()
         {
             CancellationToken cancellationToken = CancellationTokenSource.Token;
