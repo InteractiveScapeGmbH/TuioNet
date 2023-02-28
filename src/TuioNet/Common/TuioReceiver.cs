@@ -7,7 +7,7 @@ namespace TuioNet.Common
 {
     public abstract class TuioReceiver
     {
-        public bool IsConnected;
+        public bool IsConnected { get; protected set; }
         private readonly Dictionary<string, List<Action<OSCMessage>>> _messageListeners = new Dictionary<string, List<Action<OSCMessage>>>();
         private readonly Queue<OSCMessage> _queuedMessages = new Queue<OSCMessage>();
         protected readonly CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
