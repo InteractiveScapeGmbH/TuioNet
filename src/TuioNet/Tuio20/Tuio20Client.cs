@@ -74,6 +74,21 @@ namespace TuioNet.Tuio20
             _tuioReceiver.ProcessMessages();
         }
         
+        public void AddTuioListener(ITuio20Listener tuio20Listener)
+        {
+            _tuioListeners.Add(tuio20Listener);
+        }
+
+        public void RemoveTuioListener(ITuio20Listener tuio20Listener)
+        {
+            _tuioListeners.Remove(tuio20Listener);
+        }
+
+        public void RemoveAllTuioListeners()
+        {
+            _tuioListeners.Clear();
+        }
+        
         /// <summary>
         /// Returns all active TUIO tokens.
         /// </summary>
@@ -156,21 +171,6 @@ namespace TuioNet.Tuio20
 
                 return tuioSymbolList;
             }
-        }
-        
-        public void AddTuioListener(ITuio20Listener tuio20Listener)
-        {
-            _tuioListeners.Add(tuio20Listener);
-        }
-
-        public void RemoveTuioListener(ITuio20Listener tuio20Listener)
-        {
-            _tuioListeners.Remove(tuio20Listener);
-        }
-
-        public void RemoveAllTuioListeners()
-        {
-            _tuioListeners.Clear();
         }
         
         private void OnFrm(OSCMessage oscMessage)
