@@ -110,7 +110,9 @@ namespace TuioNet.Common
         /// </summary>
         /// <param name="messageProfile">The TUIO profile to listen to.</param>
         /// <param name="listener">The callback method which gets invoked for the given adress.</param>
-        /// <example>AddMessageListener("/tuio/2Dobj", OnCallback)</example>
+        /// <example>
+        /// <code>AddMessageListener("/tuio/2Dobj", OnCallback)</code>
+        /// </example>
         internal void AddMessageListener(string messageProfile, Action<OSCMessage> listener)
         {
             if (!_messageListeners.ContainsKey(messageProfile))
