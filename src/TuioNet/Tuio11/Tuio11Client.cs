@@ -23,10 +23,6 @@ namespace TuioNet.Tuio11
         private OSCMessage _cursorAliveMessage;
         private OSCMessage _blobAliveMessage;
 
-        private readonly object _objectLock = new object();
-        private readonly object _cursorLock = new object();
-        private readonly object _blobLock = new object();
-
         private readonly List<uint> _freeCursorIds = new List<uint>();
         private readonly List<uint> _freeBlobIds = new List<uint>();
 
@@ -52,10 +48,6 @@ namespace TuioNet.Tuio11
         {
             _tuioReceiver.Disconnect();
         }
-
-        public object objectLock => _objectLock;
-        public object cursorLock => _cursorLock;
-        public object blobLock => _blobLock;
 
         public bool IsConnected()
         {
