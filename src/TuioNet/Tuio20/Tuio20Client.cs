@@ -7,21 +7,21 @@ namespace TuioNet.Tuio20
 {
     public class Tuio20Client
     {
-        private TuioReceiver _tuioReceiver;
-        private List<ITuio20Listener> _tuioListeners = new List<ITuio20Listener>();
-        private Dictionary<uint, Tuio20Object> _tuioObjects = new Dictionary<uint, Tuio20Object>();
+        private readonly TuioReceiver _tuioReceiver;
+        private readonly List<ITuio20Listener> _tuioListeners = new List<ITuio20Listener>();
+        private readonly Dictionary<uint, Tuio20Object> _tuioObjects = new Dictionary<uint, Tuio20Object>();
 
-        private OSCMessage _frmMessage = null;
-        private List<OSCMessage> _otherMessages = new List<OSCMessage>();
+        private OSCMessage _frmMessage;
+        private readonly List<OSCMessage> _otherMessages = new List<OSCMessage>();
         
         private uint _bundleFrameId = 0;
         private uint _nextFrameId = 0;
         
         private uint _prevFrameId = 0;
-        private TuioTime _prevFrameTime = null;
+        private TuioTime _prevFrameTime;
 
         private uint _dim = 0;
-        private string _source = null;
+        private string _source;
         
         private object _tuioObjectLock = new object();
         
