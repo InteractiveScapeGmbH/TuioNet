@@ -49,19 +49,35 @@ namespace TuioNet.Tuio20
             _tuioReceiver.AddMessageListener("/tuio2/sym", OnOther);
         }
 
+        /// <summary>
+        /// Establish a connection to the TUIO sender.
+        /// </summary>
         public void Connect()
         {
             _prevFrameTime = new TuioTime(0, 0);
             _tuioReceiver.Connect();
         }
 
+        /// <summary>
+        /// Closes the connection to the TUIO sender.
+        /// </summary>
         public void Disconnect()
         {
             _tuioReceiver.Disconnect();
         }
         
+        /// <summary>
+        /// Process the TUIO messages in the message queue and invoke callbacks of the associated message listener. Only needs to be called if isAutoProcess is set to false.
+        /// </summary>
+        public void ProcessMessages()
+        {
+            _tuioReceiver.ProcessMessages();
+        }
         
-        
+        /// <summary>
+        /// Returns all active TUIO tokens.
+        /// </summary>
+        /// <returns>A list of all active TUIO tokens.</returns>
         public List<Tuio20Token> GetTuioTokenList()
         {
             lock (TuioObjectLock)
@@ -79,6 +95,10 @@ namespace TuioNet.Tuio20
             }
         }
 
+        /// <summary>
+        /// Returns all active TUIO pointers.
+        /// </summary>
+        /// <returns>A list of all active TUIO pointers.</returns>
         public List<Tuio20Pointer> GetTuioPointerList()
         {
             lock (TuioObjectLock)
@@ -96,6 +116,10 @@ namespace TuioNet.Tuio20
             }
         }
 
+        /// <summary>
+        /// Returns all active TUIO bounds.
+        /// </summary>
+        /// <returns>A list of all active TUIO bounds.</returns>
         public List<Tuio20Bounds> GetTuioBoundsList()
         {
             lock (TuioObjectLock)
@@ -113,6 +137,10 @@ namespace TuioNet.Tuio20
             }
         }
 
+        /// <summary>
+        /// Returns all active TUIO marker symbols.
+        /// </summary>
+        /// <returns>A list of all active TUIO marker symbols.</returns>
         public List<Tuio20Symbol> GetTuioSymbolList()
         {
             lock (TuioObjectLock)
@@ -128,6 +156,21 @@ namespace TuioNet.Tuio20
 
                 return tuioSymbolList;
             }
+        }
+        
+        public void AddTuioListener(ITuio20Listener tuio20Listener)
+        {
+            _tuioListeners.Add(tuio20Listener);
+        }
+
+        public void RemoveTuioListener(ITuio20Listener tuio20Listener)
+        {
+            _tuioListeners.Remove(tuio20Listener);
+        }
+
+        public void RemoveAllTuioListeners()
+        {
+            _tuioListeners.Clear();
         }
         
         private void OnFrm(OSCMessage oscMessage)
@@ -382,21 +425,6 @@ namespace TuioNet.Tuio20
             _prevFrameTime = currentFrameTime;
             _prevFrameId = frameId;
             _frmMessage = null;
-        }
-
-        public void AddTuioListener(ITuio20Listener tuio20Listener)
-        {
-            _tuioListeners.Add(tuio20Listener);
-        }
-
-        public void RemoveTuioListener(ITuio20Listener tuio20Listener)
-        {
-            _tuioListeners.Remove(tuio20Listener);
-        }
-
-        public void RemoveAllTuioListeners()
-        {
-            _tuioListeners.Clear();
         }
     }
 }
