@@ -9,7 +9,7 @@ namespace TuioNet.Common
     {
         private readonly int _port;
 
-        public UdpTuioReceiver(int port, bool isAutoProcess) : base(isAutoProcess)
+        internal UdpTuioReceiver(int port, bool isAutoProcess) : base(isAutoProcess)
         {
             _port = port;
         }

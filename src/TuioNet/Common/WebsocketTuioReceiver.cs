@@ -10,7 +10,7 @@ namespace TuioNet.Common
         private readonly string _address;
         private readonly int _port;
 
-        public WebsocketTuioReceiver(string address, int port, bool isAutoProcess) : base(isAutoProcess)
+        internal WebsocketTuioReceiver(string address, int port, bool isAutoProcess) : base(isAutoProcess)
         {
             _address = address;
             _port = port;

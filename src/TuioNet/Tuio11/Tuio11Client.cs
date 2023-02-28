@@ -31,13 +31,14 @@ namespace TuioNet.Tuio11
         
         public bool IsConnected => _tuioReceiver.IsConnected;
 
-        public Tuio11Client(TuioReceiver tuioReceiver)
+        public Tuio11Client(TuioConnectionType connectionType, string address = "0.0.0.0", int port = 3333, bool isAutoProcess = true)
         {
-            _tuioReceiver = tuioReceiver;
+            _tuioReceiver = TuioReceiver.FromConnectionType(connectionType, address, port, isAutoProcess);
             _tuioReceiver.AddMessageListener("/tuio/2Dobj", On2Dobj);
             _tuioReceiver.AddMessageListener("/tuio/2Dcur", On2Dcur);
             _tuioReceiver.AddMessageListener("/tuio/2Dblb", On2Dblb);
         }
+        
         
         public void Connect()
         {
@@ -49,6 +50,11 @@ namespace TuioNet.Tuio11
         public void Disconnect()
         {
             _tuioReceiver.Disconnect();
+        }
+
+        public void ProcessMessages()
+        {
+            _tuioReceiver.ProcessMessages();
         }
 
         public void AddTuioListener(ITuio11Listener tuio11Listener)
@@ -65,32 +71,59 @@ namespace TuioNet.Tuio11
         {
             _tuioListeners.Clear();
         }
-
+        
+        /// <summary>
+        /// Returns all active TUIO objects.
+        /// </summary>
+        /// <returns>A list of all active TUIO objects.</returns>
         public List<Tuio11Object> GetTuioObjects()
         {
             return _tuioObjects.Values.ToList();
         }
-
+        
+        /// <summary>
+        /// Returns all active TUIO cursors.
+        /// </summary>
+        /// <returns>A List of all active TUIO cursors.</returns>
         public List<Tuio11Cursor> GetTuioCursors()
         {
             return _tuioCursors.Values.ToList();
         }
 
+        /// <summary>
+        /// Returns all active TUIO blobs.
+        /// </summary>
+        /// <returns>A list of all active TUIO blobs.</returns>
         public List<Tuio11Blob> GetTuioBlobs()
         {
             return _tuioBlobs.Values.ToList();
         }
-
+        
+        /// <summary>
+        /// Return a specific TUIO object by its session id.
+        /// </summary>
+        /// <param name="sessionId">The session id of the requested TUIO object.</param>
+        /// <returns>A single TUIO object with the given session id.</returns>
         public Tuio11Object GetTuioObject(uint sessionId)
         {
             return _tuioObjects[sessionId];
         }
 
+        /// <summary>
+        /// Return a specific TUIO cursor by its session id.
+        /// </summary>
+        /// <param name="sessionId">The session id of the requested TUIO cursor.</param>
+        /// <returns>A single TUIO cursor with the given session id.</returns>
         public Tuio11Cursor GetTuioCursor(uint sessionId)
         {
             return _tuioCursors[sessionId];
         }
 
+        /// <summary>
+        /// Return a specific TUIO blob by its session id.
+        /// </summary>
+        /// <param name="sessionId">The session id of the requested TUIO blob.</param>
+        /// <returns>A single TUIO blob with the given session id.</returns>
         public Tuio11Blob GetTuioBlob(uint sessionId)
         {
             return _tuioBlobs[sessionId];
