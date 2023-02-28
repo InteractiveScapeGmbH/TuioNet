@@ -22,8 +22,10 @@ namespace TuioNet.Tuio20
 
         private uint _dim = 0;
         private string _source;
+        public uint dim => _dim;
+        public string source => _source;
         
-        private object _tuioObjectLock = new object();
+        public object TuioObjectLock { get; } = new object();
         
         public Tuio20Client(TuioReceiver tuioReceiver)
         {
@@ -47,13 +49,11 @@ namespace TuioNet.Tuio20
             _tuioReceiver.Disconnect();
         }
         
-        public object tuioObjectLock => _tuioObjectLock;
-        public uint dim => _dim;
-        public string source => _source;
+        
         
         public List<Tuio20Token> GetTuioTokenList()
         {
-            lock (_tuioObjectLock)
+            lock (TuioObjectLock)
             {
                 var tuioTokenList = new List<Tuio20Token>();
                 foreach (var entry in _tuioObjects)
@@ -70,7 +70,7 @@ namespace TuioNet.Tuio20
 
         public List<Tuio20Pointer> GetTuioPointerList()
         {
-            lock (_tuioObjectLock)
+            lock (TuioObjectLock)
             {
                 var tuioPointerList = new List<Tuio20Pointer>();
                 foreach (var entry in _tuioObjects)
@@ -87,7 +87,7 @@ namespace TuioNet.Tuio20
 
         public List<Tuio20Bounds> GetTuioBoundsList()
         {
-            lock (_tuioObjectLock)
+            lock (TuioObjectLock)
             {
                 var tuioBoundsList = new List<Tuio20Bounds>();
                 foreach (var entry in _tuioObjects)
@@ -104,7 +104,7 @@ namespace TuioNet.Tuio20
 
         public List<Tuio20Symbol> GetTuioSymbolList()
         {
-            lock (_tuioObjectLock)
+            lock (TuioObjectLock)
             {
                 var tuioSymbolList = new List<Tuio20Symbol>();
                 foreach (var entry in _tuioObjects)
@@ -169,7 +169,7 @@ namespace TuioNet.Tuio20
                 HashSet<Tuio20Object> addedTuioObjects = new HashSet<Tuio20Object>();
                 HashSet<Tuio20Object> updatedTuioObjects = new HashSet<Tuio20Object>();
                 HashSet<Tuio20Object> removedTuioObjects = new HashSet<Tuio20Object>();
-                lock (_tuioObjectLock)
+                lock (TuioObjectLock)
                 {
                     foreach (var sId in newSIds)
                     {
