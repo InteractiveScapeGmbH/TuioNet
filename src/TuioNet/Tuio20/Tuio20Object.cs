@@ -4,8 +4,19 @@ namespace TuioNet.Tuio20
 {
     public class Tuio20Object
     {
+        /// <summary>
+        /// Creation time of the TuioObject as TuioTime.
+        /// </summary>
         public TuioTime StartTime { get; private set; }
+        
+        /// <summary>
+        /// Time since creation as TuioTime.
+        /// </summary>
         public TuioTime CurrentTime { get; private set; }
+        
+        /// <summary>
+        /// The Session ID, a temporary unique object ID.
+        /// </summary>
         public uint SessionId { get; private set; }
         public Tuio20Token Token { get; private set; }
         public Tuio20Pointer Pointer { get; private set; }

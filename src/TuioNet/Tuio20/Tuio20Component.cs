@@ -10,19 +10,58 @@ namespace TuioNet.Tuio20
     {
         private static int MAX_PATH_LENGTH = 128; 
         
+        /// <summary>
+        /// Time since creation as TuioTime.
+        /// </summary>
         public TuioTime CurrentTime { get; protected set; }
         public Tuio20Object Container { get; protected set; }
+        
+        /// <summary>
+        /// The rotation angle of the TuioComponent in radians.
+        /// </summary>
         public float Angle { get; protected set; }
+        
+        /// <summary>
+        /// The velocity vector of the TuioContainer.
+        /// </summary>
         public Vector2 Velocity { get; protected set; }
+        
+        /// <summary>
+        /// Calculated length of the velocity vector.
+        /// </summary>
         public float Speed { get; protected set; }
+        
+        /// <summary>
+        /// The speed of the rotation.
+        /// </summary>
         public float RotationSpeed { get; protected set; }
+        
+        /// <summary>
+        /// The current acceleration of the TuioComponent. Can be calculated or given by the TUIO-Sender.
+        /// </summary>
         public float Acceleration { get; protected set; }
+        
+        /// <summary>
+        /// The acceleration of the rotation. Amount of rotation change between to updates.
+        /// </summary>
         public float RotationAcceleration { get; protected set; }
+        
+        /// <summary>
+        /// The current state of the TuioComponent.
+        /// </summary>
         public TuioState State { get; protected set; }
-        public Queue<Tuio20Point> PrevPoints = new Queue<Tuio20Point>();
 
+        /// <summary>
+        /// Is called every time the component gets updated.
+        /// </summary>
         public event Action OnUpdate;
+        
+        /// <summary>
+        /// Is called once when the state changes to removed.
+        /// </summary>
         public event Action OnRemove;
+        
+        protected readonly Queue<Tuio20Point> PrevPoints = new Queue<Tuio20Point>();
 
         public Tuio20Component(TuioTime startTime, Tuio20Object container, Vector2 position, float angle,
             Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, position)

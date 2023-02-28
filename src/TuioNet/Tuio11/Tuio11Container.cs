@@ -16,12 +16,12 @@ namespace TuioNet.Tuio11
         public TuioTime CurrentTime { get; protected set; }
         
         /// <summary>
-        /// The Session ID, a temporary object ID.
+        /// The Session ID, a temporary unique object ID.
         /// </summary>
         public uint SessionId { get; }
         
         /// <summary>
-        /// The velocity-vector of the TuioContainer.
+        /// The velocity vector of the TuioContainer.
         /// </summary>
         public Vector2 Velocity { get; protected set; }
         
@@ -31,12 +31,12 @@ namespace TuioNet.Tuio11
         public float Speed { get; protected set; }
         
         /// <summary>
-        /// The current acceleration of the TUIO Container. Can be calculated or given by the TUIO-Sender.
+        /// The current acceleration of the TuioContainer. Can be calculated or given by the TUIO-Sender.
         /// </summary>
         public float Acceleration { get; protected set; }
         
         /// <summary>
-        /// The current state of the TUIO Container.
+        /// The current state of the TuioContainer.
         /// </summary>
         public TuioState State { get; protected set; }
         

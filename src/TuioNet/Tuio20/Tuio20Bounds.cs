@@ -5,7 +5,14 @@ namespace TuioNet.Tuio20
 {
     public class Tuio20Bounds: Tuio20Component
     {
+        /// <summary>
+        /// Dimensions of the major and minor axis.
+        /// </summary>
         public Vector2 Size { get; private set; }
+        
+        /// <summary>
+        /// The region area of the bounds.
+        /// </summary>
         public float Area { get; private set; }
         
         public Tuio20Bounds(TuioTime startTime, Tuio20Object container, Vector2 position, float angle, Vector2 size, float area, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, container, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration)

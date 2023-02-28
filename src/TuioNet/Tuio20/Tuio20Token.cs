@@ -5,7 +5,15 @@ namespace TuioNet.Tuio20
 {
     public class Tuio20Token : Tuio20Component
     {
+        /// <summary>
+        /// Allows multiplexing of various symbol types and association of additional user id. First two bytes encode user id. Last two bytes encode type id.
+        /// User id 0 is reserved for "no user".
+        /// </summary>
         public uint TypeUserId { get; private set; }
+        
+        /// <summary>
+        /// Allows distinction of individual tokens during a session.
+        /// </summary>
         public uint ComponentId { get; private set; }
         
         public Tuio20Token(TuioTime startTime, Tuio20Object container, uint typeUserId, uint componentId, Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, container, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration)
