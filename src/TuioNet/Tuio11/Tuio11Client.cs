@@ -28,6 +28,8 @@ namespace TuioNet.Tuio11
 
         private uint _currentFrame = 0;
         private TuioTime _currentTime;
+        
+        public bool IsConnected => _tuioReceiver.IsConnected;
 
         public Tuio11Client(TuioReceiver tuioReceiver)
         {
@@ -47,11 +49,6 @@ namespace TuioNet.Tuio11
         public void Disconnect()
         {
             _tuioReceiver.Disconnect();
-        }
-
-        public bool IsConnected()
-        {
-            return _tuioReceiver.IsConnected;
         }
 
         public void AddTuioListener(ITuio11Listener tuio11Listener)
