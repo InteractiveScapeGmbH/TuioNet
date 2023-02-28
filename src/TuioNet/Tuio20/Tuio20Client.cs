@@ -20,11 +20,8 @@ namespace TuioNet.Tuio20
         private uint _prevFrameId = 0;
         private TuioTime _prevFrameTime;
 
-        private uint _dim = 0;
-        private string _source;
-        public uint dim => _dim;
-        public string source => _source;
-        
+        public uint Dim { get; private set; } = 0;
+        public string Source { get; private set; }
         public object TuioObjectLock { get; } = new object();
         
         public Tuio20Client(TuioReceiver tuioReceiver)
@@ -156,8 +153,8 @@ namespace TuioNet.Tuio20
             if (frameId >= _prevFrameId || frameId == 0 || 
                 (currentFrameTime - _prevFrameTime).GetTotalMilliseconds() >= 1000)
             {
-                _dim = dim;
-                _source = source;
+                Dim = dim;
+                Source = source;
                 HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
                 HashSet<uint> aliveSIds = new HashSet<uint>();
                 foreach (var sId in oscMessage.Values)
