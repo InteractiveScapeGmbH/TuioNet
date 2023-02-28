@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20
@@ -12,34 +13,31 @@ namespace TuioNet.Tuio20
         public TuioTime CurrentTime { get; protected set; }
         public Tuio20Object Container { get; protected set; }
         public float Angle { get; protected set; }
-        public float xVel { get; protected set; }
-        public float yVel { get; protected set; }
-        public float mVel { get; protected set; }
-        public float aVel { get; protected set; }
-        public float mAcc { get; protected set; }
-        public float rAcc { get; protected set; }
+        public Vector2 Velocity { get; protected set; }
+        public float Speed { get; protected set; }
+        public float RotationSpeed { get; protected set; }
+        public float Acceleration { get; protected set; }
+        public float RotationAcceleration { get; protected set; }
         public TuioState State { get; protected set; }
         public Queue<Tuio20Point> PrevPoints = new Queue<Tuio20Point>();
 
         public event Action OnUpdate;
         public event Action OnRemove;
 
-        public Tuio20Component(TuioTime startTime, Tuio20Object container, float xPos, float yPos, float angle,
-            float xVel, float yVel, float aVel, float mAcc, float rAcc) : base(startTime, xPos, yPos)
+        public Tuio20Component(TuioTime startTime, Tuio20Object container, Vector2 position, float angle,
+            Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, position)
         {
             CurrentTime = startTime;
             Container = container;
-            this.xPos = xPos;
-            this.yPos = yPos;
+            Position = position;
             Angle = angle;
-            this.xVel = xVel;
-            this.yVel = yVel;
-            mVel = (float)Math.Sqrt(xVel * xVel + yVel * yVel);
-            this.aVel = aVel;
-            this.mAcc = mAcc;
-            this.rAcc = rAcc;
+            Velocity = velocity;
+            Speed = Velocity.Length();
+            RotationSpeed = rotationSpeed;
+            Acceleration = acceleration;
+            RotationAcceleration = rotationAcceleration;
             State = TuioState.Added;
-            PrevPoints.Enqueue(new Tuio20Point(startTime, xPos, yPos));
+            PrevPoints.Enqueue(new Tuio20Point(startTime, Position));
         }
         
         public uint SessionId => Container.SessionId;
@@ -49,33 +47,31 @@ namespace TuioNet.Tuio20
             return PrevPoints.ToList();
         }
 
-        internal void UpdateComponent(TuioTime currentTime, float xPos, float yPos, float angle,
-            float xVel, float yVel, float aVel, float mAcc, float rAcc)
+        internal void UpdateComponent(TuioTime currentTime, Vector2 position, float angle,
+            Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration)
         {
             CurrentTime = currentTime;
-            this.xPos = xPos;
-            this.yPos = yPos;
+            Position = position;
             Angle = angle;
-            this.xVel = xVel;
-            this.yVel = yVel;
-            mVel = (float)Math.Sqrt(xVel * xVel + yVel * yVel);
-            this.aVel = aVel;
-            this.mAcc = mAcc;
-            this.rAcc = rAcc;
-            PrevPoints.Enqueue(new Tuio20Point(currentTime, xPos, yPos));
+            Velocity = velocity;
+            Speed = Velocity.Length();
+            RotationSpeed = rotationSpeed;
+            Acceleration = acceleration;
+            RotationAcceleration = rotationAcceleration;
+            PrevPoints.Enqueue(new Tuio20Point(CurrentTime, Position));
             if (PrevPoints.Count > MAX_PATH_LENGTH)
             {
                 PrevPoints.Dequeue();
             }
-            if (this.mAcc > 0)
+            if (Acceleration > 0)
             {
                 State = TuioState.Accelerating;
             }
-            else if (this.mAcc < 0)
+            else if (Acceleration < 0)
             {
                 State = TuioState.Decelerating;
             }
-            else if (this.rAcc != 0 && State == TuioState.Stopped)
+            else if (RotationAcceleration != 0 && State == TuioState.Stopped)
             {
                 State = TuioState.Rotating;
             }
@@ -87,7 +83,7 @@ namespace TuioNet.Tuio20
             OnUpdate?.Invoke();
         }
         
-        internal void _remove(TuioTime currentTime)
+        internal void Remove(TuioTime currentTime)
         {
             CurrentTime = currentTime;
             State = TuioState.Removed;

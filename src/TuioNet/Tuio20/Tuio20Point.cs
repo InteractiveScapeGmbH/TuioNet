@@ -1,19 +1,17 @@
-﻿using TuioNet.Common;
+﻿using System.Numerics;
+using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
     public class Tuio20Point
     {
         public TuioTime StartTime { get; protected set; }
-        public float xPos { get; protected set; }
-        public float yPos { get; protected set; }
+        public Vector2 Position { get; protected set; }
         
-        public Tuio20Point(TuioTime startTime, float xPos, float yPos)
+        public Tuio20Point(TuioTime startTime, Vector2 position)
         {
             StartTime = startTime;
-            this.xPos = xPos;
-            this.yPos = yPos;
+            Position = position;
         }
-        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OSC.NET;
 using TuioNet.Common;
 
@@ -204,13 +205,13 @@ namespace TuioNet.Tuio20
 
             var frameId = (uint)(int)_frmMessage.Values[0];
             var frameTime = (OscTimeTag)_frmMessage.Values[1];
-            var dim = (uint)(int)_frmMessage.Values[2];
+            var sensorDimension = (uint)(int)_frmMessage.Values[2];
             var source = (string)_frmMessage.Values[3];
             TuioTime currentFrameTime = TuioTime.FromOscTime(frameTime);
             if (frameId >= _prevFrameId || frameId == 0 || 
                 (currentFrameTime - _prevFrameTime).GetTotalMilliseconds() >= 1000)
             {
-                SensorDimension = dim;
+                SensorDimension = sensorDimension;
                 Source = source;
                 HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
                 HashSet<uint> aliveSIds = new HashSet<uint>();
@@ -245,16 +246,19 @@ namespace TuioNet.Tuio20
                             var sId = (uint)(int)otherOscMessage.Values[0];
                             if (aliveSIds.Contains(sId))
                             {
-                                var tuId = (uint)(int)otherOscMessage.Values[1];
+                                var typeUserId = (uint)(int)otherOscMessage.Values[1];
                                 var componentId = (uint)(int)otherOscMessage.Values[2];
                                 var posX = (float)otherOscMessage.Values[3];
                                 var posY = (float)otherOscMessage.Values[4];
+                                var position = new Vector2(posX, posY);
                                 var angle = (float)otherOscMessage.Values[5];
-                                float velocityX = 0, velocityY = 0, angleVelocity = 0, acceleration = 0, rotationAcceleration = 0;
+                                float angleVelocity = 0, acceleration = 0, rotationAcceleration = 0;
+                                var velocity = Vector2.Zero;
                                 if (otherOscMessage.Values.Count > 6)
                                 {
-                                    velocityX = (float)otherOscMessage.Values[6];
-                                    velocityY = (float)otherOscMessage.Values[7];
+                                    velocity.X = (float)otherOscMessage.Values[6];
+                                    velocity.Y = (float)otherOscMessage.Values[7];
+                                    
                                     angleVelocity = (float)otherOscMessage.Values[8];
                                     acceleration = (float)otherOscMessage.Values[9];
                                     rotationAcceleration = (float)otherOscMessage.Values[10];
@@ -264,17 +268,14 @@ namespace TuioNet.Tuio20
                                 if (tuioObject.Token == null)
                                 {
                                     addedTuioObjects.Add(tuioObject);
-                                    tuioObject.SetTuioToken(new Tuio20Token(_prevFrameTime, tuioObject, tuId, componentId, posX,
-                                        posY, angle, velocityX, velocityY, angleVelocity, acceleration, rotationAcceleration));
+                                    tuioObject.SetTuioToken(new Tuio20Token(_prevFrameTime, tuioObject, typeUserId, componentId, position, angle, velocity, angleVelocity, acceleration, rotationAcceleration));
                                 }
                                 else
                                 {
-                                    if (tuioObject.Token.HasChanged(tuId, componentId, posX,
-                                        posY, angle, velocityX, velocityY, angleVelocity, acceleration, rotationAcceleration))
+                                    if (tuioObject.Token.HasChanged(typeUserId, componentId, position, angle, velocity, angleVelocity, acceleration, rotationAcceleration))
                                     {
                                         updatedTuioObjects.Add(tuioObject);
-                                        tuioObject.Token.Update(_prevFrameTime, tuId, componentId, posX,
-                                            posY, angle, velocityX, velocityY, angleVelocity, acceleration, rotationAcceleration);
+                                        tuioObject.Token.Update(_prevFrameTime, typeUserId, componentId, position, angle, velocity, angleVelocity, acceleration, rotationAcceleration);
                                     }
                                 }
                             }
@@ -284,19 +285,21 @@ namespace TuioNet.Tuio20
                             var sId = (uint)(int)otherOscMessage.Values[0];
                             if (aliveSIds.Contains(sId))
                             {
-                                var tuId = (uint)(int)otherOscMessage.Values[1];
+                                var typeId = (uint)(int)otherOscMessage.Values[1];
                                 var componentId = (uint)(int)otherOscMessage.Values[2];
                                 var posX = (float)otherOscMessage.Values[3];
                                 var posY = (float)otherOscMessage.Values[4];
+                                var position = new Vector2(posX, posY);
                                 var angle = (float)otherOscMessage.Values[5];
                                 var shear = (float)otherOscMessage.Values[6];
                                 var radius = (float)otherOscMessage.Values[7];
                                 var press = (float)otherOscMessage.Values[8];
-                                float velocityX = 0, velocityY = 0, pressureVelocity = 0, acceleration = 0, pressureAcceleration = 0;
+                                float  pressureVelocity = 0, acceleration = 0, pressureAcceleration = 0;
+                                var velocity = Vector2.Zero;
                                 if (otherOscMessage.Values.Count > 9)
                                 {
-                                    velocityX = (float)otherOscMessage.Values[6];
-                                    velocityY = (float)otherOscMessage.Values[7];
+                                    velocity.X = (float)otherOscMessage.Values[6];
+                                    velocity.Y = (float)otherOscMessage.Values[7];
                                     pressureVelocity = (float)otherOscMessage.Values[8];
                                     acceleration = (float)otherOscMessage.Values[9];
                                     pressureAcceleration = (float)otherOscMessage.Values[10];
@@ -306,17 +309,15 @@ namespace TuioNet.Tuio20
                                 if (tuioObject.Pointer == null)
                                 {
                                     addedTuioObjects.Add(tuioObject);
-                                    tuioObject.SetTuioPointer(new Tuio20Pointer(_prevFrameTime, tuioObject, tuId, componentId, 
-                                        posX, posY, angle, shear, radius, press, velocityX, velocityY, pressureVelocity, acceleration, pressureAcceleration));
+                                    tuioObject.SetTuioPointer(new Tuio20Pointer(_prevFrameTime, tuioObject, typeId, componentId, 
+                                        position, angle, shear, radius, press, velocity, pressureVelocity, acceleration, pressureAcceleration));
                                 }
                                 else
                                 {
-                                    if (tuioObject.Pointer.HasChanged(tuId, componentId, posX,
-                                        posY, angle, shear, radius, press, velocityX, velocityY, pressureVelocity, acceleration, pressureAcceleration))
+                                    if (tuioObject.Pointer.HasChanged(typeId, componentId, position, angle, shear, radius, press, velocity, pressureVelocity, acceleration, pressureAcceleration))
                                     {
                                         updatedTuioObjects.Add(tuioObject);
-                                        tuioObject.Pointer.Update(_prevFrameTime, tuId, componentId, posX,
-                                            posY, angle, shear, radius, press, velocityX, velocityY, pressureVelocity, acceleration, pressureAcceleration);
+                                        tuioObject.Pointer.Update(_prevFrameTime, typeId, componentId, position, angle, shear, radius, press, velocity, pressureVelocity, acceleration, pressureAcceleration);
                                     }
                                 }
                             }
@@ -328,15 +329,18 @@ namespace TuioNet.Tuio20
                             {
                                 var posX = (float)otherOscMessage.Values[1];
                                 var posY = (float)otherOscMessage.Values[2];
+                                var position = new Vector2(posX, posY);
                                 var angle = (float)otherOscMessage.Values[3];
                                 var width = (float)otherOscMessage.Values[4];
                                 var height = (float)otherOscMessage.Values[5];
+                                var size = new Vector2(width, height);
                                 var area = (float)otherOscMessage.Values[6];
-                                float velocityX = 0, velocityY = 0, angleVelocity = 0, acceleration = 0, rotationAcceleration = 0;
+                                float angleVelocity = 0, acceleration = 0, rotationAcceleration = 0;
+                                var velocity = Vector2.Zero;
                                 if (otherOscMessage.Values.Count > 7)
                                 {
-                                    velocityX = (float)otherOscMessage.Values[7];
-                                    velocityY = (float)otherOscMessage.Values[8];
+                                    velocity.X = (float)otherOscMessage.Values[7];
+                                    velocity.Y = (float)otherOscMessage.Values[8];
                                     angleVelocity = (float)otherOscMessage.Values[9];
                                     acceleration = (float)otherOscMessage.Values[10];
                                     rotationAcceleration = (float)otherOscMessage.Values[11];
@@ -346,17 +350,14 @@ namespace TuioNet.Tuio20
                                 if (tuioObject.Bounds == null)
                                 {
                                     addedTuioObjects.Add(tuioObject);
-                                    tuioObject.SetTuioBounds(new Tuio20Bounds(_prevFrameTime, tuioObject, posX,
-                                        posY, angle, width, height, area, velocityX, velocityY, angleVelocity, acceleration, rotationAcceleration));
+                                    tuioObject.SetTuioBounds(new Tuio20Bounds(_prevFrameTime, tuioObject, position, angle, size, area, velocity, angleVelocity, acceleration, rotationAcceleration));
                                 }
                                 else
                                 {
-                                    if (tuioObject.Bounds.HasChanged(posX,
-                                        posY, angle, width, height, area, velocityX, velocityY, angleVelocity, acceleration, rotationAcceleration))
+                                    if (tuioObject.Bounds.HasChanged(position, angle, size, area, velocity, angleVelocity, acceleration, rotationAcceleration))
                                     {
                                         updatedTuioObjects.Add(tuioObject);
-                                        tuioObject.Bounds.Update(_prevFrameTime, posX,
-                                            posY, angle, width, height, area, velocityX, velocityY, angleVelocity, acceleration, rotationAcceleration);
+                                        tuioObject.Bounds.Update(_prevFrameTime, position, angle, size, area, velocity, angleVelocity, acceleration, rotationAcceleration);
                                     }
                                 }
                             }
@@ -366,7 +367,7 @@ namespace TuioNet.Tuio20
                             var sessionId = (uint)(int)otherOscMessage.Values[0];
                             if (aliveSIds.Contains(sessionId))
                             {
-                                var tuId = (uint)(int)otherOscMessage.Values[1];
+                                var typeUserId = (uint)(int)otherOscMessage.Values[1];
                                 var componentId = (uint)(int)otherOscMessage.Values[2];
                                 string group = (string)otherOscMessage.Values[3];
                                 string data = (string)otherOscMessage.Values[4];
@@ -375,16 +376,16 @@ namespace TuioNet.Tuio20
                                 if (tuioObject.Symbol == null)
                                 {
                                     addedTuioObjects.Add(tuioObject);
-                                    tuioObject.SetTuioSymbol(new Tuio20Symbol(_prevFrameTime, tuioObject, tuId, componentId, 
+                                    tuioObject.SetTuioSymbol(new Tuio20Symbol(_prevFrameTime, tuioObject, typeUserId, componentId, 
                                         group, data));
                                 }
                                 else
                                 {
-                                    if (tuioObject.Symbol.HasChanged(tuId, componentId, group,
+                                    if (tuioObject.Symbol.HasChanged(typeUserId, componentId, group,
                                         data))
                                     {
                                         updatedTuioObjects.Add(tuioObject);
-                                        tuioObject.Symbol.Update(_prevFrameTime, tuId, componentId, group,
+                                        tuioObject.Symbol.Update(_prevFrameTime, typeUserId, componentId, group,
                                             data);
                                     }
                                 }

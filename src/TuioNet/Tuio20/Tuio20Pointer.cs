@@ -1,44 +1,45 @@
-﻿using TuioNet.Common;
+﻿using System.Numerics;
+using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
     public class Tuio20Pointer : Tuio20Component
     {
-        public uint TuId { get; private set; }
-        public uint CId { get; private set; }
+        public uint TypeId { get; private set; }
+        public uint ComponentId { get; private set; }
         public float Shear { get; private set; }
         public float Radius { get; private set; }
         public float Press { get; private set; }
-        public float pVel { get; private set; }
-        public float pAcc { get; private set; }
+        public float PressureVelocity { get; private set; }
+        public float PressureAcceleration { get; private set; }
         
-        public Tuio20Pointer(TuioTime startTime, Tuio20Object container, uint tuId, uint cId, float xPos, float yPos, float angle, float shear, float radius, float press, float xVel, float yVel, float pVel, float mAcc, float pAcc) : base(startTime, container, xPos, yPos, angle, xVel, yVel, 0, mAcc, 0)
+        public Tuio20Pointer(TuioTime startTime, Tuio20Object container, uint typeId, uint componentId, Vector2 position, float angle, float shear, float radius, float press, Vector2 velocity, float pressureVelocity, float acceleration, float pressureAcceleration) : base(startTime, container, position, angle, velocity, 0, acceleration, 0)
         {
-            TuId = tuId;
-            CId = cId;
+            TypeId = typeId;
+            ComponentId = componentId;
             Shear = shear;
             Radius = radius;
             Press = press;
-            this.pVel = pVel;
-            this.pAcc = pAcc;
+            PressureVelocity = pressureVelocity;
+            PressureAcceleration = pressureAcceleration;
         }
         
-        internal bool HasChanged(uint tuId, uint cId, float xPos, float yPos, float angle, float shear, float radius, float press, float xVel, float yVel, float pVel, float mAcc, float pAcc)
+        internal bool HasChanged(uint typeId, uint componentId, Vector2 position, float angle, float shear, float radius, float press, Vector2 velocity, float pressureVelocity, float acceleration, float pressureAcceleration)
         {
-            return !(tuId == TuId && cId == CId && xPos == this.xPos && yPos == this.yPos && angle == Angle && shear == Shear &&radius == Radius &&press == Press &&
-                     xVel == base.xVel && yVel == base.yVel && pVel == this.pVel && mAcc == base.mAcc && pAcc == this.pAcc);
+            return !(typeId == TypeId && componentId == ComponentId && position == Position && angle == Angle && shear == Shear &&radius == Radius &&press == Press &&
+                     velocity == Velocity && pressureVelocity == this.PressureVelocity && acceleration == base.Acceleration && pressureAcceleration == this.PressureAcceleration);
         }
 
-        internal void Update(TuioTime currentTime, uint tuId, uint cId, float xPos, float yPos, float angle, float shear, float radius, float press, float xVel, float yVel, float pVel, float mAcc, float pAcc)
+        internal void Update(TuioTime currentTime, uint typeId, uint componentId, Vector2 position, float angle, float shear, float radius, float press, Vector2 velocity, float pressureVelocity, float acceleration, float pressureAcceleration)
         {
-            UpdateComponent(currentTime, xPos, yPos, angle, xVel, yVel, 0, mAcc, 0);
-            TuId = tuId;
-            CId = cId;
+            UpdateComponent(currentTime, position, angle, velocity, 0, acceleration, 0);
+            TypeId = typeId;
+            ComponentId = componentId;
             Shear = shear;
             Radius = radius;
             Press = press;
-            this.pVel = pVel;
-            this.pAcc = pAcc;
+            PressureVelocity = pressureVelocity;
+            PressureAcceleration = pressureAcceleration;
         }
     }
 }

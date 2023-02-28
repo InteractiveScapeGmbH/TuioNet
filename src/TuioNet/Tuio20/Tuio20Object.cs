@@ -98,10 +98,10 @@ namespace TuioNet.Tuio20
         internal void Remove(TuioTime currentTime)
         {
             CurrentTime = currentTime;
-            Token?._remove(currentTime);
-            Pointer?._remove(currentTime);
-            Bounds?._remove(currentTime);
-            Symbol?._remove(currentTime);
+            Token?.Remove(currentTime);
+            Pointer?.Remove(currentTime);
+            Bounds?.Remove(currentTime);
+            Symbol?.Remove(currentTime);
             State = TuioState.Removed;
         }
     }

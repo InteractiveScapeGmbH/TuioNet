@@ -1,32 +1,32 @@
-﻿using TuioNet.Common;
+﻿using System.Numerics;
+using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
     public class Tuio20Token : Tuio20Component
     {
-        public uint TuId { get; private set; }
-        public uint CId { get; private set; }
+        public uint TypeUserId { get; private set; }
+        public uint ComponentId { get; private set; }
         
-        public Tuio20Token(TuioTime startTime, Tuio20Object container, uint tuId, uint cId, float xPos, float yPos, float angle, float xVel, float yVel, float aVel, float mAcc, float rAcc) : base(startTime, container, xPos, yPos, angle, xVel, yVel, aVel, mAcc, rAcc)
+        public Tuio20Token(TuioTime startTime, Tuio20Object container, uint typeUserId, uint componentId, Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, container, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration)
         {
-            TuId = tuId;
-            CId = cId;
+            TypeUserId = typeUserId;
+            ComponentId = componentId;
         }
         
-        internal bool HasChanged(uint tuId, uint cId, float xPos, float yPos, float angle, float xVel, float yVel,
-            float aVel, float mAcc, float rAcc)
+        internal bool HasChanged(uint typeUserId, uint componentId, Vector2 position, float angle, Vector2 velocity,
+            float rotationSpeed, float acceleration, float rotationAcceleration)
         {
-            return !(tuId == TuId && cId == CId && xPos == this.xPos && yPos == this.yPos && angle == Angle &&
-                     xVel == base.xVel && yVel == base.yVel && aVel == base.aVel && mAcc == base.mAcc && rAcc == base.rAcc);
+            return !(typeUserId == TypeUserId && componentId == ComponentId && position == Position && angle == Angle &&
+                     velocity == Velocity && rotationSpeed == RotationSpeed && acceleration == Acceleration && rotationAcceleration == RotationAcceleration);
         }
 
-        internal void Update(TuioTime currentTime, uint tuId, uint cId, float xPos, float yPos, float angle,
-            float xVel, float yVel,
-            float aVel, float mAcc, float rAcc)
+        internal void Update(TuioTime currentTime, uint typeUserId, uint componentId, Vector2 position, float angle,
+            Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration)
         {
-            UpdateComponent(currentTime, xPos, yPos, angle, xVel, yVel, aVel, mAcc, rAcc);
-            TuId = tuId;
-            CId = cId;
+            UpdateComponent(currentTime, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
+            TypeUserId = typeUserId;
+            ComponentId = componentId;
         }
     }
 }
