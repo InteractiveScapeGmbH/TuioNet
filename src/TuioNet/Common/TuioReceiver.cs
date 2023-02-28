@@ -31,7 +31,7 @@ namespace TuioNet.Common
         /// <param name="port">The port on which the receiver should listen to.</param>
         /// <param name="isAutoProcess">If true the TUIO messages gets processed automatically. No need for calling the ProcessMessages() method manually.</param>
         /// <returns>A TuioReceiver object. </returns>
-        public static TuioReceiver FromConnectionType(TuioConnectionType tuioConnectionType, string address="0.0.0.0", int port=0, bool isAutoProcess=true){
+        internal static TuioReceiver FromConnectionType(TuioConnectionType tuioConnectionType, string address, int port, bool isAutoProcess){
             switch(tuioConnectionType)
             {
                 case TuioConnectionType.UDP:
@@ -87,7 +87,7 @@ namespace TuioNet.Common
         /// <summary>
         /// Process the TUIO messages in the message queue and invoke callbacks of the associated message listener.
         /// </summary>
-        public void ProcessMessages()
+        internal void ProcessMessages()
         {
             lock (_queuedMessages)
             {
@@ -111,7 +111,7 @@ namespace TuioNet.Common
         /// <param name="messageProfile">The TUIO profile to listen to.</param>
         /// <param name="listener">The callback method which gets invoked for the given adress.</param>
         /// <example>AddMessageListener("/tuio/2Dobj", OnCallback)</example>
-        public void AddMessageListener(string messageProfile, Action<OSCMessage> listener)
+        internal void AddMessageListener(string messageProfile, Action<OSCMessage> listener)
         {
             if (!_messageListeners.ContainsKey(messageProfile))
             {
@@ -124,7 +124,7 @@ namespace TuioNet.Common
         /// Remove a listener from a given profile.
         /// </summary>
         /// <param name="messageProfile">The TUIO profile the listener should be removed from.</param>
-        public void RemoveMessageListener(string messageProfile)
+        internal void RemoveMessageListener(string messageProfile)
         {
             if (_messageListeners.ContainsKey(messageProfile))
             {
