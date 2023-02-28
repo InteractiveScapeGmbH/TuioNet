@@ -108,15 +108,28 @@ namespace TuioNet.Common
         /// <summary>
         /// Adds a listener for a given TUIO profile.
         /// </summary>
-        /// <param name="address">The TUIO profile to listen to.</param>
+        /// <param name="messageProfile">The TUIO profile to listen to.</param>
         /// <param name="listener">The callback method which gets invoked for the given adress.</param>
-        public void AddMessageListener(string address, Action<OSCMessage> listener)
+        /// <example>AddMessageListener("/tuio/2Dobj", OnCallback)</example>
+        public void AddMessageListener(string messageProfile, Action<OSCMessage> listener)
         {
-            if (!_messageListeners.ContainsKey(address))
+            if (!_messageListeners.ContainsKey(messageProfile))
             {
-                _messageListeners[address] = new List<Action<OSCMessage>>();
+                _messageListeners[messageProfile] = new List<Action<OSCMessage>>();
             }
-            _messageListeners[address].Add(listener);
+            _messageListeners[messageProfile].Add(listener);
+        }
+        
+        /// <summary>
+        /// Remove a listener from a given profile.
+        /// </summary>
+        /// <param name="messageProfile">The TUIO profile the listener should be removed from.</param>
+        public void RemoveMessageListener(string messageProfile)
+        {
+            if (_messageListeners.ContainsKey(messageProfile))
+            {
+                _messageListeners.Remove(messageProfile);
+            }
         }
     }
 }
