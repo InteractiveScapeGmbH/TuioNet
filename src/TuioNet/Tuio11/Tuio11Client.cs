@@ -147,19 +147,19 @@ namespace TuioNet.Tuio11
             return _tuioBlobs[sessionId];
         }
 
-        private bool UpdateFrame(uint fseq)
+        private bool UpdateFrame(uint frameId)
         {
             var currentTime = TuioTime.GetCurrentTime();
-            if (fseq > 0)
+            if (frameId > 0)
             {
-                if (fseq > _currentFrame)
+                if (frameId > _currentFrame)
                 {
                     _currentTime = currentTime;
                 }
 
-                if (fseq >= _currentFrame || _currentFrame - fseq > 100)
+                if (frameId >= _currentFrame || _currentFrame - frameId > 100)
                 {
-                    _currentFrame = fseq;
+                    _currentFrame = frameId;
                 }
                 else
                 {
@@ -187,8 +187,8 @@ namespace TuioNet.Tuio11
             }
             else if (command == "fseq")
             {
-                var fseq = (uint)(int)oscMessage.Values[1];
-                if (UpdateFrame(fseq))
+                var frameId = (uint)(int)oscMessage.Values[1];
+                if (UpdateFrame(frameId))
                 {
                     if (_objectAliveMessage != null)
                     {
@@ -278,8 +278,8 @@ namespace TuioNet.Tuio11
             }
             else if (command == "fseq")
             {
-                var fseq = (uint)(int)oscMessage.Values[1];
-                if (UpdateFrame(fseq))
+                var frameId = (uint)(int)oscMessage.Values[1];
+                if (UpdateFrame(frameId))
                 {
                     if (_cursorAliveMessage != null)
                     {
@@ -373,8 +373,8 @@ namespace TuioNet.Tuio11
             }
             else if (command == "fseq")
             {
-                var fseq = (uint)(int)oscMessage.Values[1];
-                if (UpdateFrame(fseq))
+                var frameId = (uint)(int)oscMessage.Values[1];
+                if (UpdateFrame(frameId))
                 {
                     if (_blobAliveMessage != null)
                     {
