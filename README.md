@@ -1,4 +1,5 @@
 ﻿# TuioNet
+[![All Contributors](https://img.shields.io/github/all-contributors/InteractiveScapeGmbH/TuioNet?color=ee8449&style=flat-square)](#contributors)
 TuioNet is a .Net implementation of the TUIO specification by Martin Kaltenbrunner. It supports [TUIO 1.1](http://tuio.org/?specification) and [TUIO 2.0](http://www.tuio.org/?tuio20) for the following message profiles:
 
 **TUIO 1.1**
@@ -180,3 +181,14 @@ public class TuioListener : ITuio11Listener
     }
 }
 ```
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
