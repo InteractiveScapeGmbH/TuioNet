@@ -1,6 +1,6 @@
 ﻿# TuioNet
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 TuioNet is a .Net implementation of the TUIO specification by Martin Kaltenbrunner. It supports [TUIO 1.1](http://tuio.org/?specification) and [TUIO 2.0](http://www.tuio.org/?tuio20) for the following message profiles:
@@ -197,6 +197,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://www.interactive-scape.com/"><img src="https://avatars.githubusercontent.com/u/51314413?v=4?s=100" width="100px;" alt="Erich Querner"/><br /><sub><b>Erich Querner</b></sub></a><br /><a href="https://github.com/InteractiveScapeGmbH/TuioNet/commits?author=eqbic" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/gilescoope"><img src="https://avatars.githubusercontent.com/u/5291605?v=4?s=100" width="100px;" alt="Giles Coope"/><br /><sub><b>Giles Coope</b></sub></a><br /><a href="https://github.com/InteractiveScapeGmbH/TuioNet/commits?author=gilescoope" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://modin.yuri.at/"><img src="https://avatars.githubusercontent.com/u/115223?v=4?s=100" width="100px;" alt="Martin Kaltenbrunner"/><br /><sub><b>Martin Kaltenbrunner</b></sub></a><br /><a href="https://github.com/InteractiveScapeGmbH/TuioNet/commits?author=mkalten" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

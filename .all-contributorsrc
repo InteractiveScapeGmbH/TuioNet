@@ -23,6 +23,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mkalten",
+      "name": "Martin Kaltenbrunner",
+      "avatar_url": "https://avatars.githubusercontent.com/u/115223?v=4",
+      "profile": "http://modin.yuri.at/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
