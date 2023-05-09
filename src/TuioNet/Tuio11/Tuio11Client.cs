@@ -79,50 +79,82 @@ namespace TuioNet.Tuio11
             _tuioReceiver.ProcessMessages();
         }
         
+        /// <summary>
+        /// Add a listener to listen for TUIO cursor events.
+        /// </summary>
+        /// <param name="cursorListener"></param>
         public void AddCursorListener(ITuio11CursorListener cursorListener)
         {
             _cursorListeners.Add(cursorListener);
         }
-
+        
+        /// <summary>
+        /// Remove a listener from the list of CursorListeners.
+        /// </summary>
+        /// <param name="cursorListener"></param>
         public void RemoveCursorListener(ITuio11CursorListener cursorListener)
         {
-            if (!_cursorListeners.Contains(cursorListener)) return;
             _cursorListeners.Remove(cursorListener);
         }
 
+        /// <summary>
+        /// Add a listener to listen for TUIO object events.
+        /// </summary>
+        /// <param name="objectListener"></param>
         public void AddObjectListener(ITuio11ObjectListener objectListener)
         {
             _objectListeners.Add(objectListener);
         }
 
+        /// <summary>
+        ///  Remove a listener from the list of ObjectListeners.
+        /// </summary>
+        /// <param name="objectListener"></param>
         public void RemoveObjectListener(ITuio11ObjectListener objectListener)
         {
-            if (!_objectListeners.Contains(objectListener)) return;
             _objectListeners.Remove(objectListener);
         }
 
+        /// <summary>
+        /// Add a listener to listen for TUIO blob events.
+        /// </summary>
+        /// <param name="blobListener"></param>
         public void AddBlobListener(ITuio11BlobListener blobListener)
         {
             _blobListeners.Add(blobListener);
         }
 
+        /// <summary>
+        /// Remove a listener from the list of BlobListeners.
+        /// </summary>
+        /// <param name="blobListener"></param>
         public void RemoveBlobListener(ITuio11BlobListener blobListener)
         {
-            if (!_blobListeners.Contains(blobListener)) return;
             _blobListeners.Remove(blobListener);
         }
 
+        /// <summary>
+        /// Add a listener to react on TuioTime updates.
+        /// </summary>
+        /// <param name="timeRefresher"></param>
         public void AddTimeRefresher(ITimeRefresher timeRefresher)
         {
             _timeRefreshers.Add(timeRefresher);
         }
 
+        /// <summary>
+        /// Remove a listener from the list of TimeRefresher.
+        /// </summary>
+        /// <param name="timeRefresher"></param>
         public void RemoveTimeRefresher(ITimeRefresher timeRefresher)
         {
             if (!_timeRefreshers.Contains(timeRefresher)) return;
             _timeRefreshers.Remove(timeRefresher);
         }
 
+        /// <summary>
+        /// Remove all listeners from the client. This includes cursors, objects, blobs and timeRefreshers.
+        /// </summary>
         public void RemoveAllTuioListeners()
         {
             _cursorListeners.Clear();
