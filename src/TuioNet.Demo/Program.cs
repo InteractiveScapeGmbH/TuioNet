@@ -8,7 +8,9 @@ class Program
     private static void Main(string[] args)
     {
         var tuioClient = new Tuio11Client(TuioConnectionType.UDP);
-        tuioClient.AddTuioListener(new TuioListener());
+        var tuioListener = new TuioListener();
+        tuioClient.AddCursorListener(tuioListener);
+        tuioClient.AddObjectListener(tuioListener);
         Console.WriteLine("Connect...");
         tuioClient.Connect();
         while (true)
