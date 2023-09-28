@@ -309,6 +309,11 @@ namespace TuioNet.Tuio11
                                 objectListener.RemoveObject(tuioObject);
                             }
 
+                            foreach (var tuioListener in _tuio11Listeners)
+                            {
+                                tuioListener.RemoveTuioObject(tuioObject);
+                            }
+
                             _tuioObjects.Remove(sId);
                         }
 
@@ -339,6 +344,11 @@ namespace TuioNet.Tuio11
                                         {
                                             objectListener.UpdateObject(tuioObject);
                                         }
+
+                                        foreach (var tuioListener in _tuio11Listeners)
+                                        {
+                                            tuioListener.UpdateTuioObject(tuioObject);
+                                        }
                                     }
                                 }
                                 else
@@ -349,6 +359,11 @@ namespace TuioNet.Tuio11
                                     {
                                         objectListener.AddObject(tuioObject);
                                     }
+
+                                    foreach (var tuioListener in _tuio11Listeners)
+                                    {
+                                        tuioListener.AddTuioObject(tuioObject);
+                                    }
                                 }
                             }
                         }
@@ -356,6 +371,11 @@ namespace TuioNet.Tuio11
                         foreach (var timeRefresher in _timeRefreshers)
                         {
                             timeRefresher.Refresh(_currentTime);
+                        }
+
+                        foreach (var tuioListener in _tuio11Listeners)
+                        {
+                            tuioListener.Refresh(_currentTime);
                         }
                     }
                 }
