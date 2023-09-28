@@ -9,7 +9,8 @@ namespace TuioNet.Tuio11
     public class Tuio11Client
     {
         private readonly TuioReceiver _tuioReceiver;
-        
+
+        private readonly List<ITuio11Listener> _tuio11Listeners = new List<ITuio11Listener>();
         private readonly List<ITuio11CursorListener> _cursorListeners = new List<ITuio11CursorListener>();
         private readonly List<ITuio11ObjectListener> _objectListeners = new List<ITuio11ObjectListener>();
         private readonly List<ITuio11BlobListener> _blobListeners = new List<ITuio11BlobListener>();
@@ -77,6 +78,24 @@ namespace TuioNet.Tuio11
         public void ProcessMessages()
         {
             _tuioReceiver.ProcessMessages();
+        }
+
+        /// <summary>
+        /// Add a general listener to listen for all kinds of TUIO events.
+        /// </summary>
+        /// <param name="tuio11Listener"></param>
+        public void AddTuioListener(ITuio11Listener tuio11Listener)
+        {
+            _tuio11Listeners.Add(tuio11Listener);
+        }
+
+        /// <summary>
+        /// Remove a general listener from the list of Tuio11Listeners.
+        /// </summary>
+        /// <param name="tuio11Listener"></param>
+        public void RemoveTuioListener(ITuio11Listener tuio11Listener)
+        {
+            _tuio11Listeners.Remove(tuio11Listener);
         }
         
         /// <summary>
@@ -157,6 +176,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         public void RemoveAllTuioListeners()
         {
+            _tuio11Listeners.Clear();
             _cursorListeners.Clear();
             _objectListeners.Clear();
             _blobListeners.Clear();
