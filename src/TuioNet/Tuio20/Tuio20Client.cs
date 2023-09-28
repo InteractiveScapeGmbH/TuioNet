@@ -22,6 +22,11 @@ namespace TuioNet.Tuio20
         private TuioTime _prevFrameTime;
 
         /// <summary>
+        /// Returns true if the receiver is connected to the TUIO sender.
+        /// </summary>
+        public bool IsConnected => _tuioReceiver.IsConnected;
+
+        /// <summary>
         /// The sensor dimension. The first two bytes represent the width. The last two byte represent the height.
         /// </summary>
         public uint SensorDimension { get; private set; } = 0;
