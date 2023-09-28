@@ -421,6 +421,11 @@ namespace TuioNet.Tuio11
                                 cursorListener.RemoveCursor(tuioCursor);
                             }
 
+                            foreach (var tuioListener in _tuio11Listeners)
+                            {
+                                tuioListener.RemoveTuioCursor(tuioCursor);
+                            }
+
                             _tuioCursors.Remove(sId);
                             _freeCursorIds.Add(tuioCursor.CursorId);
                         }
@@ -447,6 +452,11 @@ namespace TuioNet.Tuio11
                                         {
                                             cursorListener.UpdateCursor(tuioCursor);
                                         }
+
+                                        foreach (var tuioListener in _tuio11Listeners)
+                                        {
+                                            tuioListener.UpdateTuioCursor(tuioCursor);
+                                        }
                                     }
                                 }
                                 else
@@ -464,6 +474,11 @@ namespace TuioNet.Tuio11
                                     {
                                         cursorListener.AddCursor(tuioCursor);
                                     }
+
+                                    foreach (var tuioListener in _tuio11Listeners)
+                                    {
+                                        tuioListener.AddTuioCursor(tuioCursor);
+                                    }
                                 }
                             }
                         }
@@ -471,6 +486,11 @@ namespace TuioNet.Tuio11
                         foreach (var timeRefresher in _timeRefreshers)
                         {
                             timeRefresher.Refresh(_currentTime);
+                        }
+
+                        foreach (var tuioListener in _tuio11Listeners)
+                        {
+                            tuioListener.Refresh(_currentTime);
                         }
                     }
                 }
