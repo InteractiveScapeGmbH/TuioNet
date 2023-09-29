@@ -29,18 +29,54 @@ namespace TuioNet.Tuio11
         private uint _currentFrame = 0;
         private TuioTime _currentTime;
 
+        /// <summary>
+        /// Event gets triggered when a new TUIO 1.1 cursor is recognized.
+        /// </summary>
         public event Action<Tuio11Cursor> OnCursorAdded;
+        
+        /// <summary>
+        /// Event gets triggered when a known TUIO 1.1 cursor is updated.
+        /// </summary>
         public event Action<Tuio11Cursor> OnCursorUpdated;
+        
+        /// <summary>
+        /// Event gets triggered when a TUIO 1.1 cursor is removed.
+        /// </summary>
         public event Action<Tuio11Cursor> OnCursorRemoved;
 
+        /// <summary>
+        /// Event gets triggered when a new TUIO 1.1 object is recognized.
+        /// </summary>
         public event Action<Tuio11Object> OnObjectAdded;
+        
+        /// <summary>
+        /// Event gets triggered when a known TUIO 1.1 object is updated.
+        /// </summary>
         public event Action<Tuio11Object> OnObjectUpdated;
+        
+        /// <summary>
+        /// Event gets triggered when a TUIO 1.1 object is removed.
+        /// </summary>
         public event Action<Tuio11Object> OnObjectRemoved;
 
+        /// <summary>
+        /// Event gets triggered when a new TUIO 1.1 blob is recognized.
+        /// </summary>
         public event Action<Tuio11Blob> OnBlobAdded;
+        
+        /// <summary>
+        /// Event gets triggered when a known TUIO 1.1 blob is updated.
+        /// </summary>
         public event Action<Tuio11Blob> OnBlobUpdated;
+        
+        /// <summary>
+        /// Event gets triggered when a TUIO blob 1.1 is removed.
+        /// </summary>
         public event Action<Tuio11Blob> OnBlobRemoved;
 
+        /// <summary>
+        /// Event gets triggered when TuioTime is updated.
+        /// </summary>
         public event Action<TuioTime> OnRefreshed;
         
         /// <summary>
