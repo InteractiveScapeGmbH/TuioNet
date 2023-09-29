@@ -7,10 +7,11 @@ class Program
 {
     private static void Main(string[] args)
     {
-        var tuioClient = new Tuio11Client(TuioConnectionType.UDP);
-        tuioClient.OnCursorAdded += CursorAdded;
-        tuioClient.OnCursorUpdated += UpdateCursor;
-        tuioClient.OnCursorRemoved += RemoveCursor;
+        var tuioClient = new TuioClient(TuioConnectionType.UDP);
+        var processor = new Tuio11Processor(tuioClient);
+        processor.OnCursorAdded += CursorAdded;
+        processor.OnCursorUpdated += UpdateCursor;
+        processor.OnCursorRemoved += RemoveCursor;
         Console.WriteLine("Connect...");
         tuioClient.Connect();
         while (true)
@@ -20,9 +21,9 @@ class Program
             if (pressedKey == ConsoleKey.Q) break;
         }
         Console.WriteLine("Disconnect...");
-        tuioClient.OnCursorAdded -= CursorAdded;
-        tuioClient.OnCursorUpdated -= UpdateCursor;
-        tuioClient.OnCursorRemoved -= RemoveCursor;
+        processor.OnCursorAdded -= CursorAdded;
+        processor.OnCursorUpdated -= UpdateCursor;
+        processor.OnCursorRemoved -= RemoveCursor;
         tuioClient.Disconnect();
     }
 
