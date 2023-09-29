@@ -7,10 +7,21 @@ using TuioNet.Common;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Client
+    public class Tuio11Processor
     {
-        private readonly TuioReceiver _tuioReceiver;
-
+        public Tuio11Processor(TuioClient client)
+        {
+            client.AddMessageListeners(new List<MessageListener>()
+            {
+                new MessageListener("/tuio/2Dobj", On2Dobj),
+                new MessageListener("/tuio/2Dcur", On2Dcur),
+                new MessageListener("/tuio/2Dblb", On2Dblb)
+            });
+            
+            TuioTime.Init();
+            _currentTime = TuioTime.GetCurrentTime();
+        }
+        
         private readonly Dictionary<uint, Tuio11Object> _tuioObjects = new Dictionary<uint, Tuio11Object>();
         private readonly Dictionary<uint, Tuio11Cursor> _tuioCursors = new Dictionary<uint, Tuio11Cursor>();
         private readonly Dictionary<uint, Tuio11Blob> _tuioBlobs = new Dictionary<uint, Tuio11Blob>();
