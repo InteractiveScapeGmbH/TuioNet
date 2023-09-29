@@ -9,7 +9,6 @@ namespace TuioNet.Tuio11
     public class Tuio11Client
     {
         private readonly TuioReceiver _tuioReceiver;
-        private readonly List<ITuio11Listener> _tuioListeners = new List<ITuio11Listener>();
 
         private readonly Dictionary<uint, Tuio11Object> _tuioObjects = new Dictionary<uint, Tuio11Object>();
         private readonly Dictionary<uint, Tuio11Cursor> _tuioCursors = new Dictionary<uint, Tuio11Cursor>();
