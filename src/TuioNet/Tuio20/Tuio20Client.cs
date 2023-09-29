@@ -391,32 +391,20 @@ namespace TuioNet.Tuio20
 
                 foreach (var tuioObject in addedTuioObjects)
                 {
-                    foreach (var tuioListener in _tuioListeners)
-                    {
-                        tuioListener.TuioAdd(tuioObject);
-                    }
+                    OnObjectAdded?.Invoke(tuioObject);
                 }
 
                 foreach (var tuioObject in updatedTuioObjects)
                 {
-                    foreach (var tuioListener in _tuioListeners)
-                    {
-                        tuioListener.TuioUpdate(tuioObject);
-                    }
+                    OnObjectUpdated?.Invoke(tuioObject);
                 }
 
                 foreach (var tuioObject in removedTuioObjects)
                 {
-                    foreach (var tuioListener in _tuioListeners)
-                    {
-                        tuioListener.TuioRemove(tuioObject);
-                    }
+                    OnObjectRemoved?.Invoke(tuioObject);
                 }
-                
-                foreach (var tuioListener in _tuioListeners)
-                {
-                    tuioListener.TuioRefresh(_prevFrameTime);
-                }
+
+                OnRefreshed?.Invoke(_prevFrameTime);
             }
             _prevFrameTime = currentFrameTime;
             _prevFrameId = frameId;
