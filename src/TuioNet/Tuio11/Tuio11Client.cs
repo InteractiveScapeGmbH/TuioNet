@@ -89,21 +89,6 @@ namespace TuioNet.Tuio11
             _tuioReceiver.ProcessMessages();
         }
         
-        public void AddTuioListener(ITuio11Listener tuio11Listener)
-        {
-            _tuioListeners.Add(tuio11Listener);
-        }
-
-        public void RemoveTuioListener(ITuio11Listener tuio11Listener)
-        {
-            _tuioListeners.Remove(tuio11Listener);
-        }
-
-        public void RemoveAllTuioListeners()
-        {
-            _tuioListeners.Clear();
-        }
-        
         /// <summary>
         /// Returns all active TUIO objects.
         /// </summary>
