@@ -373,10 +373,7 @@ namespace TuioNet.Tuio11
                         {
                             var tuioBlob = _tuioBlobs[sId];
                             tuioBlob.Remove();
-                            foreach (var tuioListener in _tuioListeners)
-                            {
-                                tuioListener.RemoveTuioBlob(tuioBlob);
-                            }
+                            OnBlobRemoved?.Invoke(tuioBlob);
 
                             _tuioBlobs.Remove(sId);
                             _freeBlobIds.Add(tuioBlob.BlobId);
@@ -407,10 +404,7 @@ namespace TuioNet.Tuio11
                                     if (tuioBlob.HasChanged(position, angle, size, area, velocity, rotationSpeed, acceleration, rotationAcceleration))
                                     {
                                         tuioBlob.Update(_currentTime, position, angle, size, area, velocity, rotationSpeed, acceleration, rotationAcceleration);
-                                        foreach (var tuioListener in _tuioListeners)
-                                        {
-                                            tuioListener.UpdateTuioBlob(tuioBlob);
-                                        }
+                                        OnBlobUpdated?.Invoke(tuioBlob);
                                     }
                                 }
                                 else
@@ -425,18 +419,12 @@ namespace TuioNet.Tuio11
                                     var tuioBlob = new Tuio11Blob(_currentTime, sessionId, blobId, position, angle, size, area, velocity, rotationSpeed, acceleration,
                                         rotationAcceleration);
                                     _tuioBlobs[sessionId] = tuioBlob;
-                                    foreach (var tuioListener in _tuioListeners)
-                                    {
-                                        tuioListener.AddTuioBlob(tuioBlob);
-                                    }
+                                    OnBlobAdded?.Invoke(tuioBlob);
                                 }
                             }
                         }
 
-                        foreach (var tuioListener in _tuioListeners)
-                        {
-                            tuioListener.Refresh(_currentTime);
-                        }
+                        OnRefreshed?.Invoke(_currentTime);
                     }
                 }
 
