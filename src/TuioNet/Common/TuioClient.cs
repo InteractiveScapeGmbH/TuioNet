@@ -47,7 +47,7 @@ namespace TuioNet.Common
             _tuioReceiver.ProcessMessages();
         }
 
-        public void AddMessageListeners(List<MessageListener> listeners)
+        internal void AddMessageListeners(List<MessageListener> listeners)
         {
             foreach (var listener in listeners)
             {
