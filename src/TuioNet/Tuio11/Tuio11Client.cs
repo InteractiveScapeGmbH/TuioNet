@@ -342,30 +342,28 @@ namespace TuioNet.Tuio11
                             var speedY = (float)setMessage.Values[5];
                             var velocity = new Vector2(speedX, speedY);
                             var acceleration = (float)setMessage.Values[6];
-                            if (aliveSIds.Contains(sessionId))
+                            if (!aliveSIds.Contains(sessionId)) continue;
+                            if (currentSIds.Contains(sessionId))
                             {
-                                if (currentSIds.Contains(sessionId))
+                                var tuioCursor = _tuioCursors[sessionId];
+                                if (tuioCursor.HasChanged(position, velocity, acceleration))
                                 {
-                                    var tuioCursor = _tuioCursors[sessionId];
-                                    if (tuioCursor.HasChanged(position, velocity, acceleration))
-                                    {
-                                        tuioCursor.Update(_currentTime, position, velocity, acceleration);
-                                        OnCursorUpdated?.Invoke(tuioCursor);
-                                    }
+                                    tuioCursor.Update(_currentTime, position, velocity, acceleration);
+                                    OnCursorUpdated?.Invoke(tuioCursor);
                                 }
-                                else
+                            }
+                            else
+                            {
+                                var cursorId = (uint)_tuioCursors.Count;
+                                if (_freeCursorIds.Count > 0)
                                 {
-                                    var cursorId = (uint)_tuioCursors.Count;
-                                    if (_freeCursorIds.Count > 0)
-                                    {
-                                        cursorId = _freeCursorIds[0];
-                                        _freeCursorIds.RemoveAt(0);
-                                    }
+                                    cursorId = _freeCursorIds[0];
+                                    _freeCursorIds.RemoveAt(0);
+                                }
 
-                                    var tuioCursor = new Tuio11Cursor(_currentTime, sessionId, cursorId, position, velocity, acceleration);
-                                    _tuioCursors[sessionId] = tuioCursor;
-                                    OnCursorAdded?.Invoke(tuioCursor);
-                                }
+                                var tuioCursor = new Tuio11Cursor(_currentTime, sessionId, cursorId, position, velocity, acceleration);
+                                _tuioCursors[sessionId] = tuioCursor;
+                                OnCursorAdded?.Invoke(tuioCursor);
                             }
                         }
 
