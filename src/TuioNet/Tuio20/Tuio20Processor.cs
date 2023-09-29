@@ -32,9 +32,8 @@ namespace TuioNet.Tuio20
         
         private uint _bundleFrameId = 0;
         private uint _nextFrameId = 0;
-        
         private uint _prevFrameId = 0;
-        private TuioTime _prevFrameTime;
+        private TuioTime _currentTime;
 
         /// <summary>
         /// Event gets triggered when Tuio 2.0 Object is added.
@@ -232,7 +231,7 @@ namespace TuioNet.Tuio20
             var source = (string)_frmMessage.Values[3];
             TuioTime currentFrameTime = TuioTime.FromOscTime(frameTime);
             if (frameId >= _prevFrameId || frameId == 0 || 
-                (currentFrameTime - _prevFrameTime).GetTotalMilliseconds() >= 1000)
+                (currentFrameTime - _currentTime).GetTotalMilliseconds() >= 1000)
             {
                 SensorDimension = sensorDimension;
                 Source = source;
@@ -251,7 +250,7 @@ namespace TuioNet.Tuio20
                 {
                     foreach (var sId in newSIds)
                     {
-                        var tuioObject = new Tuio20Object(_prevFrameTime, sId);
+                        var tuioObject = new Tuio20Object(_currentTime, sId);
                         _tuioObjects[sId] = tuioObject;
                     }
                     foreach (var sId in removedSIds)
@@ -290,14 +289,14 @@ namespace TuioNet.Tuio20
                             if (tuioObject.Token == null)
                             {
                                 addedTuioObjects.Add(tuioObject);
-                                tuioObject.SetTuioToken(new Tuio20Token(_prevFrameTime, tuioObject, typeUserId, componentId, position, angle, velocity, angleVelocity, acceleration, rotationAcceleration));
+                                tuioObject.SetTuioToken(new Tuio20Token(_currentTime, tuioObject, typeUserId, componentId, position, angle, velocity, angleVelocity, acceleration, rotationAcceleration));
                             }
                             else
                             {
                                 if (!tuioObject.Token.HasChanged(typeUserId, componentId, position, angle, velocity,
                                         angleVelocity, acceleration, rotationAcceleration)) continue;
                                 updatedTuioObjects.Add(tuioObject);
-                                tuioObject.Token.Update(_prevFrameTime, typeUserId, componentId, position, angle, velocity, angleVelocity, acceleration, rotationAcceleration);
+                                tuioObject.Token.Update(_currentTime, typeUserId, componentId, position, angle, velocity, angleVelocity, acceleration, rotationAcceleration);
                             }
                         }
                         else if (otherOscMessage.Address == "/tuio2/ptr")
@@ -328,7 +327,7 @@ namespace TuioNet.Tuio20
                             if (tuioObject.Pointer == null)
                             {
                                 addedTuioObjects.Add(tuioObject);
-                                tuioObject.SetTuioPointer(new Tuio20Pointer(_prevFrameTime, tuioObject, typeId, componentId, position, angle, shear, radius, press, velocity, pressureVelocity, acceleration, pressureAcceleration));
+                                tuioObject.SetTuioPointer(new Tuio20Pointer(_currentTime, tuioObject, typeId, componentId, position, angle, shear, radius, press, velocity, pressureVelocity, acceleration, pressureAcceleration));
                             }
                             else
                             {
@@ -336,7 +335,7 @@ namespace TuioNet.Tuio20
                                         press, velocity, pressureVelocity, acceleration, pressureAcceleration))
                                     continue;
                                 updatedTuioObjects.Add(tuioObject);
-                                tuioObject.Pointer.Update(_prevFrameTime, typeId, componentId, position, angle, shear, radius, press, velocity, pressureVelocity, acceleration, pressureAcceleration);
+                                tuioObject.Pointer.Update(_currentTime, typeId, componentId, position, angle, shear, radius, press, velocity, pressureVelocity, acceleration, pressureAcceleration);
                             }
                         }
                         else if (otherOscMessage.Address == "/tuio2/bnd")
@@ -366,13 +365,13 @@ namespace TuioNet.Tuio20
                             if (tuioObject.Bounds == null)
                             {
                                 addedTuioObjects.Add(tuioObject);
-                                tuioObject.SetTuioBounds(new Tuio20Bounds(_prevFrameTime, tuioObject, position, angle, size, area, velocity, angleVelocity, acceleration, rotationAcceleration));
+                                tuioObject.SetTuioBounds(new Tuio20Bounds(_currentTime, tuioObject, position, angle, size, area, velocity, angleVelocity, acceleration, rotationAcceleration));
                             }
                             else
                             {
                                 if (!tuioObject.Bounds.HasChanged(position, angle, size, area, velocity, angleVelocity, acceleration, rotationAcceleration)) continue;
                                 updatedTuioObjects.Add(tuioObject);
-                                tuioObject.Bounds.Update(_prevFrameTime, position, angle, size, area, velocity, angleVelocity, acceleration, rotationAcceleration);
+                                tuioObject.Bounds.Update(_currentTime, position, angle, size, area, velocity, angleVelocity, acceleration, rotationAcceleration);
                             }
                         }
                         else if (otherOscMessage.Address == "/tuio2/sym")
@@ -388,14 +387,14 @@ namespace TuioNet.Tuio20
                             if (tuioObject.Symbol == null)
                             {
                                 addedTuioObjects.Add(tuioObject);
-                                tuioObject.SetTuioSymbol(new Tuio20Symbol(_prevFrameTime, tuioObject, typeUserId, componentId, 
+                                tuioObject.SetTuioSymbol(new Tuio20Symbol(_currentTime, tuioObject, typeUserId, componentId, 
                                     group, data));
                             }
                             else
                             {
                                 if (!tuioObject.Symbol.HasChanged(typeUserId, componentId, group, data)) continue;
                                 updatedTuioObjects.Add(tuioObject);
-                                tuioObject.Symbol.Update(_prevFrameTime, typeUserId, componentId, group,
+                                tuioObject.Symbol.Update(_currentTime, typeUserId, componentId, group,
                                     data);
                             }
                         }
@@ -417,9 +416,9 @@ namespace TuioNet.Tuio20
                     OnObjectRemoved?.Invoke(tuioObject);
                 }
 
-                OnRefreshed?.Invoke(_prevFrameTime);
+                OnRefreshed?.Invoke(_currentTime);
             }
-            _prevFrameTime = currentFrameTime;
+            _currentTime = currentFrameTime;
             _prevFrameId = frameId;
             _frmMessage = null;
         }
