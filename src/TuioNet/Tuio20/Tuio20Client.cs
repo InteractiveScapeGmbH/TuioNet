@@ -9,7 +9,6 @@ namespace TuioNet.Tuio20
     public class Tuio20Client
     {
         private readonly TuioReceiver _tuioReceiver;
-        private readonly List<ITuio20Listener> _tuioListeners = new List<ITuio20Listener>();
         private readonly Dictionary<uint, Tuio20Object> _tuioObjects = new Dictionary<uint, Tuio20Object>();
 
         private OSCMessage _frmMessage;
