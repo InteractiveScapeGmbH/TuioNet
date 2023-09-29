@@ -188,12 +188,10 @@ namespace TuioNet.Tuio20
         {
             _bundleFrameId = (uint)(int)oscMessage.Values[0];
 
-            if (_bundleFrameId > _nextFrameId)
-            {
-                _otherMessages.Clear();
-                _nextFrameId = _bundleFrameId;
-                _frmMessage = oscMessage;
-            }
+            if (_bundleFrameId <= _nextFrameId) return;
+            _otherMessages.Clear();
+            _nextFrameId = _bundleFrameId;
+            _frmMessage = oscMessage;
         }
         
         private void OnOther(OSCMessage oscMessage)
