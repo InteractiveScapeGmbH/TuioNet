@@ -91,52 +91,6 @@ namespace TuioNet.Tuio11
         public event Action<TuioTime> OnRefreshed;
         
         /// <summary>
-        /// Returns true if the receiver is connected to the TUIO sender.
-        /// </summary>
-        public bool IsConnected => _tuioReceiver.IsConnected;
-
-        /// <summary>
-        /// Create new client for TUIO 1.1.
-        /// </summary>
-        /// <param name="connectionType">Type of the protocol which gets used to connect to the sender.</param>
-        /// <param name="address">The IP address of the TUIO sender.</param>
-        /// <param name="port">The port the client listen to for new TUIO messages. Default UDP port is 3333.</param>
-        /// <param name="isAutoProcess">If set, the receiver processes incoming messages automatically. Otherwise the ProcessMessages() methods needs to be called manually.</param>
-        public Tuio11Client(TuioConnectionType connectionType, string address = "0.0.0.0", int port = 3333, bool isAutoProcess = true)
-        {
-            _tuioReceiver = TuioReceiver.FromConnectionType(connectionType, address, port, isAutoProcess);
-            _tuioReceiver.AddMessageListener("/tuio/2Dobj", On2Dobj);
-            _tuioReceiver.AddMessageListener("/tuio/2Dcur", On2Dcur);
-            _tuioReceiver.AddMessageListener("/tuio/2Dblb", On2Dblb);
-        }
-        
-        /// <summary>
-        /// Establish a connection to the TUIO sender.
-        /// </summary>
-        public void Connect()
-        {
-            TuioTime.Init();
-            _currentTime = TuioTime.GetCurrentTime();
-            _tuioReceiver.Connect();
-        }
-        
-        /// <summary>
-        /// Closes the connection to the TUIO sender.
-        /// </summary>
-        public void Disconnect()
-        {
-            _tuioReceiver.Disconnect();
-        }
-        
-        /// <summary>
-        /// Process the TUIO messages in the message queue and invoke callbacks of the associated message listener. Only needs to be called if isAutoProcess is set to false.
-        /// </summary>
-        public void ProcessMessages()
-        {
-            _tuioReceiver.ProcessMessages();
-        }
-        
-        /// <summary>
         /// Returns all active TUIO objects.
         /// </summary>
         /// <returns>A list of all active TUIO objects.</returns>
