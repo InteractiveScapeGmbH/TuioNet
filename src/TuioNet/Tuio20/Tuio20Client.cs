@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using OSC.NET;
@@ -19,6 +20,11 @@ namespace TuioNet.Tuio20
         
         private uint _prevFrameId = 0;
         private TuioTime _prevFrameTime;
+
+        public event Action<Tuio20Object> OnObjectAdded;
+        public event Action<Tuio20Object> OnObjectUpdated;
+        public event Action<Tuio20Object> OnObjectRemoved;
+        public event Action<TuioTime> OnRefreshed;
 
         /// <summary>
         /// Returns true if the receiver is connected to the TUIO sender.
