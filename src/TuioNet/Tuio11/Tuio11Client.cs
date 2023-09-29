@@ -265,24 +265,21 @@ namespace TuioNet.Tuio11
                             var rotationSpeed = (float)setMessage.Values[8];
                             var acceleration = (float)setMessage.Values[9];
                             var rotationAcceleration = (float)setMessage.Values[10];
-                            if (aliveSIds.Contains(sessionId))
+                            if (!aliveSIds.Contains(sessionId)) continue;
+                            if (currentSIds.Contains(sessionId))
                             {
-                                if (currentSIds.Contains(sessionId))
-                                {
-                                    var tuioObject = _tuioObjects[sessionId];
-                                    tuioObject.UpdateTime(_currentTime);
-                                    if (tuioObject.HasChanged(position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration))
-                                    {
-                                        tuioObject.Update(_currentTime, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
-                                        OnObjectUpdated?.Invoke(tuioObject);
-                                    }
-                                }
-                                else
-                                {
-                                    var tuioObject = new Tuio11Object(_currentTime, sessionId, symbolId, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
-                                    _tuioObjects[sessionId] = tuioObject;
-                                    OnObjectAdded?.Invoke(tuioObject);
-                                }
+                                var tuioObject = _tuioObjects[sessionId];
+                                tuioObject.UpdateTime(_currentTime);
+                                if (!tuioObject.HasChanged(position, angle, velocity, rotationSpeed, acceleration,
+                                        rotationAcceleration)) continue;
+                                tuioObject.Update(_currentTime, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
+                                OnObjectUpdated?.Invoke(tuioObject);
+                            }
+                            else
+                            {
+                                var tuioObject = new Tuio11Object(_currentTime, sessionId, symbolId, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
+                                _tuioObjects[sessionId] = tuioObject;
+                                OnObjectAdded?.Invoke(tuioObject);
                             }
                         }
 
@@ -428,31 +425,28 @@ namespace TuioNet.Tuio11
                             var rotationSpeed = (float)setMessage.Values[10];
                             var acceleration = (float)setMessage.Values[11];
                             var rotationAcceleration = (float)setMessage.Values[12];
-                            if (aliveSIds.Contains(sessionId))
+                            if (!aliveSIds.Contains(sessionId)) continue;
+                            if (currentSIds.Contains(sessionId))
                             {
-                                if (currentSIds.Contains(sessionId))
+                                var tuioBlob = _tuioBlobs[sessionId];
+                                if (!tuioBlob.HasChanged(position, angle, size, area, velocity, rotationSpeed,
+                                        acceleration, rotationAcceleration)) continue;
+                                tuioBlob.Update(_currentTime, position, angle, size, area, velocity, rotationSpeed, acceleration, rotationAcceleration);
+                                OnBlobUpdated?.Invoke(tuioBlob);
+                            }
+                            else
+                            {
+                                var blobId = (uint)_tuioBlobs.Count;
+                                if (_freeBlobIds.Count > 0)
                                 {
-                                    var tuioBlob = _tuioBlobs[sessionId];
-                                    if (tuioBlob.HasChanged(position, angle, size, area, velocity, rotationSpeed, acceleration, rotationAcceleration))
-                                    {
-                                        tuioBlob.Update(_currentTime, position, angle, size, area, velocity, rotationSpeed, acceleration, rotationAcceleration);
-                                        OnBlobUpdated?.Invoke(tuioBlob);
-                                    }
+                                    blobId = _freeBlobIds[0];
+                                    _freeBlobIds.RemoveAt(0);
                                 }
-                                else
-                                {
-                                    var blobId = (uint)_tuioBlobs.Count;
-                                    if (_freeBlobIds.Count > 0)
-                                    {
-                                        blobId = _freeBlobIds[0];
-                                        _freeBlobIds.RemoveAt(0);
-                                    }
 
-                                    var tuioBlob = new Tuio11Blob(_currentTime, sessionId, blobId, position, angle, size, area, velocity, rotationSpeed, acceleration,
-                                        rotationAcceleration);
-                                    _tuioBlobs[sessionId] = tuioBlob;
-                                    OnBlobAdded?.Invoke(tuioBlob);
-                                }
+                                var tuioBlob = new Tuio11Blob(_currentTime, sessionId, blobId, position, angle, size, area, velocity, rotationSpeed, acceleration,
+                                    rotationAcceleration);
+                                _tuioBlobs[sessionId] = tuioBlob;
+                                OnBlobAdded?.Invoke(tuioBlob);
                             }
                         }
 
