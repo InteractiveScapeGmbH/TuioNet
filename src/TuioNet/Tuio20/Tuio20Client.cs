@@ -21,9 +21,24 @@ namespace TuioNet.Tuio20
         private uint _prevFrameId = 0;
         private TuioTime _prevFrameTime;
 
+        /// <summary>
+        /// Event gets triggered when Tuio 2.0 Object is added.
+        /// </summary>
         public event Action<Tuio20Object> OnObjectAdded;
+        
+        /// <summary>
+        /// Event gets triggered when Tuio 2.0 Object is updated.
+        /// </summary>
         public event Action<Tuio20Object> OnObjectUpdated;
+        
+        /// <summary>
+        /// Event gets triggered when Tuio 2.0 Object is removed.
+        /// </summary>
         public event Action<Tuio20Object> OnObjectRemoved;
+        
+        /// <summary>
+        /// Event gets triggered when TuioTime is updated.
+        /// </summary>
         public event Action<TuioTime> OnRefreshed;
 
         /// <summary>
