@@ -210,10 +210,7 @@ namespace TuioNet.Tuio11
                         {
                             var tuioObject = _tuioObjects[sId];
                             tuioObject.Remove();
-                            foreach (var tuioListener in _tuioListeners)
-                            {
-                                tuioListener.RemoveTuioObject(tuioObject);
-                            }
+                            OnObjectRemoved?.Invoke(tuioObject);
 
                             _tuioObjects.Remove(sId);
                         }
@@ -241,28 +238,19 @@ namespace TuioNet.Tuio11
                                     if (tuioObject.HasChanged(position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration))
                                     {
                                         tuioObject.Update(_currentTime, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
-                                        foreach (var tuioListener in _tuioListeners)
-                                        {
-                                            tuioListener.UpdateTuioObject(tuioObject);
-                                        }
+                                        OnObjectUpdated?.Invoke(tuioObject);
                                     }
                                 }
                                 else
                                 {
                                     var tuioObject = new Tuio11Object(_currentTime, sessionId, symbolId, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
                                     _tuioObjects[sessionId] = tuioObject;
-                                    foreach (var tuioListener in _tuioListeners)
-                                    {
-                                        tuioListener.AddTuioObject(tuioObject);
-                                    }
+                                    OnObjectAdded?.Invoke(tuioObject);
                                 }
                             }
                         }
 
-                        foreach (var tuioListener in _tuioListeners)
-                        {
-                            tuioListener.Refresh(_currentTime);
-                        }
+                        OnRefreshed?.Invoke(_currentTime);
                     }
                 }
 
@@ -302,10 +290,7 @@ namespace TuioNet.Tuio11
                         {
                             var tuioCursor = _tuioCursors[sId];
                             tuioCursor.Remove();
-                            foreach (var tuioListener in _tuioListeners)
-                            {
-                                tuioListener.RemoveTuioCursor(tuioCursor);
-                            }
+                            OnCursorRemoved?.Invoke(tuioCursor);
 
                             _tuioCursors.Remove(sId);
                             _freeCursorIds.Add(tuioCursor.CursorId);
@@ -329,10 +314,7 @@ namespace TuioNet.Tuio11
                                     if (tuioCursor.HasChanged(position, velocity, acceleration))
                                     {
                                         tuioCursor.Update(_currentTime, position, velocity, acceleration);
-                                        foreach (var tuioListener in _tuioListeners)
-                                        {
-                                            tuioListener.UpdateTuioCursor(tuioCursor);
-                                        }
+                                        OnCursorUpdated?.Invoke(tuioCursor);
                                     }
                                 }
                                 else
@@ -346,18 +328,12 @@ namespace TuioNet.Tuio11
 
                                     var tuioCursor = new Tuio11Cursor(_currentTime, sessionId, cursorId, position, velocity, acceleration);
                                     _tuioCursors[sessionId] = tuioCursor;
-                                    foreach (var tuioListener in _tuioListeners)
-                                    {
-                                        tuioListener.AddTuioCursor(tuioCursor);
-                                    }
+                                    OnCursorAdded?.Invoke(tuioCursor);
                                 }
                             }
                         }
 
-                        foreach (var tuioListener in _tuioListeners)
-                        {
-                            tuioListener.Refresh(_currentTime);
-                        }
+                        OnRefreshed?.Invoke(_currentTime);
                     }
                 }
 
