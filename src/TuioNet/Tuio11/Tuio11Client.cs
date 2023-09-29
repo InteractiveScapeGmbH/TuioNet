@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using OSC.NET;
@@ -27,6 +28,20 @@ namespace TuioNet.Tuio11
 
         private uint _currentFrame = 0;
         private TuioTime _currentTime;
+
+        public event Action<Tuio11Cursor> OnCursorAdded;
+        public event Action<Tuio11Cursor> OnCursorUpdated;
+        public event Action<Tuio11Cursor> OnCursorRemoved;
+
+        public event Action<Tuio11Object> OnObjectAdded;
+        public event Action<Tuio11Object> OnObjectUpdated;
+        public event Action<Tuio11Object> OnObjectRemoved;
+
+        public event Action<Tuio11Blob> OnBlobAdded;
+        public event Action<Tuio11Blob> OnBlobUpdated;
+        public event Action<Tuio11Blob> OnBlobRemoved;
+
+        public event Action<TuioTime> OnRefreshed;
         
         /// <summary>
         /// Returns true if the receiver is connected to the TUIO sender.
