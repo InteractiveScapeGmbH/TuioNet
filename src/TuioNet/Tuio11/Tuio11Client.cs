@@ -182,8 +182,8 @@ namespace TuioNet.Tuio11
             return _tuioBlobs[sessionId];
         }
 
-        private const int FRAME_TOLERANCE = 100;
-        private const int TIME_TOLERANCE = 100;
+        private const int FrameTolerance = 100;
+        private const int TimeTolerance = 100;
         private bool UpdateFrame(uint frameId)
         {
             var currentTime = TuioTime.GetCurrentTime();
@@ -199,7 +199,7 @@ namespace TuioNet.Tuio11
                 
                 // if the connection to the tuio sender gets lost after more then FRAME_TOLERANCE frames or the frameId
                 // integer flows over the second condition holds true and the current frame is set to the incoming one.
-                if (frameId >= _currentFrame || _currentFrame - frameId > FRAME_TOLERANCE)
+                if (frameId >= _currentFrame || _currentFrame - frameId > FrameTolerance)
                 {
                     _currentFrame = frameId;
                 }
@@ -208,7 +208,7 @@ namespace TuioNet.Tuio11
                     return false;
                 }
             }
-            else if ((currentTime - _currentTime).GetTotalMilliseconds() > TIME_TOLERANCE)
+            else if ((currentTime - _currentTime).GetTotalMilliseconds() > TimeTolerance)
             {
                 _currentTime = currentTime;
             }
