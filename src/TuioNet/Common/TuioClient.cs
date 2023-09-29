@@ -11,26 +11,22 @@
         /// <param name="isAutoProcess">If set, the receiver processes incoming messages automatically. Otherwise the ProcessMessages() methods needs to be called manually.</param>
         public TuioClientBase(TuioConnectionType connectionType, string address = "0.0.0.0", int port = 3333, bool isAutoProcess = true)
         {
-            TuioReceiver = TuioReceiver.FromConnectionType(connectionType, address, port, isAutoProcess);
-            AddMessageListeners();
+            _tuioReceiver = TuioReceiver.FromConnectionType(connectionType, address, port, isAutoProcess);
         }
 
-        protected readonly TuioReceiver TuioReceiver;
-        protected TuioTime CurrentTime;
+        private readonly TuioReceiver _tuioReceiver;
 
         /// <summary>
         /// Returns true if the receiver is connected to the TUIO sender.
         /// </summary>
-        public bool IsConnected => TuioReceiver.IsConnected;
+        public bool IsConnected => _tuioReceiver.IsConnected;
         
         /// <summary>
         /// Establish a connection to the TUIO sender.
         /// </summary>
         public void Connect()
         {
-            TuioTime.Init();
-            CurrentTime = TuioTime.GetCurrentTime();
-            TuioReceiver.Connect();
+            _tuioReceiver.Connect();
         }
 
         /// <summary>
@@ -38,7 +34,7 @@
         /// </summary>
         public void Disconnect()
         {
-            TuioReceiver.Disconnect();
+            _tuioReceiver.Disconnect();
         }
 
         /// <summary>
@@ -46,7 +42,7 @@
         /// </summary>
         public void ProcessMessages()
         {
-            TuioReceiver.ProcessMessages();
+            _tuioReceiver.ProcessMessages();
         }
 
         protected abstract void AddMessageListeners();
