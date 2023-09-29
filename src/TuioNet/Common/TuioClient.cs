@@ -1,4 +1,6 @@
-﻿namespace TuioNet.Common
+﻿using System.Collections.Generic;
+
+namespace TuioNet.Common
 {
     public abstract class TuioClientBase
     {
@@ -45,6 +47,12 @@
             _tuioReceiver.ProcessMessages();
         }
 
-        protected abstract void AddMessageListeners();
+        public void AddMessageListeners(List<MessageListener> listeners)
+        {
+            foreach (var listener in listeners)
+            {
+                _tuioReceiver.AddMessageListener(listener.MessageProfile, listener.Callback);
+            }
+        }
     }
 }
