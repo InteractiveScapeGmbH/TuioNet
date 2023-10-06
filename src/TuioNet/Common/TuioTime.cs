@@ -177,5 +177,14 @@ namespace TuioNet.Common
         {
             return GetSystemTime() - StartTime;
         }
+
+        /// <summary>
+        /// Returns a string representation of Tuio Time.
+        /// </summary>
+        /// <returns>TuioTime in ss:000000</returns>
+        public override string ToString()
+        {
+            return $"{Seconds}:{Microseconds:D6}";
+        }
     }
 }
