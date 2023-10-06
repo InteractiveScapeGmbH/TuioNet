@@ -151,6 +151,15 @@ namespace TuioNet.Common
         }
 
         /// <summary>
+        /// Returns the total TuioTime in microseconds.
+        /// </summary>
+        /// <returns>The total TuioTime in microseconds.</returns>
+        public long GetTotalMicroseconds()
+        {
+            return Seconds * MicrosecondsPerSecond + Microseconds;
+        }
+
+        /// <summary>
         /// Globally resets the Tuio session time.
         /// </summary>
         public static void Init()
