@@ -50,7 +50,7 @@ namespace TuioNet.Tuio11
             var isCalculateRotation = angle != Angle && rotationSpeed == 0;
             if(isCalculateRotation)
             {
-                var dt = (currentTime - lastPoint.StartTime).GetTotalMilliseconds() / 1000.0f;
+                var dt = (currentTime - lastPoint.StartTime).GetTotalSeconds();
                 if (dt > 0)
                 {
                     var lastAngle = Angle;
