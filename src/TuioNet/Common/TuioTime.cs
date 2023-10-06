@@ -147,7 +147,7 @@ namespace TuioNet.Common
         /// <returns>The total TuioTime in milliseconds.</returns>
         public long GetTotalMilliseconds()
         {
-            return 1000 * (long) Seconds + Microseconds / 1000;
+            return 1000 * Seconds + Microseconds / 1000;
         }
 
         /// <summary>
