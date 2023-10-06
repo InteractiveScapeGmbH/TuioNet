@@ -11,11 +11,6 @@ namespace TuioNet.Tuio11
         private const int MAX_PATH_LENGTH = 128;
 
         /// <summary>
-        /// Time since creation as TuioTime.
-        /// </summary>
-        public TuioTime CurrentTime { get; protected set; }
-        
-        /// <summary>
         /// The Session ID, a temporary unique object ID.
         /// </summary>
         public uint SessionId { get; }

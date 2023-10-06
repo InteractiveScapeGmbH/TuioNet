@@ -14,6 +14,11 @@ namespace TuioNet.Tuio11
         /// The normalized position of the TuioPoint. [0..1]
         /// </summary>
         public Vector2 Position { get; protected set; }
+        
+        /// <summary>
+        /// Time since creation as TuioTime.
+        /// </summary>
+        public TuioTime CurrentTime { get; protected set; }
 
         public Tuio11Point(TuioTime startTime, Vector2 position)
         {
