@@ -72,7 +72,7 @@ namespace TuioNet.Tuio11
             Position = position;
             if (isCalculateSpeeds)
             {
-                var dt = (currentTime - lastPoint.StartTime).GetTotalMilliseconds() / 1000.0f;
+                var dt = (currentTime - lastPoint.CurrentTime).GetTotalMilliseconds() / 1000.0f;
                 var deltaPosition = Position - lastPoint.Position;
                 var distance = deltaPosition.Length();
                 var lastMotionSpeed = Speed;
