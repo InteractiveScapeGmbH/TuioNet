@@ -23,6 +23,7 @@ namespace TuioNet.Tuio11
         public Tuio11Point(TuioTime startTime, Vector2 position)
         {
             StartTime = startTime;
+            CurrentTime = startTime;
             Position = position;
         }
     }
