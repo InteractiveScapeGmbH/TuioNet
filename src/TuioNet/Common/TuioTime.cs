@@ -131,6 +131,15 @@ namespace TuioNet.Common
         {
             return !(timeA == timeB);
         }
+
+        /// <summary>
+        /// Returns the total TuioTime in seconds with fractional part as microseconds.
+        /// </summary>
+        /// <returns>The total TuioTime in seconds.</returns>
+        public float GetTotalSeconds()
+        {
+            return Seconds + (float)Microseconds / MicrosecondsPerSecond;
+        }
         
         /// <summary>
         /// Returns the total TuioTime in milliseconds.
