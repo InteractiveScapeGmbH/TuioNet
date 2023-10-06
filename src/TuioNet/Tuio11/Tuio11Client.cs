@@ -177,6 +177,7 @@ namespace TuioNet.Tuio11
             {
                 _currentTime = currentTime;
             }
+            
 
             return true;
         }
