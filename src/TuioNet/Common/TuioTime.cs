@@ -169,8 +169,8 @@ namespace TuioNet.Common
 
         public static TuioTime GetSystemTime()
         {
-            OscTimeTag oscTimeTag = new OscTimeTag(DateTime.Now);
-            return FromOscTime(oscTimeTag);
+            var microseconds = DateTime.Now.Ticks / 10;
+            return new TuioTime(microseconds / 1000_000, microseconds % 1000_000);
         }
 
         public static TuioTime GetCurrentTime()
