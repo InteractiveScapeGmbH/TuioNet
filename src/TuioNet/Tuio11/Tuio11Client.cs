@@ -327,6 +327,8 @@ namespace TuioNet.Tuio11
                                 if (currentSIds.Contains(sessionId))
                                 {
                                     var tuioCursor = _tuioCursors[sessionId];
+                                    tuioCursor.UpdateTime(_currentTime);
+
                                     if (tuioCursor.HasChanged(position, velocity, acceleration))
                                     {
                                         tuioCursor.Update(_currentTime, position, velocity, acceleration);
