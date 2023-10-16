@@ -30,7 +30,7 @@ namespace TuioNet.Common
 
         public static TuioTime FromOscTime(OscTimeTag oscTimeTag)
         {
-            return new TuioTime(oscTimeTag.SecondsSinceEpoch, oscTimeTag.FractionalSecond);
+            return new TuioTime(oscTimeTag.SecondsSinceEpoch, oscTimeTag.Microseconds);
         }
 
         /// <summary>
