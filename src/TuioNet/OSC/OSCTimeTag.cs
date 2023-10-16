@@ -65,6 +65,8 @@ namespace OSC.NET
             }
         }
 
+        public long Microseconds => ((mTimeStamp - Epoch).Ticks / 10) % 1000_000;
+
         /// <summary>
         /// Gets the Osc Time Tag as a DateTime value.
         /// </summary>
