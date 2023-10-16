@@ -94,12 +94,10 @@ namespace TuioNet.Common
                 while (_queuedMessages.Count > 0)
                 {
                     var oscMessage = _queuedMessages.Dequeue();
-                    if (_messageListeners.TryGetValue(oscMessage.Address, out var messageListenersForAddress))
+                    if (!_messageListeners.TryGetValue(oscMessage.Address, out var messageListenersForAddress)) continue;
+                    foreach (var messageListener in messageListenersForAddress)
                     {
-                        foreach (var messageListener in messageListenersForAddress)
-                        {
-                            messageListener.Invoke(oscMessage);
-                        }
+                        messageListener.Invoke(oscMessage);
                     }
                 }
             }
