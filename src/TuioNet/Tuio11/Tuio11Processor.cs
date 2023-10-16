@@ -86,7 +86,8 @@ namespace TuioNet.Tuio11
         public event Action<Tuio11Blob> OnBlobRemoved;
 
         /// <summary>
-        /// Event gets triggered when TuioTime is updated.
+        /// This event gets triggered at the end of the current frame after all tuio messages were processed and it
+        /// provides the current TuioTime. This event is useful to handle all updates contained in one TUIO frame together.
         /// </summary>
         public event Action<TuioTime> OnRefreshed;
         
