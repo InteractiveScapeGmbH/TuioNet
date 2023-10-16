@@ -34,36 +34,36 @@ Tuio processors are responsible for parsing tuio messages. There are two types o
 Tuio11Processor.cs:
 ```csharp
 public Tuio11Processor(TuioClient client)
-        {
-            client.AddMessageListeners(new List<MessageListener>()
-            {
-                new MessageListener("/tuio/2Dobj", On2Dobj),
-                new MessageListener("/tuio/2Dcur", On2Dcur),
-                new MessageListener("/tuio/2Dblb", On2Dblb)
-            });
-            
-            TuioTime.Init();
-            _currentTime = TuioTime.GetCurrentTime();
-        }
+{
+    client.AddMessageListeners(new List<MessageListener>()
+    {
+        new MessageListener("/tuio/2Dobj", On2Dobj),
+        new MessageListener("/tuio/2Dcur", On2Dcur),
+        new MessageListener("/tuio/2Dblb", On2Dblb)
+    });
+    
+    TuioTime.Init();
+    _currentTime = TuioTime.GetCurrentTime();
+}
 ```
 
 Tuio20Processor.cs
 ```csharp
 public Tuio20Processor(TuioClient client)
-        {
-            client.AddMessageListeners(new List<MessageListener>()
-            {
-                new MessageListener("/tuio2/frm", OnFrm),
-                new MessageListener("/tuio2/alv", OnAlv),
-                new MessageListener("/tuio2/tok", OnOther),
-                new MessageListener("/tuio2/ptr", OnOther),
-                new MessageListener("/tuio2/bnd", OnOther),
-                new MessageListener("/tuio2/sym", OnOther),
-            });
-            
-            TuioTime.Init();
-            _currentTime = TuioTime.GetCurrentTime();
-        }
+{
+    client.AddMessageListeners(new List<MessageListener>()
+    {
+        new MessageListener("/tuio2/frm", OnFrm),
+        new MessageListener("/tuio2/alv", OnAlv),
+        new MessageListener("/tuio2/tok", OnOther),
+        new MessageListener("/tuio2/ptr", OnOther),
+        new MessageListener("/tuio2/bnd", OnOther),
+        new MessageListener("/tuio2/sym", OnOther),
+    });
+    
+    TuioTime.Init();
+    _currentTime = TuioTime.GetCurrentTime();
+}
 ```
 
 #### Add/Remove Message Listeners
