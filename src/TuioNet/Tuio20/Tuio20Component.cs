@@ -10,10 +10,6 @@ namespace TuioNet.Tuio20
     {
         private static int MAX_PATH_LENGTH = 128; 
         
-        /// <summary>
-        /// Time since creation as TuioTime.
-        /// </summary>
-        public TuioTime CurrentTime { get; protected set; }
         public Tuio20Object Container { get; protected set; }
         
         /// <summary>
@@ -97,6 +93,18 @@ namespace TuioNet.Tuio20
             RotationSpeed = rotationSpeed;
             Acceleration = acceleration;
             RotationAcceleration = rotationAcceleration;
+            var lastPoint = PrevPoints.Dequeue();
+            var dt = (currentTime - lastPoint.CurrentTime).GetTotalSeconds();
+            var deltaPosition = Position - lastPoint.Position;
+            var distance = deltaPosition.Length();
+            var lastMotionSpeed = Speed;
+            if(dt > 0)
+            {
+                Velocity = deltaPosition / dt;
+                Speed = distance / dt;
+                Acceleration = (Speed - lastMotionSpeed) / dt;
+            }
+            
             PrevPoints.Enqueue(new Tuio20Point(CurrentTime, Position));
             if (PrevPoints.Count > MAX_PATH_LENGTH)
             {

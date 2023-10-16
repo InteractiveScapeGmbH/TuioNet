@@ -11,6 +11,11 @@ namespace TuioNet.Tuio20
         public TuioTime StartTime { get; }
         
         /// <summary>
+        /// Time since creation as TuioTime.
+        /// </summary>
+        public TuioTime CurrentTime { get; protected set; }
+        
+        /// <summary>
         /// The normalized position of the TuioPoint. [0..1]
         /// </summary>
         public Vector2 Position { get; protected set; }
@@ -18,6 +23,7 @@ namespace TuioNet.Tuio20
         public Tuio20Point(TuioTime startTime, Vector2 position)
         {
             StartTime = startTime;
+            CurrentTime = startTime;
             Position = position;
         }
     }
