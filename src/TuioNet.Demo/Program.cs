@@ -25,35 +25,6 @@ class Program
 
 public class Listener11 : ITuio11Listener
 {
-    public void TuioAdd(Tuio20Object tuio20Object)
-    {
-        if (tuio20Object.ContainsTuioPointer())
-        {
-            Console.WriteLine($"Cursor {tuio20Object.Pointer.SessionId} -> Position: {tuio20Object.Pointer.Position}");
-        }
-    }
-
-    public void TuioUpdate(Tuio20Object tuio20Object)
-    {
-        if (tuio20Object.ContainsTuioPointer())
-        {
-            Console.WriteLine($"Cursor {tuio20Object.Pointer.SessionId} -> Position: {tuio20Object.Pointer.Position}, Velocity: {tuio20Object.Pointer.Velocity}, Speed: {tuio20Object.Pointer.Speed}, Time: {tuio20Object.Pointer.CurrentTime}");
-        }
-    }
-
-    public void TuioRemove(Tuio20Object tuio20Object)
-    {
-        if (tuio20Object.ContainsTuioPointer())
-        {
-            Console.WriteLine($"Cursor {tuio20Object.Pointer.SessionId} -> Position: {tuio20Object.Pointer.Position}");
-        }
-    }
-
-    public void TuioRefresh(TuioTime tuioTime)
-    {
-        // throw new NotImplementedException();
-    }
-
     public void AddTuioObject(Tuio11Object tuio11Object)
     {
         Console.WriteLine($"Object {tuio11Object.SymbolId} added.");
