@@ -47,16 +47,6 @@ namespace TuioNet.Tuio20
         /// </summary>
         public TuioState State { get; protected set; }
 
-        /// <summary>
-        /// Is called every time the component gets updated.
-        /// </summary>
-        public event Action OnUpdate;
-        
-        /// <summary>
-        /// Is called once when the state changes to removed.
-        /// </summary>
-        public event Action OnRemove;
-        
         protected readonly Queue<Tuio20Point> PrevPoints = new Queue<Tuio20Point>();
 
         public Tuio20Component(TuioTime startTime, Tuio20Object container, Vector2 position, float angle,
@@ -127,14 +117,12 @@ namespace TuioNet.Tuio20
                 State = TuioState.Stopped;
             }
             Container.Update(currentTime);
-            OnUpdate?.Invoke();
         }
         
         internal void Remove(TuioTime currentTime)
         {
             CurrentTime = currentTime;
             State = TuioState.Removed;
-            OnRemove?.Invoke();
         }
     }
 }

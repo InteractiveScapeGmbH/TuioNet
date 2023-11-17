@@ -35,16 +35,6 @@ namespace TuioNet.Tuio11
         /// </summary>
         public TuioState State { get; protected set; }
         
-        /// <summary>
-        /// Is called every time the container gets updated.
-        /// </summary>
-        public event Action OnUpdate;
-        
-        /// <summary>
-        /// Is called once when the state changes to removed.
-        /// </summary>
-        public event Action OnRemove;
-        
         protected readonly List<Tuio11Point> PrevPoints = new List<Tuio11Point>();
 
         public Tuio11Container(TuioTime startTime, uint sessionId, Vector2 position, Vector2 velocity, float acceleration) : base(startTime, position)
@@ -108,14 +98,11 @@ namespace TuioNet.Tuio11
             {
                 State = TuioState.Stopped;
             }
-            
-            OnUpdate?.Invoke();
         }
 
         internal void Remove()
         {
             State = TuioState.Removed;
-            OnRemove?.Invoke();
         }
     }
 }
