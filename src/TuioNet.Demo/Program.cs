@@ -9,9 +9,9 @@ class Program
     {
         var tuioClient = new TuioClient(TuioConnectionType.UDP);
         var processor = new Tuio11Processor(tuioClient);
-        processor.OnCursorAdded += CursorAdded;
-        processor.OnCursorUpdated += UpdateCursor;
-        processor.OnCursorRemoved += RemoveCursor;
+        processor.OnObjectAdded += AddObject;
+        processor.OnObjectUpdated += UpdateObject;
+        processor.OnObjectRemoved += RemoveObject;
         Console.WriteLine("Connect...");
         tuioClient.Connect();
         while (true)
@@ -21,25 +21,25 @@ class Program
             if (pressedKey == ConsoleKey.Q) break;
         }
         Console.WriteLine("Disconnect...");
-        processor.OnCursorAdded -= CursorAdded;
-        processor.OnCursorUpdated -= UpdateCursor;
-        processor.OnCursorRemoved -= RemoveCursor;
+        processor.OnObjectAdded -= AddObject;
+        processor.OnObjectUpdated -= UpdateObject;
+        processor.OnObjectRemoved -= RemoveObject;
         tuioClient.Disconnect();
     }
 
-    private static void CursorAdded(Tuio11Cursor cursor)
+    private static void AddObject(Tuio11Object tuioObject)
     {
-        Console.WriteLine($"New cursor added -> ID: {cursor.CursorId}");
+        Console.WriteLine($"New cursor added -> ID: {tuioObject.SymbolId}, Position: {tuioObject.Position}");
     }
 
-    private static void UpdateCursor(Tuio11Cursor cursor)
+    private static void UpdateObject(Tuio11Object tuioObject)
     {
-        Console.WriteLine($"Cursor {cursor.CursorId} -> Position: {cursor.Position}");
+        Console.WriteLine($"Cursor {tuioObject.SymbolId} -> Position: {tuioObject.Position}");
     }
 
-    private static void RemoveCursor(Tuio11Cursor cursor)
+    private static void RemoveObject(Tuio11Object tuioObject)
     {
-        Console.WriteLine($"Cursor {cursor.CursorId} removed");
+        Console.WriteLine($"Cursor {tuioObject.SymbolId} removed");
     }
 }
 
