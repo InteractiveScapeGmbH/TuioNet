@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Numerics;
+using OSC.NET;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Blob : Tuio11Container
+    public class Tuio11Blob : Tuio11Container, ITuio11Entity
     {
         /// <summary>
         /// The individual blob ID that is assigned to each TuioBlob.
@@ -87,6 +88,28 @@ namespace TuioNet.Tuio11
 
             Size = size;
             Area = area;
+        }
+
+        public OSCMessage SetMessage
+        {
+            get
+            {
+                var message = new OSCMessage("/tuio/2Dblb");
+                message.Append("set");
+                message.Append(SessionId);
+                message.Append(Position.X);
+                message.Append(Position.Y);
+                message.Append(Angle);
+                message.Append(Size.X);
+                message.Append(Size.Y);
+                message.Append(Area);
+                message.Append(Velocity.X);
+                message.Append(Velocity.Y);
+                message.Append(RotationSpeed);
+                message.Append(Acceleration);
+                message.Append(RotationAcceleration);
+                return message;
+            }
         }
     }
 }

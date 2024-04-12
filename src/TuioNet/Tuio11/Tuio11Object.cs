@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Numerics;
+using OSC.NET;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Object : Tuio11Container
+    public class Tuio11Object : Tuio11Container, ITuio11Entity
     {
         /// <summary>
         /// The individual symbol ID which is assigned to each TuioObject.
@@ -78,6 +79,26 @@ namespace TuioNet.Tuio11
             if (State != TuioState.Stopped && RotationAcceleration != 0)
             {
                 State = TuioState.Rotating;
+            }
+        }
+
+        public OSCMessage SetMessage
+        {
+            get
+            {
+                var message = new OSCMessage("/tuio/2Dobj");
+                message.Append("set");
+                message.Append(SessionId);
+                message.Append(SymbolId);
+                message.Append(Position.X);
+                message.Append(Position.Y);
+                message.Append(Angle);
+                message.Append(Velocity.X);
+                message.Append(Velocity.Y);
+                message.Append(RotationSpeed);
+                message.Append(Acceleration);
+                message.Append(RotationAcceleration);
+                return message;
             }
         }
     }

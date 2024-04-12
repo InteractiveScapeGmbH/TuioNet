@@ -1,9 +1,10 @@
 ﻿using System.Numerics;
+using OSC.NET;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Cursor : Tuio11Container
+    public class Tuio11Cursor : Tuio11Container, ITuio11Entity
     {
         /// <summary>
         /// Individual cursor ID assigned to each TuioCursor.
@@ -24,6 +25,22 @@ namespace TuioNet.Tuio11
         {
             var isCalculateSpeeds = (position.X != ((Tuio11Point)this).Position.X && velocity.X == 0) || (position.Y != ((Tuio11Point)this).Position.Y && velocity.Y == 0);
             UpdateContainer(currentTime, position, velocity, acceleration, isCalculateSpeeds);
+        }
+
+        public OSCMessage SetMessage
+        {
+            get
+            {
+                var message = new OSCMessage("/tuio/2Dcur");
+                message.Append("set");
+                message.Append(SessionId);
+                message.Append(Position.X);
+                message.Append(Position.Y);
+                message.Append(Velocity.X);
+                message.Append(Velocity.Y);
+                message.Append(Acceleration);
+                return message;
+            }
         }
     }
 }
