@@ -147,6 +147,10 @@ namespace OSC.NET
 			{
 				AppendTag(INTEGER);
 			}
+			else if (value is uint)
+			{
+				AppendTag(LONG);
+			}
 			else if(value is long)
 			{
 				AppendTag(LONG);
