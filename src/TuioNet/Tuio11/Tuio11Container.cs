@@ -47,6 +47,7 @@ namespace TuioNet.Tuio11
             CurrentTime = startTime;
             SessionId = sessionId;
             Velocity = velocity;
+            Acceleration = acceleration;
             Speed = Velocity.Length();
             PrevPoints.Add(new Tuio11Point(CurrentTime, position));
         }
