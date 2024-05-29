@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
+using Stride.Core.Mathematics;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20
