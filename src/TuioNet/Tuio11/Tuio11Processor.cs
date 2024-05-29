@@ -43,53 +43,53 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// Event gets triggered when a new TUIO 1.1 cursor is recognized.
         /// </summary>
-        public event Action<Tuio11Cursor> OnCursorAdded;
+        public event EventHandler<Tuio11Cursor> OnCursorAdded;
         
         /// <summary>
         /// Event gets triggered when a known TUIO 1.1 cursor is updated.
         /// </summary>
-        public event Action<Tuio11Cursor> OnCursorUpdated;
+        public event EventHandler<Tuio11Cursor> OnCursorUpdated;
         
         /// <summary>
         /// Event gets triggered when a TUIO 1.1 cursor is removed.
         /// </summary>
-        public event Action<Tuio11Cursor> OnCursorRemoved;
+        public event EventHandler<Tuio11Cursor> OnCursorRemoved;
 
         /// <summary>
         /// Event gets triggered when a new TUIO 1.1 object is recognized.
         /// </summary>
-        public event Action<Tuio11Object> OnObjectAdded;
+        public event EventHandler<Tuio11Object> OnObjectAdded;
         
         /// <summary>
         /// Event gets triggered when a known TUIO 1.1 object is updated.
         /// </summary>
-        public event Action<Tuio11Object> OnObjectUpdated;
+        public event EventHandler<Tuio11Object> OnObjectUpdated;
         
         /// <summary>
         /// Event gets triggered when a TUIO 1.1 object is removed.
         /// </summary>
-        public event Action<Tuio11Object> OnObjectRemoved;
+        public event EventHandler<Tuio11Object> OnObjectRemoved;
 
         /// <summary>
         /// Event gets triggered when a new TUIO 1.1 blob is recognized.
         /// </summary>
-        public event Action<Tuio11Blob> OnBlobAdded;
+        public event EventHandler<Tuio11Blob> OnBlobAdded;
         
         /// <summary>
         /// Event gets triggered when a known TUIO 1.1 blob is updated.
         /// </summary>
-        public event Action<Tuio11Blob> OnBlobUpdated;
+        public event EventHandler<Tuio11Blob> OnBlobUpdated;
         
         /// <summary>
         /// Event gets triggered when a TUIO blob 1.1 is removed.
         /// </summary>
-        public event Action<Tuio11Blob> OnBlobRemoved;
+        public event EventHandler<Tuio11Blob> OnBlobRemoved;
 
         /// <summary>
         /// This event gets triggered at the end of the current frame after all tuio messages were processed and it
         /// provides the current TuioTime. This event is useful to handle all updates contained in one TUIO frame together.
         /// </summary>
-        public event Action<TuioTime> OnRefreshed;
+        public event EventHandler<TuioTime> OnRefreshed;
         
         /// <summary>
         /// Returns all active TUIO objects.
@@ -212,7 +212,7 @@ namespace TuioNet.Tuio11
                         {
                             var tuioObject = _tuioObjects[sId];
                             tuioObject.Remove();
-                            OnObjectRemoved?.Invoke(tuioObject);
+                            OnObjectRemoved?.Invoke(this, tuioObject);
 
                             _tuioObjects.Remove(sId);
                         }
@@ -239,17 +239,17 @@ namespace TuioNet.Tuio11
                                 if (!tuioObject.HasChanged(position, angle, velocity, rotationSpeed, acceleration,
                                         rotationAcceleration)) continue;
                                 tuioObject.Update(_currentTime, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
-                                OnObjectUpdated?.Invoke(tuioObject);
+                                OnObjectUpdated?.Invoke(this, tuioObject);
                             }
                             else
                             {
                                 var tuioObject = new Tuio11Object(_currentTime, sessionId, symbolId, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);
                                 _tuioObjects[sessionId] = tuioObject;
-                                OnObjectAdded?.Invoke(tuioObject);
+                                OnObjectAdded?.Invoke(this, tuioObject);
                             }
                         }
 
-                        OnRefreshed?.Invoke(_currentTime);
+                        OnRefreshed?.Invoke(this, _currentTime);
                     }
                 }
 
@@ -289,7 +289,7 @@ namespace TuioNet.Tuio11
                         {
                             var tuioCursor = _tuioCursors[sId];
                             tuioCursor.Remove();
-                            OnCursorRemoved?.Invoke(tuioCursor);
+                            OnCursorRemoved?.Invoke(this, tuioCursor);
 
                             _tuioCursors.Remove(sId);
                             _freeCursorIds.Add(tuioCursor.CursorId);
@@ -311,7 +311,7 @@ namespace TuioNet.Tuio11
                                 var tuioCursor = _tuioCursors[sessionId];
                                 if (!tuioCursor.HasChanged(position, velocity, acceleration)) continue;
                                 tuioCursor.Update(_currentTime, position, velocity, acceleration);
-                                OnCursorUpdated?.Invoke(tuioCursor);
+                                OnCursorUpdated?.Invoke(this, tuioCursor);
                             }
                             else
                             {
@@ -324,11 +324,11 @@ namespace TuioNet.Tuio11
 
                                 var tuioCursor = new Tuio11Cursor(_currentTime, sessionId, cursorId, position, velocity, acceleration);
                                 _tuioCursors[sessionId] = tuioCursor;
-                                OnCursorAdded?.Invoke(tuioCursor);
+                                OnCursorAdded?.Invoke(this, tuioCursor);
                             }
                         }
 
-                        OnRefreshed?.Invoke(_currentTime);
+                        OnRefreshed?.Invoke(this, _currentTime);
                     }
                 }
 
@@ -368,7 +368,7 @@ namespace TuioNet.Tuio11
                         {
                             var tuioBlob = _tuioBlobs[sId];
                             tuioBlob.Remove();
-                            OnBlobRemoved?.Invoke(tuioBlob);
+                            OnBlobRemoved?.Invoke(this, tuioBlob);
 
                             _tuioBlobs.Remove(sId);
                             _freeBlobIds.Add(tuioBlob.BlobId);
@@ -398,7 +398,7 @@ namespace TuioNet.Tuio11
                                 if (!tuioBlob.HasChanged(position, angle, size, area, velocity, rotationSpeed,
                                         acceleration, rotationAcceleration)) continue;
                                 tuioBlob.Update(_currentTime, position, angle, size, area, velocity, rotationSpeed, acceleration, rotationAcceleration);
-                                OnBlobUpdated?.Invoke(tuioBlob);
+                                OnBlobUpdated?.Invoke(this, tuioBlob);
                             }
                             else
                             {
@@ -412,11 +412,11 @@ namespace TuioNet.Tuio11
                                 var tuioBlob = new Tuio11Blob(_currentTime, sessionId, blobId, position, angle, size, area, velocity, rotationSpeed, acceleration,
                                     rotationAcceleration);
                                 _tuioBlobs[sessionId] = tuioBlob;
-                                OnBlobAdded?.Invoke(tuioBlob);
+                                OnBlobAdded?.Invoke(this, tuioBlob);
                             }
                         }
 
-                        OnRefreshed?.Invoke(_currentTime);
+                        OnRefreshed?.Invoke(this, _currentTime);
                     }
                 }
 

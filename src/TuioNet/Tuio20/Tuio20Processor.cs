@@ -38,23 +38,23 @@ namespace TuioNet.Tuio20
         /// <summary>
         /// Event gets triggered when Tuio 2.0 Object is added.
         /// </summary>
-        public event Action<Tuio20Object> OnObjectAdded;
+        public event EventHandler<Tuio20Object> OnObjectAdded;
         
         /// <summary>
         /// Event gets triggered when Tuio 2.0 Object is updated.
         /// </summary>
-        public event Action<Tuio20Object> OnObjectUpdated;
+        public event EventHandler<Tuio20Object> OnObjectUpdated;
         
         /// <summary>
         /// Event gets triggered when Tuio 2.0 Object is removed.
         /// </summary>
-        public event Action<Tuio20Object> OnObjectRemoved;
+        public event EventHandler<Tuio20Object> OnObjectRemoved;
         
         /// <summary>
         /// This event gets triggered at the end of the current frame after all tuio messages were processed and it
         /// provides the current TuioTime. This event is useful to handle all updates contained in one TUIO frame together.
         /// </summary>
-        public event Action<TuioTime> OnRefreshed;
+        public event EventHandler<TuioTime> OnRefreshed;
 
         /// <summary>
         /// The sensor dimension. The first two bytes represent the width. The last two byte represent the height.
@@ -356,20 +356,20 @@ namespace TuioNet.Tuio20
 
                 foreach (var tuioObject in addedTuioObjects)
                 {
-                    OnObjectAdded?.Invoke(tuioObject);
+                    OnObjectAdded?.Invoke(this, tuioObject);
                 }
 
                 foreach (var tuioObject in updatedTuioObjects)
                 {
-                    OnObjectUpdated?.Invoke(tuioObject);
+                    OnObjectUpdated?.Invoke(this, tuioObject);
                 }
 
                 foreach (var tuioObject in removedTuioObjects)
                 {
-                    OnObjectRemoved?.Invoke(tuioObject);
+                    OnObjectRemoved?.Invoke(this, tuioObject);
                 }
 
-                OnRefreshed?.Invoke(_currentTime);
+                OnRefreshed?.Invoke(this, _currentTime);
             }
             _currentTime = currentFrameTime;
             _prevFrameId = frameId;
