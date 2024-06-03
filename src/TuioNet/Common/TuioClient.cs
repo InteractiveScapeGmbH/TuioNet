@@ -63,5 +63,14 @@ namespace TuioNet.Common
         {
             _tuioReceiver.AddMessageListener(listener);
         }
+
+        /// <summary>
+        /// Remove a listener from a given profile.
+        /// </summary>
+        /// <param name="messageProfile">The TUIO profile the listener should be removed from.</param>
+        public void RemoveMessageListener(string messageProfile)
+        {
+            _tuioReceiver.RemoveMessageListener(messageProfile);
+        }
     }
 }
