@@ -28,6 +28,18 @@ A brief overview over the most important classes and how to use them.
 ### Tuio Client
 The Tuio client class is the entry point for the communication between the client application and a TUIO sender. They hold a reference to a TuioReceiver (which can be UDP or Websocket receiver).
 
+By default, the `Processor` classes add `MessageListeners` for the currently supported Tuio profiles (see above for a list of the supported profiles). But it is also possible to register for your own custom message profile by calling `AddMessageListener` on the `TuioClient`. Here you are not limited to the Tuio profiles. You can register to every OSC message format your Tuio sender supports.
+
+```csharp
+var tuioClient = new TuioClient(TuioConnectionType.UDP);
+tuioClient.AddMessageListener(new MessageListener("/my/profile/example", OnMessage);
+    
+private void OnMessage(OSCMessage message)
+{
+    // Do something with the message
+}        
+```
+
 ### Tuio Processors
 Tuio processors are responsible for parsing tuio messages. There are two types of processors, one for TUIO 1.1 and one for TUIO 2.0. They get a client object and can listen to specific messages by register callback methods for them. In the current implementation the TUIO processors listen to the following message profiles.
 
