@@ -106,7 +106,7 @@ namespace TuioNet.Common
         /// <summary>
         /// Adds a listener for a given TUIO profile.
         /// </summary>
-        /// <param name="listener">The MessageListener which contains the name of the profile and the callback method which gets invoked for the given adress.</param>
+        /// <param name="listener">The MessageListener which contains the name of the profile and the callback method which gets invoked for the given profile.</param>
         /// <example>
         /// <code>AddMessageListener("/tuio/2Dobj", OnCallback)</code>
         /// </example>

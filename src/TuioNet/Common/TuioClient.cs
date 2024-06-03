@@ -54,5 +54,14 @@ namespace TuioNet.Common
                 _tuioReceiver.AddMessageListener(listener);
             }
         }
+
+        /// <summary>
+        /// Adds a listener to react on a custom profile.
+        /// </summary>
+        /// <param name="listener">The MessageListener which contains the name of the profile and the callback method which gets invoked for the given profile.</param>
+        public void AddMessageListener(MessageListener listener)
+        {
+            _tuioReceiver.AddMessageListener(listener);
+        }
     }
 }
