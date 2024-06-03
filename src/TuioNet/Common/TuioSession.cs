@@ -1,0 +1,53 @@
+﻿using System;
+using TuioNet.Tuio11;
+using TuioNet.Tuio20;
+
+namespace TuioNet.Common;
+
+public class TuioSession : IDisposable
+{
+    public TuioVersion TuioVersion { get; }
+    public TuioConnectionType ConnectionType { get; }
+    public string IpAddress { get; }
+    public int Port { get; }
+
+    public ITuioDispatcher TuioDispatcher { get; }
+
+
+    private TuioClient _tuioClient;
+    private bool _isInitialized;
+
+    public TuioSession(TuioVersion tuioVersion = TuioVersion.Tuio11,
+        TuioConnectionType connectionType = TuioConnectionType.UDP, string ipAddress = "127.0.0.1", int port = 3333)
+    {
+        TuioVersion = tuioVersion;
+        ConnectionType = connectionType;
+        IpAddress = ipAddress;
+        Port = port;
+
+        TuioDispatcher = TuioVersion switch
+        {
+            TuioVersion.Tuio11 => new Tuio11Dispatcher(),
+            TuioVersion.Tuio20 => new Tuio20Dispatcher()
+        };
+
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        if (_isInitialized) return;
+        _tuioClient = new TuioClient(ConnectionType, IpAddress, Port);
+        TuioDispatcher.SetupProcessor(_tuioClient);
+        TuioDispatcher.RegisterCallbacks();
+        _tuioClient.Connect();
+        _isInitialized = true;
+    }
+
+    public void Dispose()
+    {
+        TuioDispatcher.UnregisterCallbacks();
+        _tuioClient.Disconnect();
+        _isInitialized = false;
+    }
+}
