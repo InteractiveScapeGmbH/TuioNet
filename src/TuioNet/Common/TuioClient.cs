@@ -51,7 +51,7 @@ namespace TuioNet.Common
         {
             foreach (var listener in listeners)
             {
-                _tuioReceiver.AddMessageListener(listener);
+                AddMessageListener(listener);
             }
         }
 
