@@ -51,8 +51,26 @@ namespace TuioNet.Common
         {
             foreach (var listener in listeners)
             {
-                _tuioReceiver.AddMessageListener(listener.MessageProfile, listener.Callback);
+                AddMessageListener(listener);
             }
+        }
+
+        /// <summary>
+        /// Adds a listener to react on a custom profile.
+        /// </summary>
+        /// <param name="listener">The MessageListener which contains the name of the profile and the callback method which gets invoked for the given profile.</param>
+        public void AddMessageListener(MessageListener listener)
+        {
+            _tuioReceiver.AddMessageListener(listener);
+        }
+
+        /// <summary>
+        /// Remove a listener from a given profile.
+        /// </summary>
+        /// <param name="messageProfile">The TUIO profile the listener should be removed from.</param>
+        public void RemoveMessageListener(string messageProfile)
+        {
+            _tuioReceiver.RemoveMessageListener(messageProfile);
         }
     }
 }
