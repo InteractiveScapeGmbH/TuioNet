@@ -10,7 +10,7 @@ namespace TuioNet.Common
         /// <summary>
         /// Returns true if the receiver is connected to the TUIO sender.
         /// </summary>
-        public bool IsConnected { get; protected set; }
+        public virtual bool IsConnected { get; protected set; }
         
         private readonly Dictionary<string, List<Action<OSCMessage>>> _messageListeners = new Dictionary<string, List<Action<OSCMessage>>>();
         private readonly Queue<OSCMessage> _queuedMessages = new Queue<OSCMessage>();
