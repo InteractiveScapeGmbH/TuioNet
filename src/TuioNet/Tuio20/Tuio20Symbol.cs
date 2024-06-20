@@ -1,4 +1,4 @@
-﻿using Stride.Core.Mathematics;
+﻿using System.Numerics;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20
