@@ -7,39 +7,39 @@ class Program
 {
     private static void Main(string[] args)
     {
-        var tuioClient = new TuioClient(TuioConnectionType.UDP);
-        var processor = new Tuio11Processor(tuioClient);
-        processor.OnCursorAdded += CursorAdded;
-        processor.OnCursorUpdated += UpdateCursor;
-        processor.OnCursorRemoved += RemoveCursor;
-        Console.WriteLine("Connect...");
-        tuioClient.Connect();
-        while (true)
+        using (var tuioSession = new TuioSession(TuioVersion.Tuio11, TuioConnectionType.Websocket, "10.0.0.31"))
         {
-            if (!Console.KeyAvailable) continue;
-            var pressedKey = Console.ReadKey().Key;
-            if (pressedKey == ConsoleKey.Q) break;
+            var dispatcher = (Tuio11Dispatcher)tuioSession.TuioDispatcher;
+            dispatcher.OnCursorAdd += CursorAdded;
+            dispatcher.OnCursorUpdate += UpdateCursor;
+            dispatcher.OnCursorRemove += RemoveCursor;
+            Console.WriteLine("Connect...");
+            while (true)
+            {
+                if (!Console.KeyAvailable) continue;
+                var pressedKey = Console.ReadKey().Key;
+                if (pressedKey == ConsoleKey.Q) break;
+            }
+            Console.WriteLine("Disconnect...");
+            dispatcher.OnCursorAdd -= CursorAdded;
+            dispatcher.OnCursorUpdate -= UpdateCursor;
+            dispatcher.OnCursorRemove -= RemoveCursor;
         }
-        Console.WriteLine("Disconnect...");
-        processor.OnCursorAdded -= CursorAdded;
-        processor.OnCursorUpdated -= UpdateCursor;
-        processor.OnCursorRemoved -= RemoveCursor;
-        tuioClient.Disconnect();
     }
 
-    private static void CursorAdded(Tuio11Cursor cursor)
+    private static void RemoveCursor(object? sender, Tuio11Cursor cursor)
     {
-        Console.WriteLine($"New cursor added -> ID: {cursor.CursorId}");
+        Console.WriteLine($"Cursor {cursor.CursorId} removed");
     }
 
-    private static void UpdateCursor(Tuio11Cursor cursor)
+    private static void UpdateCursor(object? sender, Tuio11Cursor cursor)
     {
         Console.WriteLine($"Cursor {cursor.CursorId} -> Position: {cursor.Position}");
     }
 
-    private static void RemoveCursor(Tuio11Cursor cursor)
+    private static void CursorAdded(object? sender, Tuio11Cursor cursor)
     {
-        Console.WriteLine($"Cursor {cursor.CursorId} removed");
+        Console.WriteLine($"New cursor added -> ID: {cursor.CursorId}");
     }
 }
 
