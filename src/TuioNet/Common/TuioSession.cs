@@ -44,6 +44,21 @@ public class TuioSession : IDisposable
         _isInitialized = true;
     }
 
+    public void AddMessageListener(MessageListener listener)
+    {
+        _tuioClient.AddMessageListener(listener);
+    }
+
+    public void RemoveMessageListener(string listener)
+    {
+        _tuioClient.RemoveMessageListener(listener);
+    }
+    
+    public void ProcessMessages()
+    {
+        _tuioClient.ProcessMessages();
+    }
+
     public void Dispose()
     {
         TuioDispatcher.UnregisterCallbacks();
