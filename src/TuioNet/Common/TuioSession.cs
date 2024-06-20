@@ -18,7 +18,7 @@ public class TuioSession : IDisposable
     private bool _isInitialized;
 
     public TuioSession(TuioVersion tuioVersion = TuioVersion.Tuio11,
-        TuioConnectionType connectionType = TuioConnectionType.UDP, string ipAddress = "127.0.0.1", int port = 3333)
+        TuioConnectionType connectionType = TuioConnectionType.UDP, string ipAddress = "127.0.0.1", int port = 3333, bool isAutoProcess = true)
     {
         TuioVersion = tuioVersion;
         ConnectionType = connectionType;
@@ -31,13 +31,13 @@ public class TuioSession : IDisposable
             TuioVersion.Tuio20 => new Tuio20Dispatcher()
         };
 
-        Initialize();
+        Initialize(isAutoProcess);
     }
 
-    private void Initialize()
+    private void Initialize(bool isAutoProcess)
     {
         if (_isInitialized) return;
-        _tuioClient = new TuioClient(ConnectionType, IpAddress, Port);
+        _tuioClient = new TuioClient(ConnectionType, IpAddress, Port, isAutoProcess);
         TuioDispatcher.SetupProcessor(_tuioClient);
         TuioDispatcher.RegisterCallbacks();
         _tuioClient.Connect();
