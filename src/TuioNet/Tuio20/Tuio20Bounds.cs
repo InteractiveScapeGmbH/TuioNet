@@ -1,15 +1,21 @@
-﻿using Stride.Core.Mathematics;
+﻿using System;
+using Stride.Core.Mathematics;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
-    public class Tuio20Bounds: Tuio20Component
+    public class Tuio20Bounds: Tuio20Component, IBoundsDrawer
     {
         /// <summary>
         /// Dimensions of the major and minor axis.
         /// </summary>
         public Vector2 Size { get; private set; }
-        
+
+        /// <summary>
+        /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
+        /// </summary>
+        public string DebugText => $"s_Id: {SessionId}\nAngle: {(Angle * 180f / Math.PI):f2}\nPosition: {Position:f2}Size: {Size:f2}\nTime: {CurrentTime.GetTotalMilliseconds()}";
+
         /// <summary>
         /// The region area of the bounds.
         /// </summary>

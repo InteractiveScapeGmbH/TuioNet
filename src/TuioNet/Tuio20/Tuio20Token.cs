@@ -1,9 +1,10 @@
-﻿using Stride.Core.Mathematics;
+﻿using System;
+using Stride.Core.Mathematics;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
-    public class Tuio20Token : Tuio20Component
+    public class Tuio20Token : Tuio20Component, IObjectDrawer
     {
         /// <summary>
         /// Allows multiplexing of various symbol types and association of additional user id. First two bytes encode user id. Last two bytes encode type id.
@@ -36,5 +37,10 @@ namespace TuioNet.Tuio20
             TypeUserId = typeUserId;
             ComponentId = componentId;
         }
+
+        /// <summary>
+        /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
+        /// </summary>
+        public string DebugText => $"s_Id: {SessionId}\nId: {ComponentId}\nAngle: {(Angle * 180f / Math.PI):f2}\nPosition: {Position:f2}\nVelocity: {Velocity:f2}\nTime: {CurrentTime.GetTotalMilliseconds()}";
     }
 }
