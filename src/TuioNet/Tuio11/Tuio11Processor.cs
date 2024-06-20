@@ -7,9 +7,9 @@ using TuioNet.Common;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Processor
+    internal class Tuio11Processor
     {
-        public Tuio11Processor(TuioClient client)
+        internal Tuio11Processor(TuioClient client)
         {
             client.AddMessageListeners(new List<MessageListener>()
             {
@@ -43,59 +43,59 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// Event gets triggered when a new TUIO 1.1 cursor is recognized.
         /// </summary>
-        public event EventHandler<Tuio11Cursor> OnCursorAdded;
+        internal event EventHandler<Tuio11Cursor> OnCursorAdded;
         
         /// <summary>
         /// Event gets triggered when a known TUIO 1.1 cursor is updated.
         /// </summary>
-        public event EventHandler<Tuio11Cursor> OnCursorUpdated;
+        internal event EventHandler<Tuio11Cursor> OnCursorUpdated;
         
         /// <summary>
         /// Event gets triggered when a TUIO 1.1 cursor is removed.
         /// </summary>
-        public event EventHandler<Tuio11Cursor> OnCursorRemoved;
+        internal event EventHandler<Tuio11Cursor> OnCursorRemoved;
 
         /// <summary>
         /// Event gets triggered when a new TUIO 1.1 object is recognized.
         /// </summary>
-        public event EventHandler<Tuio11Object> OnObjectAdded;
+        internal event EventHandler<Tuio11Object> OnObjectAdded;
         
         /// <summary>
         /// Event gets triggered when a known TUIO 1.1 object is updated.
         /// </summary>
-        public event EventHandler<Tuio11Object> OnObjectUpdated;
+        internal event EventHandler<Tuio11Object> OnObjectUpdated;
         
         /// <summary>
         /// Event gets triggered when a TUIO 1.1 object is removed.
         /// </summary>
-        public event EventHandler<Tuio11Object> OnObjectRemoved;
+        internal event EventHandler<Tuio11Object> OnObjectRemoved;
 
         /// <summary>
         /// Event gets triggered when a new TUIO 1.1 blob is recognized.
         /// </summary>
-        public event EventHandler<Tuio11Blob> OnBlobAdded;
+        internal event EventHandler<Tuio11Blob> OnBlobAdded;
         
         /// <summary>
         /// Event gets triggered when a known TUIO 1.1 blob is updated.
         /// </summary>
-        public event EventHandler<Tuio11Blob> OnBlobUpdated;
+        internal event EventHandler<Tuio11Blob> OnBlobUpdated;
         
         /// <summary>
         /// Event gets triggered when a TUIO blob 1.1 is removed.
         /// </summary>
-        public event EventHandler<Tuio11Blob> OnBlobRemoved;
+        internal event EventHandler<Tuio11Blob> OnBlobRemoved;
 
         /// <summary>
         /// This event gets triggered at the end of the current frame after all tuio messages were processed and it
         /// provides the current TuioTime. This event is useful to handle all updates contained in one TUIO frame together.
         /// </summary>
-        public event EventHandler<TuioTime> OnRefreshed;
+        internal event EventHandler<TuioTime> OnRefreshed;
         
         /// <summary>
         /// Returns all active TUIO objects.
         /// </summary>
         /// <returns>A list of all active TUIO objects.</returns>
-        public List<Tuio11Object> GetTuioObjects()
+        internal List<Tuio11Object> GetTuioObjects()
         {
             return _tuioObjects.Values.ToList();
         }
@@ -104,7 +104,7 @@ namespace TuioNet.Tuio11
         /// Returns all active TUIO cursors.
         /// </summary>
         /// <returns>A List of all active TUIO cursors.</returns>
-        public List<Tuio11Cursor> GetTuioCursors()
+        internal List<Tuio11Cursor> GetTuioCursors()
         {
             return _tuioCursors.Values.ToList();
         }
@@ -113,7 +113,7 @@ namespace TuioNet.Tuio11
         /// Returns all active TUIO blobs.
         /// </summary>
         /// <returns>A list of all active TUIO blobs.</returns>
-        public List<Tuio11Blob> GetTuioBlobs()
+        internal List<Tuio11Blob> GetTuioBlobs()
         {
             return _tuioBlobs.Values.ToList();
         }
@@ -123,7 +123,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         /// <param name="sessionId">The session id of the requested TUIO object.</param>
         /// <returns>A single TUIO object with the given session id.</returns>
-        public Tuio11Object GetTuioObject(uint sessionId)
+        internal Tuio11Object GetTuioObject(uint sessionId)
         {
             return _tuioObjects[sessionId];
         }
@@ -133,7 +133,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         /// <param name="sessionId">The session id of the requested TUIO cursor.</param>
         /// <returns>A single TUIO cursor with the given session id.</returns>
-        public Tuio11Cursor GetTuioCursor(uint sessionId)
+        internal Tuio11Cursor GetTuioCursor(uint sessionId)
         {
             return _tuioCursors[sessionId];
         }
@@ -143,7 +143,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         /// <param name="sessionId">The session id of the requested TUIO blob.</param>
         /// <returns>A single TUIO blob with the given session id.</returns>
-        public Tuio11Blob GetTuioBlob(uint sessionId)
+        internal Tuio11Blob GetTuioBlob(uint sessionId)
         {
             return _tuioBlobs[sessionId];
         }

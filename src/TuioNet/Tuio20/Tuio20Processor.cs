@@ -7,9 +7,9 @@ using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
-    public class Tuio20Processor
+    internal class Tuio20Processor
     {
-        public Tuio20Processor(TuioClient client)
+        internal Tuio20Processor(TuioClient client)
         {
             client.AddMessageListeners(new List<MessageListener>()
             {
@@ -38,40 +38,41 @@ namespace TuioNet.Tuio20
         /// <summary>
         /// Event gets triggered when Tuio 2.0 Object is added.
         /// </summary>
-        public event EventHandler<Tuio20Object> OnObjectAdded;
+        internal event EventHandler<Tuio20Object> OnObjectAdded;
         
         /// <summary>
         /// Event gets triggered when Tuio 2.0 Object is updated.
         /// </summary>
-        public event EventHandler<Tuio20Object> OnObjectUpdated;
+        internal event EventHandler<Tuio20Object> OnObjectUpdated;
         
         /// <summary>
         /// Event gets triggered when Tuio 2.0 Object is removed.
         /// </summary>
-        public event EventHandler<Tuio20Object> OnObjectRemoved;
+        internal event EventHandler<Tuio20Object> OnObjectRemoved;
         
         /// <summary>
         /// This event gets triggered at the end of the current frame after all tuio messages were processed and it
         /// provides the current TuioTime. This event is useful to handle all updates contained in one TUIO frame together.
         /// </summary>
-        public event EventHandler<TuioTime> OnRefreshed;
+        internal event EventHandler<TuioTime> OnRefreshed;
 
         /// <summary>
         /// The sensor dimension. The first two bytes represent the width. The last two byte represent the height.
         /// </summary>
-        public uint SensorDimension { get; private set; } = 0;
+        internal uint SensorDimension { get; private set; } = 0;
         
         /// <summary>
         /// Provide additional information about the TUIO source.
         /// </summary>
-        public string Source { get; private set; }
-        public object TuioObjectLock { get; } = new object();
+        internal string Source { get; private set; }
+
+        private object TuioObjectLock { get; } = new object();
         
         /// <summary>
         /// Returns all active TUIO tokens.
         /// </summary>
         /// <returns>A list of all active TUIO tokens.</returns>
-        public List<Tuio20Token> GetTuioTokenList()
+        internal List<Tuio20Token> GetTuioTokenList()
         {
             lock (TuioObjectLock)
             {
@@ -92,7 +93,7 @@ namespace TuioNet.Tuio20
         /// Returns all active TUIO pointers.
         /// </summary>
         /// <returns>A list of all active TUIO pointers.</returns>
-        public List<Tuio20Pointer> GetTuioPointerList()
+        internal List<Tuio20Pointer> GetTuioPointerList()
         {
             lock (TuioObjectLock)
             {
@@ -113,7 +114,7 @@ namespace TuioNet.Tuio20
         /// Returns all active TUIO bounds.
         /// </summary>
         /// <returns>A list of all active TUIO bounds.</returns>
-        public List<Tuio20Bounds> GetTuioBoundsList()
+        internal List<Tuio20Bounds> GetTuioBoundsList()
         {
             lock (TuioObjectLock)
             {
@@ -134,7 +135,7 @@ namespace TuioNet.Tuio20
         /// Returns all active TUIO marker symbols.
         /// </summary>
         /// <returns>A list of all active TUIO marker symbols.</returns>
-        public List<Tuio20Symbol> GetTuioSymbolList()
+        internal List<Tuio20Symbol> GetTuioSymbolList()
         {
             lock (TuioObjectLock)
             {
