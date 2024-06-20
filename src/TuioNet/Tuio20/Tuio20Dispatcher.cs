@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20;
@@ -33,6 +34,26 @@ public class Tuio20Dispatcher : ITuioDispatcher
         _processor.OnObjectUpdated -= UpdateObject;
         _processor.OnObjectRemoved -= RemoveObject;
         _processor.OnRefreshed -= Refresh;
+    }
+
+    public List<Tuio20Pointer> GetTuioPointer()
+    {
+        return _processor == null ? [] : _processor.GetTuioPointerList();
+    }
+
+    public List<Tuio20Token> GetTuioTokens()
+    {
+        return _processor == null ? [] : _processor.GetTuioTokenList();
+    }
+    
+    public List<Tuio20Bounds> GetTuioBounds()
+    {
+        return _processor == null ? [] : _processor.GetTuioBoundsList();
+    }
+    
+    public List<Tuio20Symbol> GetTuioSymbols()
+    {
+        return _processor == null ? [] : _processor.GetTuioSymbolList();
     }
 
     private void AddObject(object? sender, Tuio20Object tuioObject)

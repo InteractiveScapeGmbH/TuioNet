@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio11;
@@ -60,6 +61,21 @@ public class Tuio11Dispatcher : ITuioDispatcher
         _processor.OnBlobRemoved -= RemoveBlob;
 
         _processor.OnRefreshed -= Refresh;
+    }
+
+    public List<Tuio11Cursor> GetTuioCursors()
+    {
+        return _processor == null ? [] : _processor.GetTuioCursors();
+    }
+    
+    public List<Tuio11Object> GetTuioObjects()
+    {
+        return _processor == null ? [] : _processor.GetTuioObjects();
+    }
+    
+    public List<Tuio11Blob> GetTuioBlobs()
+    {
+        return _processor == null ? [] : _processor.GetTuioBlobs();
     }
     
     private void AddCursor(object? sender, Tuio11Cursor cursor)
