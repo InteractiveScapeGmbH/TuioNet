@@ -7,7 +7,7 @@ class Program
 {
     private static void Main(string[] args)
     {
-        using (var tuioSession = new TuioSession(TuioVersion.Tuio11, TuioConnectionType.Websocket, "10.0.0.31"))
+        using (var tuioSession = new TuioSession(TuioVersion.Tuio11, TuioConnectionType.UDP))
         {
             var dispatcher = (Tuio11Dispatcher)tuioSession.TuioDispatcher;
             dispatcher.OnCursorAdd += CursorAdded;
