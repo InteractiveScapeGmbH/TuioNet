@@ -25,10 +25,10 @@ namespace TuioNet.Tuio20
             _currentTime = TuioTime.GetCurrentTime();
         }
         
-        private readonly Dictionary<uint, Tuio20Object> _tuioObjects = new Dictionary<uint, Tuio20Object>();
+        private readonly Dictionary<uint, Tuio20Object> _tuioObjects = new();
 
         private OSCMessage _frmMessage;
-        private readonly List<OSCMessage> _otherMessages = new List<OSCMessage>();
+        private readonly List<OSCMessage> _otherMessages = new();
         
         private uint _bundleFrameId = 0;
         private uint _nextFrameId = 0;
@@ -152,7 +152,7 @@ namespace TuioNet.Tuio20
             }
         }
         
-        private void OnFrm(OSCMessage oscMessage)
+        private void OnFrm(object sender, OSCMessage oscMessage)
         {
             _bundleFrameId = (uint)(int)oscMessage.Values[0];
 
@@ -162,7 +162,7 @@ namespace TuioNet.Tuio20
             _frmMessage = oscMessage;
         }
         
-        private void OnOther(OSCMessage oscMessage)
+        private void OnOther(object sender, OSCMessage oscMessage)
         {
             if (_bundleFrameId != _nextFrameId)
             {
@@ -172,7 +172,7 @@ namespace TuioNet.Tuio20
             _otherMessages.Add(oscMessage);
         }
 
-        private void OnAlv(OSCMessage oscMessage)
+        private void OnAlv(object sender, OSCMessage oscMessage)
         {
             if (_frmMessage == null || _bundleFrameId != _nextFrameId)
             {

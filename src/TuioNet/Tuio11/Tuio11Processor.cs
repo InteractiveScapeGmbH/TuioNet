@@ -182,7 +182,7 @@ namespace TuioNet.Tuio11
             return true;
         }
 
-        private void On2Dobj(OSCMessage oscMessage)
+        private void On2Dobj(object sender, OSCMessage oscMessage)
         {
             var command = (string)oscMessage.Values[0];
             if (command == "set")
@@ -258,7 +258,7 @@ namespace TuioNet.Tuio11
             }
         }
 
-        private void On2Dcur(OSCMessage oscMessage)
+        private void On2Dcur(object sender, OSCMessage oscMessage)
         {
             var command = (string)oscMessage.Values[0];
             if (command == "set")
@@ -337,7 +337,7 @@ namespace TuioNet.Tuio11
             }
         }
 
-        private void On2Dblb(OSCMessage oscMessage)
+        private void On2Dblb(object sender, OSCMessage oscMessage)
         {
             var command = (string)oscMessage.Values[0];
             if (command == "set")

@@ -12,9 +12,9 @@ namespace TuioNet.Common
         /// </summary>
         public virtual bool IsConnected { get; protected set; }
         
-        private readonly Dictionary<string, List<Action<OSCMessage>>> _messageListeners = new Dictionary<string, List<Action<OSCMessage>>>();
-        private readonly Queue<OSCMessage> _queuedMessages = new Queue<OSCMessage>();
-        protected readonly CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
+        private readonly Dictionary<string, List<EventHandler<OSCMessage>>> _messageListeners = new();
+        private readonly Queue<OSCMessage> _queuedMessages = new();
+        protected readonly CancellationTokenSource CancellationTokenSource = new();
 
         private readonly bool _isAutoProcess;
 
@@ -97,7 +97,7 @@ namespace TuioNet.Common
                     if (!_messageListeners.TryGetValue(oscMessage.Address, out var messageListenersForAddress)) continue;
                     foreach (var messageListener in messageListenersForAddress)
                     {
-                        messageListener.Invoke(oscMessage);
+                        messageListener.Invoke(this, oscMessage);
                     }
                 }
             }
@@ -115,7 +115,7 @@ namespace TuioNet.Common
             var profile = listener.MessageProfile;
             if (!_messageListeners.ContainsKey(profile))
             {
-                _messageListeners[profile] = new List<Action<OSCMessage>>();
+                _messageListeners[profile] = new List<EventHandler<OSCMessage>>();
             }
             _messageListeners[profile].Add(listener.Callback);
         }
