@@ -73,6 +73,6 @@ namespace TuioNet.Tuio20
         /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
         /// </summary>
         public string DebugText =>
-            $"Id: {SessionId}\nPosition: {Position:f2}\nVelocity: {Velocity:f2}\nTime: {CurrentTime.GetTotalMilliseconds()}";
+            $"Id: {SessionId}\nPosition: {Position:f2}";
     }
 }

@@ -14,7 +14,7 @@ namespace TuioNet.Tuio20
         /// <summary>
         /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
         /// </summary>
-        public string DebugText => $"s_Id: {SessionId}\nAngle: {(Angle * 180f / Math.PI):f2}\nPosition: {Position:f2}Size: {Size:f2}\nTime: {CurrentTime.GetTotalMilliseconds()}";
+        public string DebugText => $"s_Id: {SessionId}\nAngle: {(Angle * 180f / Math.PI):f2}\nPosition: {Position:f2}Size: {Size:f2}";
 
         /// <summary>
         /// The region area of the bounds.
