@@ -47,7 +47,7 @@ namespace TuioNet.Tuio11
                      rotationSpeed == RotationSpeed && acceleration == Acceleration && rotationAcceleration == RotationAcceleration);
         }
 
-        internal void Update(TuioTime currentTime, Vector2 position, float angle,
+        public void Update(TuioTime currentTime, Vector2 position, float angle,
             Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration)
         {
             var lastPoint = PrevPoints[PrevPoints.Count - 1];
