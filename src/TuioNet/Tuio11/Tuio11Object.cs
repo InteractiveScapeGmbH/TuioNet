@@ -5,7 +5,7 @@ using TuioNet.Common;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Object : Tuio11Container, ITuio11Entity, IObjectDrawer
+    public class Tuio11Object : Tuio11Container, ITuioEntity, IObjectDrawer
     {
         /// <summary>
         /// The individual symbol ID which is assigned to each TuioObject.
@@ -88,7 +88,7 @@ namespace TuioNet.Tuio11
             }
         }
 
-        public OSCMessage SetMessage
+        public OSCMessage OscMessage
         {
             get
             {

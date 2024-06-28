@@ -5,7 +5,7 @@ using TuioNet.Common;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Blob : Tuio11Container, ITuio11Entity, IBoundsDrawer
+    public class Tuio11Blob : Tuio11Container, ITuioEntity, IBoundsDrawer
     {
         /// <summary>
         /// The individual blob ID that is assigned to each TuioBlob.
@@ -95,7 +95,7 @@ namespace TuioNet.Tuio11
             Area = area;
         }
 
-        public OSCMessage SetMessage
+        public OSCMessage OscMessage
         {
             get
             {

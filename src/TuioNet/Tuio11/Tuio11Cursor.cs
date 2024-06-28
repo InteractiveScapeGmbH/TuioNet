@@ -4,7 +4,7 @@ using TuioNet.Common;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Cursor : Tuio11Container, ITuio11Entity, ITouchDrawer
+    public class Tuio11Cursor : Tuio11Container, ITuioEntity, ITouchDrawer
     {
         /// <summary>
         /// Individual cursor ID assigned to each TuioCursor.
@@ -33,7 +33,7 @@ namespace TuioNet.Tuio11
         public string DebugText =>
             $"Id: {SessionId}\nPosition: {Position:f2}";
         
-        public OSCMessage SetMessage
+        public OSCMessage OscMessage
         {
             get
             {
