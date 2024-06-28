@@ -10,11 +10,11 @@ namespace TuioNet.Common
         /// <summary>
         /// Returns true if the receiver is connected to the TUIO sender.
         /// </summary>
-        public bool IsConnected { get; protected set; }
+        public virtual bool IsConnected { get; protected set; }
         
-        private readonly Dictionary<string, List<Action<OSCMessage>>> _messageListeners = new Dictionary<string, List<Action<OSCMessage>>>();
-        private readonly Queue<OSCMessage> _queuedMessages = new Queue<OSCMessage>();
-        protected readonly CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
+        private readonly Dictionary<string, List<EventHandler<OSCMessage>>> _messageListeners = new();
+        private readonly Queue<OSCMessage> _queuedMessages = new();
+        protected readonly CancellationTokenSource CancellationTokenSource = new();
 
         private readonly bool _isAutoProcess;
 
@@ -97,7 +97,7 @@ namespace TuioNet.Common
                     if (!_messageListeners.TryGetValue(oscMessage.Address, out var messageListenersForAddress)) continue;
                     foreach (var messageListener in messageListenersForAddress)
                     {
-                        messageListener.Invoke(oscMessage);
+                        messageListener.Invoke(this, oscMessage);
                     }
                 }
             }
@@ -106,18 +106,18 @@ namespace TuioNet.Common
         /// <summary>
         /// Adds a listener for a given TUIO profile.
         /// </summary>
-        /// <param name="messageProfile">The TUIO profile to listen to.</param>
-        /// <param name="listener">The callback method which gets invoked for the given adress.</param>
+        /// <param name="listener">The MessageListener which contains the name of the profile and the callback method which gets invoked for the given profile.</param>
         /// <example>
         /// <code>AddMessageListener("/tuio/2Dobj", OnCallback)</code>
         /// </example>
-        internal void AddMessageListener(string messageProfile, Action<OSCMessage> listener)
+        internal void AddMessageListener(MessageListener listener)
         {
-            if (!_messageListeners.ContainsKey(messageProfile))
+            var profile = listener.MessageProfile;
+            if (!_messageListeners.ContainsKey(profile))
             {
-                _messageListeners[messageProfile] = new List<Action<OSCMessage>>();
+                _messageListeners[profile] = new List<EventHandler<OSCMessage>>();
             }
-            _messageListeners[messageProfile].Add(listener);
+            _messageListeners[profile].Add(listener.Callback);
         }
         
         /// <summary>

@@ -3,7 +3,7 @@ using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
-    public class Tuio20Pointer : Tuio20Component
+    public class Tuio20Pointer : Tuio20Component, ITouchDrawer
     {
         /// <summary>
         /// Allows distinction between different pointer input devices. The first two bytes encode the user id. The Last two bytes encode the type id.
@@ -68,5 +68,11 @@ namespace TuioNet.Tuio20
             PressureSpeed = pressureSpeed;
             PressureAcceleration = pressureAcceleration;
         }
+        
+        /// <summary>
+        /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
+        /// </summary>
+        public string DebugText =>
+            $"Id: {SessionId}\nPosition: {Position:f2}";
     }
 }

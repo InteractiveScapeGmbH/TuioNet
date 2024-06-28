@@ -25,11 +25,25 @@ TuioNet is a .Net implementation of the TUIO specification by Martin Kaltenbrunn
 ## Documentation
 A brief overview over the most important classes and how to use them.
 
-### Tuio Client
-The Tuio client class is the entry point for the communication between the client application and a TUIO sender. They hold a reference to a TuioReceiver (which can be UDP or Websocket receiver).
+### Tuio Session
+The Tuio session class is the entry point for the communication between the client application and a TUIO sender. It takes the TUIO protocol version, the connection type and the IP-Address of the TUIO sender.
+
+Based on the protocol version the `TuioSession` creates a `Processor` which is responsible for parsing the incoming TUIO messages. By default, the `Processor` classes add `MessageListeners` for the currently supported Tuio profiles (see above for a list of the supported profiles). But it is also possible to register for your own custom message profile by calling `AddMessageListener` on the `TuioSession`. Here you are not limited to the Tuio profiles. You can register to every OSC message format your Tuio sender supports.
+
+```csharp
+using(var session = new TuioSession(TuioVersion.Tuio11, TuioConnectionType.Websocket, "10.0.0.31"))
+{
+    session.AddMessageListener(new MessageListener("/my/profile/example", OnMessage);
+    
+    private void OnMessage(object? sender, OSCMessage message)
+    {
+        // Do something with the message
+    }        
+}
+```
 
 ### Tuio Processors
-Tuio processors are responsible for parsing tuio messages. There are two types of processors, one for TUIO 1.1 and one for TUIO 2.0. They get a client object and can listen to specific messages by register callback methods for them. In the current implementation the TUIO processors listen to the following message profiles.
+Tuio processors are responsible for parsing TUIO messages. There are two types of processors, one for TUIO 1.1 and one for TUIO 2.0. They get a client object and can listen to specific messages by register callback methods for them. In the current implementation the TUIO processors listen to the following message profiles.
 
 Tuio11Processor.cs:
 ```csharp
@@ -95,7 +109,7 @@ The Refreshed event is triggered when a TUIO frame is completely processed. This
 ```csharp
 _processor.OnRefreshed += OnRefreshed;
 
-private void OnRefreshed(TuioTime time)
+private void OnRefreshed(object sender, TuioTime time)
 {
     // update stuff after the whole tuio frame got processed
 }
@@ -106,7 +120,7 @@ This event gets triggered when a new cursor was added this frame.
 ```csharp
 _processor.OnCursorAdded += OnCursorAdded;
 
-private void OnCursorAdded(Tuio11Cursor cursor)
+private void OnCursorAdded(object sender, Tuio11Cursor cursor)
 {
     Console.WriteLine($"New cursor added -> ID: {cursor.CursorId}");
 }
@@ -117,7 +131,7 @@ This event gets triggered when an already known cursor gets updated, for example
 ```csharp
 _processor.OnCursorUpdated += OnCursorUpdated;
 
-private void OnCursorUpdated(Tuio11Cursor cursor)
+private void OnCursorUpdated(object sender, Tuio11Cursor cursor)
 {
     Console.WriteLine($"Cursor {cursor.CursorId} -> Position: {cursor.Position}");
 }
@@ -128,7 +142,7 @@ This event gets triggered when a cursor was removed this frame.
 ```csharp
 _processor.OnCursorRemoved += OnCursorRemoved;
 
-private void OnCursorAdded(Tuio11Cursor cursor)
+private void OnCursorAdded(object sender, Tuio11Cursor cursor)
 {
     Console.WriteLine($"Cursor {cursor.CursorId} removed");
 }
@@ -139,7 +153,7 @@ This event gets triggered when a new TUIO 1.1 object was added this frame.
 ```csharp
 _processor.OnObjectAdded += OnObjectAdded;
 
-private void OnObjectAdded(Tuio11Object tuioObject)
+private void OnObjectAdded(object sender, Tuio11Object tuioObject)
 {
     Console.WriteLine($"New object added -> ID: {tuioObject.SymbolId}");
 }
@@ -150,7 +164,7 @@ This event gets triggered when an already known TUIO 1.1 object gets updated, fo
 ```csharp
 _processor.OnObjectUpdated += OnObjectUpdated;
 
-private void OnObjectUpdated(Tuio11Object tuioObject)
+private void OnObjectUpdated(object sender, Tuio11Object tuioObject)
 {
     Console.WriteLine($"Object {tuioObject.SymbolId} -> Position: {tuioObject.Position}");
 }
@@ -161,7 +175,7 @@ This event gets triggered when a TUIO 1.1  object was removed this frame.
 ```csharp
 _processor.OnObjectRemoved += OnObjectRemoved;
 
-private void OnObjectRemoved(Tuio11Object tuioObject)
+private void OnObjectRemoved(object sender, Tuio11Object tuioObject)
 {
     Console.WriteLine($"Object {tuioObject.SymbolId} removed");
 }
@@ -172,7 +186,7 @@ This event gets triggered when a new TUIO 1.1 blob was added this frame.
 ```csharp
 _processor.OnBlobAdded += OnBlobAdded;
 
-private void OnBlobAdded(Tuio11Blob blob)
+private void OnBlobAdded(object sender, Tuio11Blob blob)
 {
     Console.WriteLine($"New Blob added -> ID: {blob.BlobId}");
 }
@@ -183,7 +197,7 @@ This event gets triggered when an already known TUIO 1.1 blob gets updated, for 
 ```csharp
 _processor.OnBlobUpdated += OnBlobUpdated;
 
-private void OnBlobUpdated(Tuio11Blob blob)
+private void OnBlobUpdated(object sender, Tuio11Blob blob)
 {
     Console.WriteLine($"Blob {blob.BlobId} -> Position: {blob.Position}");
 }
@@ -194,7 +208,7 @@ This event gets triggered when a TUIO 1.1 blob was removed this frame.
 ```csharp
 _processor.OnBlobRemoved += OnBlobRemoved;
 
-private void OnBlobRemoved(Tuio11Blob blob)
+private void OnBlobRemoved(object sender, Tuio11Blob blob)
 {
     Console.WriteLine($"Blob {blob.BlobId} removed");
 }
@@ -207,7 +221,7 @@ The Refreshed event is triggered when a TUIO frame is completely processed. This
 ```csharp
 _processor.OnRefreshed += OnRefreshed;
 
-private void OnRefreshed(TuioTime time)
+private void OnRefreshed(object sender, TuioTime time)
 {
     // update stuff after the whole tuio frame got processed
 }
@@ -218,7 +232,7 @@ This event gets triggered when a new TUIO 2.0 object was added this frame. This 
 ```csharp
 _processor.OnObjectAdded += OnObjectAdded;
 
-private void OnObjectAdded(Tuio20Object tuioObject)
+private void OnObjectAdded(object sender, Tuio20Object tuioObject)
 {
     // if you expect the object to be a pointer you can check it and act accordingly
     if(tuioObject.ContainsTuioPointer())
@@ -234,7 +248,7 @@ This event gets triggered when an already known TUIO 2.0 object gets updated, fo
 ```csharp
 _processor.OnObjectUpdated += OnObjectUpdated;
 
-private void OnObjectUpdated(Tuio20Object tuioObject)
+private void OnObjectUpdated(object sender, Tuio20Object tuioObject)
 {
     // if you expect the object to be a token you can check it and act accordingly
     if(tuioObject.ContainsTuioToken())
@@ -249,7 +263,7 @@ This event gets triggered when a TUIO 2.0 object was removed this frame.
 ```csharp
 _processor.OnObjectRemoved += OnObjectRemoved;
 
-private void OnObjectRemoved(Tuio20Object tuioObject)
+private void OnObjectRemoved(object sender, Tuio20Object tuioObject)
 {
     // if you expect the object to be a symbol you can check it and act accordingly
     if(tuioObject.ContainsTuioSymbol())
@@ -261,10 +275,10 @@ private void OnObjectRemoved(Tuio20Object tuioObject)
 
 ## Demo Console Application
 A simple console application which demonstrates a simple setup for a TUIO 1.1 connection via UDP. 
-- First create a `TuioClient` (the default port is 3333, you can set it in the constructor of the client class)
-- Create a `Tuio11Processor` which takes the tuio client.
-- Register methods for the desired events on the processor.
-- Establish a connection to the TUIO sender.
+- First create a `TuioSession` (the default port is 3333)
+- Get the `ITuioDispatcher` from the session object and cast it to the appropriate type based on the TUIO version (`Tuio11Dispatcher` or `Tuio20Dispatcher`).
+- Register methods for the desired events on the dispatcher object.
+- The connecting and disconnecting is handled by the session object. As soon as the session gets disposed it disconnects from the sender.
 - The application runs and prints to the console when TUIO objects/cursors appear, move or get removed.
 - By pressing the ```Q``` button you can stop the application.
 
@@ -279,39 +293,39 @@ class Program
 {
     private static void Main(string[] args)
     {
-        var tuioClient = new TuioClient(TuioConnectionType.UDP);
-        var processor = new Tuio11Processor(tuioClient);
-        processor.OnCursorAdded += CursorAdded;
-        processor.OnCursorUpdated += UpdateCursor;
-        processor.OnCursorRemoved += RemoveCursor;
-        Console.WriteLine("Connect...");
-        tuioClient.Connect();
-        while (true)
+        using (var tuioSession = new TuioSession(TuioVersion.Tuio11, TuioConnectionType.UDP))
         {
-            if (!Console.KeyAvailable) continue;
-            var pressedKey = Console.ReadKey().Key;
-            if (pressedKey == ConsoleKey.Q) break;
+            var dispatcher = (Tuio11Dispatcher)tuioSession.TuioDispatcher;
+            dispatcher.OnCursorAdd += CursorAdded;
+            dispatcher.OnCursorUpdate += UpdateCursor;
+            dispatcher.OnCursorRemove += RemoveCursor;
+            Console.WriteLine("Connect...");
+            while (true)
+            {
+                if (!Console.KeyAvailable) continue;
+                var pressedKey = Console.ReadKey().Key;
+                if (pressedKey == ConsoleKey.Q) break;
+            }
+            Console.WriteLine("Disconnect...");
+            dispatcher.OnCursorAdd -= CursorAdded;
+            dispatcher.OnCursorUpdate -= UpdateCursor;
+            dispatcher.OnCursorRemove -= RemoveCursor;
         }
-        Console.WriteLine("Disconnect...");
-        processor.OnCursorAdded -= CursorAdded;
-        processor.OnCursorUpdated -= UpdateCursor;
-        processor.OnCursorRemoved -= RemoveCursor;
-        tuioClient.Disconnect();
     }
 
-    private static void CursorAdded(Tuio11Cursor cursor)
+    private static void RemoveCursor(object? sender, Tuio11Cursor cursor)
     {
-        Console.WriteLine($"New cursor added -> ID: {cursor.CursorId}");
+        Console.WriteLine($"Cursor {cursor.CursorId} removed");
     }
 
-    private static void UpdateCursor(Tuio11Cursor cursor)
+    private static void UpdateCursor(object? sender, Tuio11Cursor cursor)
     {
         Console.WriteLine($"Cursor {cursor.CursorId} -> Position: {cursor.Position}");
     }
 
-    private static void RemoveCursor(Tuio11Cursor cursor)
+    private static void CursorAdded(object? sender, Tuio11Cursor cursor)
     {
-        Console.WriteLine($"Cursor {cursor.CursorId} removed");
+        Console.WriteLine($"New cursor added -> ID: {cursor.CursorId}");
     }
 }
 ```
