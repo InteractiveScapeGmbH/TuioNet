@@ -17,7 +17,7 @@ namespace TuioNet.Tuio20
         /// <summary>
         /// The Session ID, a temporary unique object ID.
         /// </summary>
-        public uint SessionId { get; private set; }
+        public int SessionId { get; private set; }
         
         /// <summary>
         /// The token associated with this object.
@@ -44,7 +44,7 @@ namespace TuioNet.Tuio20
         /// </summary>
         public TuioState State { get; private set; }
 
-        public Tuio20Object(TuioTime startTime, uint sessionId)
+        public Tuio20Object(TuioTime startTime, int sessionId)
         {
             StartTime = startTime;
             CurrentTime = startTime;

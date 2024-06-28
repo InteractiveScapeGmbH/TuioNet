@@ -10,27 +10,27 @@ namespace TuioNet.Tuio20
         /// Allows multiplexing of various symbol types and association of additional user id. First two bytes encode user id. Last two bytes encode type id.
         /// User id 0 is reserved for "no user".
         /// </summary>
-        public uint TypeUserId { get; private set; }
+        public int TypeUserId { get; private set; }
         
         /// <summary>
         /// Allows distinction of individual tokens during a session.
         /// </summary>
-        public uint ComponentId { get; private set; }
+        public int ComponentId { get; private set; }
         
-        public Tuio20Token(TuioTime startTime, Tuio20Object container, uint typeUserId, uint componentId, Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, container, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration)
+        public Tuio20Token(TuioTime startTime, Tuio20Object container, int typeUserId, int componentId, Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, container, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration)
         {
             TypeUserId = typeUserId;
             ComponentId = componentId;
         }
         
-        internal bool HasChanged(uint typeUserId, uint componentId, Vector2 position, float angle, Vector2 velocity,
+        internal bool HasChanged(int typeUserId, int componentId, Vector2 position, float angle, Vector2 velocity,
             float rotationSpeed, float acceleration, float rotationAcceleration)
         {
             return !(typeUserId == TypeUserId && componentId == ComponentId && position == Position && angle == Angle &&
                      velocity == Velocity && rotationSpeed == RotationSpeed && acceleration == Acceleration && rotationAcceleration == RotationAcceleration);
         }
 
-        internal void Update(TuioTime currentTime, uint typeUserId, uint componentId, Vector2 position, float angle,
+        internal void Update(TuioTime currentTime, int typeUserId, int componentId, Vector2 position, float angle,
             Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration)
         {
             UpdateComponent(currentTime, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);

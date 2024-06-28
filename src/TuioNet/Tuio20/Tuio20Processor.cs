@@ -25,14 +25,14 @@ namespace TuioNet.Tuio20
             _currentTime = TuioTime.GetCurrentTime();
         }
         
-        private readonly Dictionary<uint, Tuio20Object> _tuioObjects = new();
+        private readonly Dictionary<int, Tuio20Object> _tuioObjects = new();
 
         private OSCMessage _frmMessage;
         private readonly List<OSCMessage> _otherMessages = new();
         
-        private uint _bundleFrameId = 0;
-        private uint _nextFrameId = 0;
-        private uint _prevFrameId = 0;
+        private int _bundleFrameId = 0;
+        private int _nextFrameId = 0;
+        private int _prevFrameId = 0;
         private TuioTime _currentTime;
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace TuioNet.Tuio20
         /// <summary>
         /// The sensor dimension. The first two bytes represent the width. The last two byte represent the height.
         /// </summary>
-        internal uint SensorDimension { get; private set; } = 0;
+        internal int SensorDimension { get; private set; } = 0;
         
         /// <summary>
         /// Provide additional information about the TUIO source.
@@ -154,7 +154,7 @@ namespace TuioNet.Tuio20
         
         private void OnFrm(object sender, OSCMessage oscMessage)
         {
-            _bundleFrameId = (uint)(int)oscMessage.Values[0];
+            _bundleFrameId = (int)oscMessage.Values[0];
 
             if (_bundleFrameId <= _nextFrameId) return;
             _otherMessages.Clear();
@@ -179,9 +179,9 @@ namespace TuioNet.Tuio20
                 return;
             }
 
-            var frameId = (uint)(int)_frmMessage.Values[0];
+            var frameId = (int)_frmMessage.Values[0];
             var frameTime = (OscTimeTag)_frmMessage.Values[1];
-            var sensorDimension = (uint)(int)_frmMessage.Values[2];
+            var sensorDimension = (int)_frmMessage.Values[2];
             var source = (string)_frmMessage.Values[3];
             TuioTime currentFrameTime = TuioTime.FromOscTime(frameTime);
             if (frameId >= _prevFrameId || frameId == 0 || 
@@ -189,14 +189,14 @@ namespace TuioNet.Tuio20
             {
                 SensorDimension = sensorDimension;
                 Source = source;
-                HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
-                HashSet<uint> aliveSIds = new HashSet<uint>();
+                HashSet<int> currentSIds = new HashSet<int>(_tuioObjects.Keys);
+                HashSet<int> aliveSIds = new HashSet<int>();
                 foreach (var sId in oscMessage.Values)
                 {
-                    aliveSIds.Add((uint)(int) sId);
+                    aliveSIds.Add((int) sId);
                 }
-                HashSet<uint> newSIds = new HashSet<uint>(aliveSIds.Except(currentSIds));
-                HashSet<uint> removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
+                HashSet<int> newSIds = new HashSet<int>(aliveSIds.Except(currentSIds));
+                HashSet<int> removedSIds = new HashSet<int>(currentSIds.Except(aliveSIds));
                 HashSet<Tuio20Object> addedTuioObjects = new HashSet<Tuio20Object>();
                 HashSet<Tuio20Object> updatedTuioObjects = new HashSet<Tuio20Object>();
                 HashSet<Tuio20Object> removedTuioObjects = new HashSet<Tuio20Object>();
@@ -219,10 +219,10 @@ namespace TuioNet.Tuio20
                     {
                         if (otherOscMessage.Address == "/tuio2/tok")
                         {
-                            var sId = (uint)(int)otherOscMessage.Values[0];
+                            var sId = (int)otherOscMessage.Values[0];
                             if (!aliveSIds.Contains(sId)) continue;
-                            var typeUserId = (uint)(int)otherOscMessage.Values[1];
-                            var componentId = (uint)(int)otherOscMessage.Values[2];
+                            var typeUserId = (int)otherOscMessage.Values[1];
+                            var componentId = (int)otherOscMessage.Values[2];
                             var posX = (float)otherOscMessage.Values[3];
                             var posY = (float)otherOscMessage.Values[4];
                             var position = new Vector2(posX, posY);
@@ -255,10 +255,10 @@ namespace TuioNet.Tuio20
                         }
                         else if (otherOscMessage.Address == "/tuio2/ptr")
                         {
-                            var sId = (uint)(int)otherOscMessage.Values[0];
+                            var sId = (int)otherOscMessage.Values[0];
                             if (!aliveSIds.Contains(sId)) continue;
-                            var typeId = (uint)(int)otherOscMessage.Values[1];
-                            var componentId = (uint)(int)otherOscMessage.Values[2];
+                            var typeId = (int)otherOscMessage.Values[1];
+                            var componentId = (int)otherOscMessage.Values[2];
                             var posX = (float)otherOscMessage.Values[3];
                             var posY = (float)otherOscMessage.Values[4];
                             var position = new Vector2(posX, posY);
@@ -294,7 +294,7 @@ namespace TuioNet.Tuio20
                         }
                         else if (otherOscMessage.Address == "/tuio2/bnd")
                         {
-                            var sId = (uint)(int)otherOscMessage.Values[0];
+                            var sId = (int)otherOscMessage.Values[0];
                             if (!aliveSIds.Contains(sId)) continue;
                             var posX = (float)otherOscMessage.Values[1];
                             var posY = (float)otherOscMessage.Values[2];
@@ -330,10 +330,10 @@ namespace TuioNet.Tuio20
                         }
                         else if (otherOscMessage.Address == "/tuio2/sym")
                         {
-                            var sessionId = (uint)(int)otherOscMessage.Values[0];
+                            var sessionId = (int)otherOscMessage.Values[0];
                             if (!aliveSIds.Contains(sessionId)) continue;
-                            var typeUserId = (uint)(int)otherOscMessage.Values[1];
-                            var componentId = (uint)(int)otherOscMessage.Values[2];
+                            var typeUserId = (int)otherOscMessage.Values[1];
+                            var componentId = (int)otherOscMessage.Values[2];
                             string group = (string)otherOscMessage.Values[3];
                             string data = (string)otherOscMessage.Values[4];
 
