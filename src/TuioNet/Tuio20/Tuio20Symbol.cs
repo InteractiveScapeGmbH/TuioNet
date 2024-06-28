@@ -40,7 +40,7 @@ namespace TuioNet.Tuio20
             return !(typeUserId == TypeUserId && componentId == ComponentId && group == Group && data == Data);
         }
 
-        internal void Update(TuioTime currentTime, int typeUserId, int componentId, string group, string data)
+        public void Update(TuioTime currentTime, int typeUserId, int componentId, string group, string data)
         {
             UpdateComponent(currentTime, Vector2.Zero, 0, Vector2.Zero, 0, 0, 0);
             TypeUserId = typeUserId;

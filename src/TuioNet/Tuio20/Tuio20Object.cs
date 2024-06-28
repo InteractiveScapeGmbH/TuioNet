@@ -120,7 +120,7 @@ namespace TuioNet.Tuio20
             return Symbol is {State: TuioState.Added};
         }
         
-        internal void Update(TuioTime currentTime)
+        public void Update(TuioTime currentTime)
         {
             CurrentTime = currentTime;
             State = TuioState.Idle;

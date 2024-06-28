@@ -31,7 +31,7 @@ namespace TuioNet.Tuio20
                      velocity == Velocity && rotationSpeed == RotationSpeed && acceleration == Acceleration && rotationAcceleration == RotationAcceleration);
         }
 
-        internal void Update(TuioTime currentTime, int typeUserId, int componentId, Vector2 position, float angle,
+        public void Update(TuioTime currentTime, int typeUserId, int componentId, Vector2 position, float angle,
             Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration)
         {
             UpdateComponent(currentTime, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration);

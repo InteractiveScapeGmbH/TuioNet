@@ -58,7 +58,7 @@ namespace TuioNet.Tuio20
                      velocity == Velocity && pressureSpeed == this.PressureSpeed && acceleration == base.Acceleration && pressureAcceleration == this.PressureAcceleration);
         }
 
-        internal void Update(TuioTime currentTime, int typeUserId, int componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration)
+        public void Update(TuioTime currentTime, int typeUserId, int componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration)
         {
             UpdateComponent(currentTime, position, angle, velocity, 0, acceleration, 0);
             TypeUserId = typeUserId;
