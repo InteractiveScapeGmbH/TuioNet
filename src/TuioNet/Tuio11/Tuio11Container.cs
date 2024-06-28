@@ -17,7 +17,7 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// The Session ID, a temporary unique object ID.
         /// </summary>
-        public uint SessionId { get; }
+        public int SessionId { get; }
         
         /// <summary>
         /// The velocity vector of the TuioContainer.
@@ -41,7 +41,7 @@ namespace TuioNet.Tuio11
         
         protected readonly List<Tuio11Point> PrevPoints = new List<Tuio11Point>();
 
-        public Tuio11Container(TuioTime startTime, uint sessionId, Vector2 position, Vector2 velocity, float acceleration) : base(startTime, position)
+        public Tuio11Container(TuioTime startTime, int sessionId, Vector2 position, Vector2 velocity, float acceleration) : base(startTime, position)
         {
             CurrentTime = startTime;
             SessionId = sessionId;

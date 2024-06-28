@@ -10,7 +10,7 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// The individual symbol ID which is assigned to each TuioObject.
         /// </summary>
-        public uint SymbolId { get; }
+        public int SymbolId { get; }
         
         /// <summary>
         /// The rotation angle of the TuioObject in radians.
@@ -33,7 +33,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         public float RotationAcceleration { get; protected set; }
         
-        public Tuio11Object(TuioTime startTime, uint sessionId, uint symbolId, Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, sessionId, position, velocity, acceleration)
+        public Tuio11Object(TuioTime startTime, int sessionId, int symbolId, Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, sessionId, position, velocity, acceleration)
         {
             SymbolId = symbolId;
             Angle = angle;

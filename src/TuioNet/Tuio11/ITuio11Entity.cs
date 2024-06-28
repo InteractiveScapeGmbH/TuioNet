@@ -4,7 +4,7 @@ namespace TuioNet.Tuio11
 {
     public interface ITuio11Entity
     {
-        public uint SessionId { get; }
+        public int SessionId { get; }
         public OSCMessage SetMessage { get; }
 
     }

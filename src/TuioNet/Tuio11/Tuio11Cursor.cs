@@ -9,9 +9,9 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// Individual cursor ID assigned to each TuioCursor.
         /// </summary>
-        public uint CursorId { get; }
+        public int CursorId { get; }
         
-        public Tuio11Cursor(TuioTime startTime, uint sessionId, uint cursorId, Vector2 position, Vector2 velocity, float acceleration) : base(startTime, sessionId, position, velocity, acceleration)
+        public Tuio11Cursor(TuioTime startTime, int sessionId, int cursorId, Vector2 position, Vector2 velocity, float acceleration) : base(startTime, sessionId, position, velocity, acceleration)
         {
             CursorId = cursorId;
         }
