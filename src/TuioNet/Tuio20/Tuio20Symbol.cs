@@ -1,9 +1,10 @@
 ﻿using System.Numerics;
+using OSC.NET;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
-    public class Tuio20Symbol : Tuio20Component
+    public class Tuio20Symbol : Tuio20Component, ITuioEntity
     {
         /// <summary>
         /// Allows multiplexing of various symbol types and association of additional user id. First two bytes encode user id. Last two bytes encode type id.
@@ -46,6 +47,20 @@ namespace TuioNet.Tuio20
             ComponentId = componentId;
             Group = group;
             Data = data;
+        }
+
+        public OSCMessage OscMessage
+        {
+            get
+            {
+                var message = new OSCMessage("/tuio2/sym");
+                message.Append(SessionId);
+                message.Append(TypeUserId);
+                message.Append(ComponentId);
+                message.Append(Group);
+                message.Append(Data);
+                return message;
+            }
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Numerics;
+using OSC.NET;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
-    public class Tuio20Token : Tuio20Component, IObjectDrawer
+    public class Tuio20Token : Tuio20Component, ITuioEntity, IObjectDrawer
     {
         /// <summary>
         /// Allows multiplexing of various symbol types and association of additional user id. First two bytes encode user id. Last two bytes encode type id.
@@ -42,5 +43,25 @@ namespace TuioNet.Tuio20
         /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
         /// </summary>
         public string DebugText => $"s_Id: {SessionId}\nId: {ComponentId}\nAngle: {(Angle * 180f / Math.PI):f2}\nPosition: {Position:f2}";
+
+        public OSCMessage OscMessage
+        {
+            get
+            {
+                var message = new OSCMessage("/tuio2/tok");
+                message.Append(SessionId);
+                message.Append(TypeUserId);
+                message.Append(ComponentId);
+                message.Append(Position.X);
+                message.Append(Position.Y);
+                message.Append(Angle);
+                message.Append(Velocity.X);
+                message.Append(Velocity.Y);
+                message.Append(RotationSpeed);
+                message.Append(Acceleration);
+                message.Append(RotationAcceleration);
+                return message;
+            }
+        }
     }
 }

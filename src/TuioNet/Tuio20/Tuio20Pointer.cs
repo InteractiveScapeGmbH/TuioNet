@@ -4,7 +4,7 @@ using TuioNet.Common;
 
 namespace TuioNet.Tuio20
 {
-    public class Tuio20Pointer : Tuio20Component, ITouchDrawer
+    public class Tuio20Pointer : Tuio20Component, ITuioEntity, ITouchDrawer
     {
         /// <summary>
         /// Allows distinction between different pointer input devices. The first two bytes encode the user id. The Last two bytes encode the type id.
@@ -76,6 +76,27 @@ namespace TuioNet.Tuio20
         public string DebugText =>
             $"Id: {SessionId}\nPosition: {Position:f2}";
 
-        public OSCMessage OscMessage { get; }
+        public OSCMessage OscMessage
+        {
+            get
+            {
+                var message = new OSCMessage("/tuio2/ptr");
+                message.Append(SessionId);
+                message.Append(TypeUserId);
+                message.Append(ComponentId);
+                message.Append(Position.X);
+                message.Append(Position.Y);
+                message.Append(Angle);
+                message.Append(Shear);
+                message.Append(Radius);
+                message.Append(Pressure);
+                message.Append(Velocity.X);
+                message.Append(Velocity.Y);
+                message.Append(PressureSpeed);
+                message.Append(Acceleration);
+                message.Append(PressureAcceleration);
+                return message;
+            }
+        }
     }
 }
