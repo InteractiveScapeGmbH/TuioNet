@@ -67,12 +67,12 @@ namespace OSC.NET
         protected const char MATRIX4 = 'M';  // for 4x4 Matrices with float, so synonym to ffffffffffffffff
 
 
-		public OSCMessage(string address, bool extendedMode = false) : base(extendedMode)
+		public OSCMessage(string address)
 		{
             this.typeTag = ",";
 			this.Address = address;
 		}
-		public OSCMessage(string address, object value, bool extendedMode =  false) : base(extendedMode)
+		public OSCMessage(string address, object value)
 		{
             this.typeTag = ",";
 			this.Address = address;

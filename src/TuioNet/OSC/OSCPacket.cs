@@ -42,16 +42,14 @@ namespace OSC.NET
 	abstract public class OSCPacket
 	{
 		public static readonly Encoding ASCIIEncoding8Bit;
-        public bool ExtendedVVVVMode { get; set; } 
 
         static OSCPacket()
         {
             ASCIIEncoding8Bit = Encoding.Default;
         }
         
-		public OSCPacket(bool extendedMode = false)
+		public OSCPacket()
 		{
-		    this.ExtendedVVVVMode = extendedMode;
             this.values = new List<object>();
 		}
 

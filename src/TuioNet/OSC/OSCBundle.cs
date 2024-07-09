@@ -42,20 +42,20 @@ namespace OSC.NET
 		protected const string BUNDLE = "#bundle";
 		private OscTimeTag timestamp = new OscTimeTag();
 
-        public OSCBundle(OscTimeTag ts, bool extendedMode = false) : base(extendedMode)
-		{
+        public OSCBundle(OscTimeTag ts)
+        {
 			this.address = BUNDLE;
 			this.timestamp = ts;
 		}
 
-		public OSCBundle(long ts, bool extendedMode = false) : base (extendedMode)
+		public OSCBundle(long ts)
 		{
             DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             timestamp = new OscTimeTag(start.AddMilliseconds(ts).ToLocalTime());		    
 		}
 
 
-		public OSCBundle(bool extendedMode = false) : base (extendedMode)
+		public OSCBundle()
 		{
 			this.address = BUNDLE;
 			this.timestamp = new OscTimeTag(DateTime.Now);
@@ -86,7 +86,7 @@ namespace OSC.NET
 			this.binaryData = data.ToArray();
 		}
 
-		public static new OSCBundle Unpack(byte[] bytes, ref int start, int end, bool extendedMode = false)
+		public static new OSCBundle Unpack(byte[] bytes, ref int start, int end)
 		{
 
 			string address = unpackString(bytes, ref start);
@@ -94,13 +94,13 @@ namespace OSC.NET
 			if(!address.Equals(BUNDLE)) return null; // TODO
 
 			OscTimeTag timestamp = unpackTimeTag(bytes, ref start);
-            OSCBundle bundle = new OSCBundle(timestamp, extendedMode);
+            OSCBundle bundle = new OSCBundle(timestamp);
 			
 			while(start < end)
 			{
 				int length = unpackInt(bytes, ref start);
 				int sub_end = start + length;
-				bundle.Append(OSCPacket.Unpack(bytes, ref start, sub_end, extendedMode));
+				bundle.Append(OSCPacket.Unpack(bytes, ref start, sub_end));
 			}
 
 			return bundle;
