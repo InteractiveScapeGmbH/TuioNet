@@ -160,32 +160,32 @@ namespace OSC.NET
 
 		protected static int unpackInt(byte[] bytes, ref int start)
 		{
-			byte[] data = new byte[4];
-			for(int i = 0 ; i < 4 ; i++, start++) data[i] = bytes[start];
+			byte[] data = new byte[sizeof(int)];
+			for(int i = 0 ; i < sizeof(int) ; i++, start++) data[i] = bytes[start];
 			if(BitConverter.IsLittleEndian) data = swapEndian(data);
 			return BitConverter.ToInt32(data, 0);
 		}
 
 		protected static long unpackLong(byte[] bytes, ref int start)
 		{
-			byte[] data = new byte[8];
-			for(int i = 0 ; i < 8 ; i++, start++) data[i] = bytes[start];
+			byte[] data = new byte[sizeof(long)];
+			for(int i = 0 ; i < sizeof(long) ; i++, start++) data[i] = bytes[start];
 			if(BitConverter.IsLittleEndian) data = swapEndian(data);
 			return BitConverter.ToInt64(data, 0);
 		}
 
 		protected static float unpackFloat(byte[] bytes, ref int start)
 		{
-			byte[] data = new byte[4];
-			for(int i = 0 ; i < 4 ; i++, start++) data[i] = bytes[start];
+			byte[] data = new byte[sizeof(float)];
+			for(int i = 0 ; i < sizeof(float) ; i++, start++) data[i] = bytes[start];
 			if(BitConverter.IsLittleEndian) data = swapEndian(data);
 			return BitConverter.ToSingle(data, 0);
 		}
 
 		protected static double unpackDouble(byte[] bytes, ref int start)
 		{
-			byte[] data = new byte[8];
-			for(int i = 0 ; i < 8 ; i++, start++) data[i] = bytes[start];
+			byte[] data = new byte[sizeof(double)];
+			for(int i = 0 ; i < sizeof(double) ; i++, start++) data[i] = bytes[start];
 			if(BitConverter.IsLittleEndian) data = swapEndian(data);
 			return BitConverter.ToDouble(data, 0);
 		}
