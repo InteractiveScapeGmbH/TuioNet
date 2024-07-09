@@ -40,16 +40,17 @@ namespace OSC.NET
 	public class OSCMessage : OSCPacket
 	{
 //      These Attributes adhere to the OSC Specs 1.0
-        protected const char INTEGER = 'i'; // int32 8byte
+        protected const char INTEGER  = 'i'; // int32 8byte
+        protected const char UNSIGNED = 'u'; // uint32 8byte
 		protected const char FLOAT	  = 'f'; //float32 8byte
 		protected const char LONG	  = 'h';  //int64 16byte
-		protected const char DOUBLE  = 'd'; // float64 16byte
-		protected const char STRING  = 's'; // padded by zeros
-		protected const char SYMBOL  = 'S'; // same as STRING really
+		protected const char DOUBLE   = 'd'; // float64 16byte
+		protected const char STRING   = 's'; // padded by zeros
+		protected const char SYMBOL   = 'S'; // same as STRING really
         protected const char BLOB	  = 'b'; // bytestream, starts with an int that tells the total length of th stream
-        protected const char TIMETAG = 't'; // fixed point floating number with 32bytes (16bytes for totaldays after 1.1.1900 and 16bytes for fractionOfDay)
+        protected const char TIMETAG  = 't'; // fixed point floating number with 32bytes (16bytes for totaldays after 1.1.1900 and 16bytes for fractionOfDay)
         protected const char CHAR	  = 'c'; // bit
-        protected const char COLOR  = 'r'; // 4x8bit -> rgba
+        protected const char COLOR    = 'r'; // 4x8bit -> rgba
 
         //protected const char TRUE	  = 'T';
         //protected const char FALSE = 'F';
@@ -91,6 +92,7 @@ namespace OSC.NET
 			{
 				if(value is int) addBytes(data, packInt((int)value));
 				else if(value is long) addBytes(data, packLong((long)value));
+				else if(value is uint) addBytes(data, packUint((uint)value));
 				else if(value is float) addBytes(data, packFloat((float)value));
 				else if(value is double) addBytes(data, packDouble((double)value));
 				else if(value is string) {
@@ -126,6 +128,7 @@ namespace OSC.NET
 				//Console.WriteLine("tag: " + tag + " @ "+start);
 				if(tag == ',') continue;
 				else if(tag == INTEGER) msg.Append(unpackInt(bytes, ref start));
+				else if(tag == UNSIGNED) msg.Append(unpackUint(bytes, ref start));
 				else if(tag == LONG) msg.Append(unpackLong(bytes, ref start));
 				else if(tag == DOUBLE) msg.Append(unpackDouble(bytes, ref start));
 				else if(tag == FLOAT) msg.Append(unpackFloat(bytes, ref start));
@@ -149,7 +152,7 @@ namespace OSC.NET
 			}
 			else if (value is uint)
 			{
-				AppendTag(LONG);
+				AppendTag(UNSIGNED);
 			}
 			else if(value is long)
 			{
