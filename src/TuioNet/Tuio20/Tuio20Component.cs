@@ -69,7 +69,7 @@ namespace TuioNet.Tuio20
             PrevPoints.Enqueue(new Tuio20Point(startTime, Position));
         }
         
-        public int SessionId => Container.SessionId;
+        public uint SessionId => Container.SessionId;
         
         public List<Tuio20Point> GetPath()
         {

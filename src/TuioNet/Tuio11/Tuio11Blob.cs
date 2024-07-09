@@ -10,7 +10,7 @@ namespace TuioNet.Tuio11
         /// <summary>
         /// The individual blob ID that is assigned to each TuioBlob.
         /// </summary>
-        public int BlobId { get; }
+        public uint BlobId { get; }
         
         /// <summary>
         /// The rotation angle ob the TuioBlob in radians.
@@ -34,7 +34,7 @@ namespace TuioNet.Tuio11
         public float RotationSpeed { get; protected set; }
         public float RotationAcceleration { get; protected set; }
         
-        public Tuio11Blob(TuioTime startTime, int sessionId, int blobId, Vector2 position, float angle, Vector2 size, float area, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, sessionId, position, velocity, acceleration)
+        public Tuio11Blob(TuioTime startTime, uint sessionId, uint blobId, Vector2 position, float angle, Vector2 size, float area, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, sessionId, position, velocity, acceleration)
         {
             BlobId = blobId;
             Angle = angle;

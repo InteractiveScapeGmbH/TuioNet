@@ -9,12 +9,12 @@ namespace TuioNet.Tuio20
         /// <summary>
         /// Allows distinction between different pointer input devices. The first two bytes encode the user id. The Last two bytes encode the type id.
         /// </summary>
-        public int TypeUserId { get; private set; }
+        public uint TypeUserId { get; private set; }
         
         /// <summary>
         /// Allows distinction of individual pointer components during a session.
         /// </summary>
-        public int ComponentId { get; private set; }
+        public uint ComponentId { get; private set; }
         
         /// <summary>
         /// The shear angle relative to the horizontal surface plane.
@@ -41,7 +41,7 @@ namespace TuioNet.Tuio20
         /// </summary>
         public float PressureAcceleration { get; private set; }
         
-        public Tuio20Pointer(TuioTime startTime, Tuio20Object container, int typeUserId, int componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration) : base(startTime, container, position, angle, velocity, 0, acceleration, 0)
+        public Tuio20Pointer(TuioTime startTime, Tuio20Object container, uint typeUserId, uint componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration) : base(startTime, container, position, angle, velocity, 0, acceleration, 0)
         {
             TypeUserId = typeUserId;
             ComponentId = componentId;
@@ -52,13 +52,13 @@ namespace TuioNet.Tuio20
             PressureAcceleration = pressureAcceleration;
         }
         
-        internal bool HasChanged(int typeUserId, int componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration)
+        internal bool HasChanged(uint typeUserId, uint componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration)
         {
             return !(typeUserId == TypeUserId && componentId == ComponentId && position == Position && angle == Angle && shear == Shear &&radius == Radius &&pressure == Pressure &&
                      velocity == Velocity && pressureSpeed == this.PressureSpeed && acceleration == base.Acceleration && pressureAcceleration == this.PressureAcceleration);
         }
 
-        public void Update(TuioTime currentTime, int typeUserId, int componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration)
+        public void Update(TuioTime currentTime, uint typeUserId, uint componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration)
         {
             UpdateComponent(currentTime, position, angle, velocity, 0, acceleration, 0);
             TypeUserId = typeUserId;

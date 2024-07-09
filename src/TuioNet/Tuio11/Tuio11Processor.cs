@@ -22,9 +22,9 @@ namespace TuioNet.Tuio11
             _currentTime = TuioTime.GetCurrentTime();
         }
         
-        private readonly Dictionary<int, Tuio11Object> _tuioObjects = new Dictionary<int, Tuio11Object>();
-        private readonly Dictionary<int, Tuio11Cursor> _tuioCursors = new Dictionary<int, Tuio11Cursor>();
-        private readonly Dictionary<int, Tuio11Blob> _tuioBlobs = new Dictionary<int, Tuio11Blob>();
+        private readonly Dictionary<uint, Tuio11Object> _tuioObjects = new Dictionary<uint, Tuio11Object>();
+        private readonly Dictionary<uint, Tuio11Cursor> _tuioCursors = new Dictionary<uint, Tuio11Cursor>();
+        private readonly Dictionary<uint, Tuio11Blob> _tuioBlobs = new Dictionary<uint, Tuio11Blob>();
 
         private readonly List<OSCMessage> _objectSetMessages = new List<OSCMessage>();
         private readonly List<OSCMessage> _cursorSetMessages = new List<OSCMessage>();
@@ -34,8 +34,8 @@ namespace TuioNet.Tuio11
         private OSCMessage _cursorAliveMessage;
         private OSCMessage _blobAliveMessage;
 
-        private readonly List<int> _freeCursorIds = new List<int>();
-        private readonly List<int> _freeBlobIds = new List<int>();
+        private readonly List<uint> _freeCursorIds = new List<uint>();
+        private readonly List<uint> _freeBlobIds = new List<uint>();
 
         private int _currentFrame = 0;
         private TuioTime _currentTime;
@@ -123,7 +123,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         /// <param name="sessionId">The session id of the requested TUIO object.</param>
         /// <returns>A single TUIO object with the given session id.</returns>
-        internal Tuio11Object GetTuioObject(int sessionId)
+        internal Tuio11Object GetTuioObject(uint sessionId)
         {
             return _tuioObjects[sessionId];
         }
@@ -133,7 +133,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         /// <param name="sessionId">The session id of the requested TUIO cursor.</param>
         /// <returns>A single TUIO cursor with the given session id.</returns>
-        internal Tuio11Cursor GetTuioCursor(int sessionId)
+        internal Tuio11Cursor GetTuioCursor(uint sessionId)
         {
             return _tuioCursors[sessionId];
         }
@@ -143,7 +143,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         /// <param name="sessionId">The session id of the requested TUIO blob.</param>
         /// <returns>A single TUIO blob with the given session id.</returns>
-        internal Tuio11Blob GetTuioBlob(int sessionId)
+        internal Tuio11Blob GetTuioBlob(uint sessionId)
         {
             return _tuioBlobs[sessionId];
         }
@@ -200,14 +200,14 @@ namespace TuioNet.Tuio11
                 {
                     if (_objectAliveMessage != null)
                     {
-                        var currentSIds = new HashSet<int>(_tuioObjects.Keys);
-                        var aliveSIds = new HashSet<int>();
+                        var currentSIds = new HashSet<uint>(_tuioObjects.Keys);
+                        var aliveSIds = new HashSet<uint>();
                         for (int i = 1; i < _objectAliveMessage.Values.Count; i++)
                         {
-                            aliveSIds.Add((int)_objectAliveMessage.Values[i]);
+                            aliveSIds.Add((uint)_objectAliveMessage.Values[i]);
                         }
 
-                        var removedSIds = new HashSet<int>(currentSIds.Except(aliveSIds));
+                        var removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
                         foreach (var sId in removedSIds)
                         {
                             var tuioObject = _tuioObjects[sId];
@@ -219,8 +219,8 @@ namespace TuioNet.Tuio11
 
                         foreach (var setMessage in _objectSetMessages)
                         {
-                            var sessionId = (int)setMessage.Values[1];
-                            var symbolId = (int)setMessage.Values[2];
+                            var sessionId = (uint)setMessage.Values[1];
+                            var symbolId = (uint)setMessage.Values[2];
                             var posX = (float)setMessage.Values[3];
                             var posY = (float)setMessage.Values[4];
                             var position = new Vector2(posX, posY);
@@ -276,14 +276,14 @@ namespace TuioNet.Tuio11
                 {
                     if (_cursorAliveMessage != null)
                     {
-                        var currentSIds = new HashSet<int>(_tuioCursors.Keys);
-                        var aliveSIds = new HashSet<int>();
+                        var currentSIds = new HashSet<uint>(_tuioCursors.Keys);
+                        var aliveSIds = new HashSet<uint>();
                         for (int i = 1; i < _cursorAliveMessage.Values.Count; i++)
                         {
-                            aliveSIds.Add((int)_cursorAliveMessage.Values[i]);
+                            aliveSIds.Add((uint)_cursorAliveMessage.Values[i]);
                         }
 
-                        var removedSIds = new HashSet<int>(currentSIds.Except(aliveSIds));
+                        var removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
 
                         foreach (var sId in removedSIds)
                         {
@@ -297,7 +297,7 @@ namespace TuioNet.Tuio11
                         _freeCursorIds.Sort();
                         foreach (var setMessage in _cursorSetMessages)
                         {
-                            var sessionId = (int)setMessage.Values[1];
+                            var sessionId = (uint)setMessage.Values[1];
                             var posX = (float)setMessage.Values[2];
                             var posY = (float)setMessage.Values[3];
                             var position = new Vector2(posX, posY);
@@ -315,7 +315,7 @@ namespace TuioNet.Tuio11
                             }
                             else
                             {
-                                var cursorId = _tuioCursors.Count;
+                                var cursorId = (uint)_tuioCursors.Count;
                                 if (_freeCursorIds.Count > 0)
                                 {
                                     cursorId = _freeCursorIds[0];
@@ -355,14 +355,14 @@ namespace TuioNet.Tuio11
                 {
                     if (_blobAliveMessage != null)
                     {
-                        var currentSIds = new HashSet<int>(_tuioBlobs.Keys);
-                        var aliveSIds = new HashSet<int>();
+                        var currentSIds = new HashSet<uint>(_tuioBlobs.Keys);
+                        var aliveSIds = new HashSet<uint>();
                         for (int i = 1; i < _blobAliveMessage.Values.Count; i++)
                         {
-                            aliveSIds.Add((int)_blobAliveMessage.Values[i]);
+                            aliveSIds.Add((uint)_blobAliveMessage.Values[i]);
                         }
 
-                        var removedSIds = new HashSet<int>(currentSIds.Except(aliveSIds));
+                        var removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
 
                         foreach (var sId in removedSIds)
                         {
@@ -376,7 +376,7 @@ namespace TuioNet.Tuio11
                         _freeBlobIds.Sort();
                         foreach (var setMessage in _blobSetMessages)
                         {
-                            var sessionId = (int)setMessage.Values[1];
+                            var sessionId = (uint)setMessage.Values[1];
                             var posX = (float)setMessage.Values[2];
                             var posY = (float)setMessage.Values[3];
                             var position = new Vector2(posX, posY);
@@ -402,7 +402,7 @@ namespace TuioNet.Tuio11
                             }
                             else
                             {
-                                var blobId = _tuioBlobs.Count;
+                                var blobId = (uint)_tuioBlobs.Count;
                                 if (_freeBlobIds.Count > 0)
                                 {
                                     blobId = _freeBlobIds[0];

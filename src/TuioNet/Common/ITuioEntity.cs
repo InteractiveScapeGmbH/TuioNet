@@ -4,7 +4,7 @@ namespace TuioNet.Common
 {
     public interface ITuioEntity
     {
-        public int SessionId { get; }
+        public uint SessionId { get; }
         public OSCMessage OscMessage { get; }
 
     }
