@@ -46,7 +46,7 @@ namespace TuioNet.Tuio20
             get
             {
                 var message = new OSCMessage("/tuio2/bnd");
-                message.Append(SessionId);
+                message.Append((int)SessionId);
                 message.Append(Position.X);
                 message.Append(Position.Y);
                 message.Append(Angle);

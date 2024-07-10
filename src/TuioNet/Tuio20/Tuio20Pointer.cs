@@ -81,9 +81,9 @@ namespace TuioNet.Tuio20
             get
             {
                 var message = new OSCMessage("/tuio2/ptr");
-                message.Append(SessionId);
-                message.Append(TypeUserId);
-                message.Append(ComponentId);
+                message.Append((int)SessionId);
+                message.Append((int)TypeUserId);
+                message.Append((int)ComponentId);
                 message.Append(Position.X);
                 message.Append(Position.Y);
                 message.Append(Angle);
