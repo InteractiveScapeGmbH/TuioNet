@@ -38,8 +38,10 @@ namespace TuioNet.Tuio11
         private readonly List<uint> _freeCursorIds = new List<uint>();
         private readonly List<uint> _freeBlobIds = new List<uint>();
 
-        private int _currentFrame = 0;
+        private uint _currentFrame = 0;
         private TuioTime _currentTime;
+
+        internal string Source { get; private set; }
 
         /// <summary>
         /// Event gets triggered when a new TUIO 1.1 cursor is recognized.
@@ -149,9 +151,9 @@ namespace TuioNet.Tuio11
             return _tuioBlobs[sessionId];
         }
 
-        private const int FrameTolerance = 100;
-        private const int TimeTolerance = 100;
-        private bool UpdateFrame(int frameId)
+        private const uint FrameTolerance = 100;
+        private const uint TimeTolerance = 100;
+        private bool UpdateFrame(uint frameId)
         {
             var currentTime = TuioTime.GetCurrentTime();
             
@@ -186,7 +188,11 @@ namespace TuioNet.Tuio11
         internal void On2Dobj(object sender, OSCMessage oscMessage)
         {
             var command = (string)oscMessage.Values[0];
-            if (command == "set")
+            if (command == "source")
+            {
+                Source = (string)oscMessage.Values[1];
+            }
+            else if (command == "set")
             {
                 _objectSetMessages.Add(oscMessage);
             }
@@ -196,7 +202,7 @@ namespace TuioNet.Tuio11
             }
             else if (command == "fseq")
             {
-                var frameId = (int)oscMessage.Values[1];
+                var frameId = (uint)(int)oscMessage.Values[1];
                 if (UpdateFrame(frameId))
                 {
                     if (_objectAliveMessage != null)
@@ -262,7 +268,11 @@ namespace TuioNet.Tuio11
         internal void On2Dcur(object sender, OSCMessage oscMessage)
         {
             var command = (string)oscMessage.Values[0];
-            if (command == "set")
+            if (command == "source")
+            {
+                Source = (string)oscMessage.Values[1];
+            }
+            else if (command == "set")
             {
                 _cursorSetMessages.Add(oscMessage);
             }
@@ -272,7 +282,7 @@ namespace TuioNet.Tuio11
             }
             else if (command == "fseq")
             {
-                var frameId = (int)oscMessage.Values[1];
+                var frameId = (uint)(int)oscMessage.Values[1];
                 if (UpdateFrame(frameId))
                 {
                     if (_cursorAliveMessage != null)
@@ -341,7 +351,11 @@ namespace TuioNet.Tuio11
         internal void On2Dblb(object sender, OSCMessage oscMessage)
         {
             var command = (string)oscMessage.Values[0];
-            if (command == "set")
+            if (command == "source")
+            {
+                Source = (string)oscMessage.Values[1];
+            }
+            else if (command == "set")
             {
                 _blobSetMessages.Add(oscMessage);
             }
@@ -351,7 +365,7 @@ namespace TuioNet.Tuio11
             }
             else if (command == "fseq")
             {
-                var frameId = (int)oscMessage.Values[1];
+                var frameId = (uint)(int)oscMessage.Values[1];
                 if (UpdateFrame(frameId))
                 {
                     if (_blobAliveMessage != null)

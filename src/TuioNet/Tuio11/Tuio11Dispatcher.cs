@@ -63,6 +63,8 @@ public class Tuio11Dispatcher : ITuioDispatcher
         _processor.OnRefreshed -= Refresh;
     }
 
+    public string Source => _processor == null ? string.Empty : _processor.Source;
+
     public List<Tuio11Cursor> GetTuioCursors()
     {
         return _processor == null ? [] : _processor.GetTuioCursors();
