@@ -10,4 +10,8 @@
       <PackageReference Include="Stride.Core.Mathematics" Version="4.2.0.2149" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="WebSocketSharp" Version="1.0.3-rc11" />
+    </ItemGroup>
+
 </Project>
