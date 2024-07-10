@@ -225,16 +225,16 @@ namespace OSC.NET
             return tag;
         }
 
-		public static OSCPacket Unpack(byte[] bytes, bool extendedMode = false)
+		public static OSCPacket Unpack(byte[] bytes)
 		{
 			int start = 0;
-			return Unpack(bytes, ref start, bytes.Length, extendedMode);
+			return Unpack(bytes, ref start, bytes.Length);
 		}
 
-		public static OSCPacket Unpack(byte[] bytes, ref int start, int end, bool extendedMode = false)
+		public static OSCPacket Unpack(byte[] bytes, ref int start, int end)
 		{
-			if(bytes[start] == '#') return OSCBundle.Unpack(bytes, ref start, end, extendedMode);
-			else return OSCMessage.Unpack(bytes, ref start, extendedMode);
+			if(bytes[start] == '#') return OSCBundle.Unpack(bytes, ref start, end);
+			else return OSCMessage.Unpack(bytes, ref start);
 		}
 
 

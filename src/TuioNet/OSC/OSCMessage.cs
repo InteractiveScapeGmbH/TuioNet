@@ -113,11 +113,11 @@ namespace OSC.NET
 		}
 
 
-		public static OSCMessage Unpack(byte[] bytes, ref int start, bool extendedMode = false)
+		public static OSCMessage Unpack(byte[] bytes, ref int start)
 		{
 			string address = unpackString(bytes, ref start);
 			//Console.WriteLine("address: " + address);
-			OSCMessage msg = new OSCMessage(address, extendedMode);
+			OSCMessage msg = new OSCMessage(address);
 
 			char[] tags = unpackString(bytes, ref start).ToCharArray();
 			//Console.WriteLine("tags: " + new string(tags));
