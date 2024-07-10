@@ -24,7 +24,6 @@
 
     <ItemGroup>
       <Folder Include="Tuio11" />
-      <Folder Include="Tuio20" />
     </ItemGroup>
 
 </Project>
