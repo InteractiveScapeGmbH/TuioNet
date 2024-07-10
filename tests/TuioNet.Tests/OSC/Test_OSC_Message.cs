@@ -44,8 +44,9 @@ public class Test_OSC_Message
     public void OSC_uint()
     {
         uint a = 10;
-        _message.Append(a);
-        var v = (uint)_message.Values[0];
+        int a_cast = (int)a;
+        _message.Append(a_cast);
+        var v = (uint)(int)_message.Values[0];
         Assert.AreEqual(a, v);
     }
     
@@ -53,8 +54,9 @@ public class Test_OSC_Message
     public void OSC_uint_min()
     {
         uint a = UInt32.MinValue;
-        _message.Append(a);
-        var v = (uint)_message.Values[0];
+        int a_cast = (int)a;
+        _message.Append(a_cast);
+        var v = (uint)(int)_message.Values[0];
         Assert.AreEqual(a, v);
     }
     
@@ -62,8 +64,9 @@ public class Test_OSC_Message
     public void OSC_uint_max()
     {
         uint a = UInt32.MaxValue;
-        _message.Append(a);
-        var v = (uint)_message.Values[0];
+        int a_cast = (int)a;
+        _message.Append(a_cast);
+        var v = (uint)(int)_message.Values[0];
         Assert.AreEqual(a, v);
     }
     
