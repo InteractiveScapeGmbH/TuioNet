@@ -101,7 +101,7 @@ namespace TuioNet.Tuio11
             {
                 var message = new OSCMessage("/tuio/2Dblb");
                 message.Append("set");
-                message.Append(SessionId);
+                message.Append((int)SessionId);
                 message.Append(Position.X);
                 message.Append(Position.Y);
                 message.Append(Angle);
