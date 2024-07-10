@@ -7,7 +7,7 @@ using TuioNet.Tuio11;
 namespace TuioNet.Tests.Tuio11;
 
 [TestFixture]
-public class Test_Tuio11
+public class Test_Tuio11_Receive
 {
     private uint sId;
     private uint symbolId;
