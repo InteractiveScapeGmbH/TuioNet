@@ -56,7 +56,7 @@ namespace TuioNet.Tuio20
                 message.Append(Velocity.X);
                 message.Append(Velocity.Y);
                 message.Append(RotationSpeed);
-                message.Append(Speed);
+                message.Append(Acceleration);
                 message.Append(RotationAcceleration);
                 return message;
             }
