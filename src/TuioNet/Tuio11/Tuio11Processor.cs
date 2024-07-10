@@ -183,7 +183,7 @@ namespace TuioNet.Tuio11
             return true;
         }
 
-        private void On2Dobj(object sender, OSCMessage oscMessage)
+        internal void On2Dobj(object sender, OSCMessage oscMessage)
         {
             var command = (string)oscMessage.Values[0];
             if (command == "set")
@@ -205,7 +205,7 @@ namespace TuioNet.Tuio11
                         var aliveSIds = new HashSet<uint>();
                         for (int i = 1; i < _objectAliveMessage.Values.Count; i++)
                         {
-                            aliveSIds.Add((uint)_objectAliveMessage.Values[i]);
+                            aliveSIds.Add((uint)(int)_objectAliveMessage.Values[i]);
                         }
 
                         var removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
@@ -220,8 +220,8 @@ namespace TuioNet.Tuio11
 
                         foreach (var setMessage in _objectSetMessages)
                         {
-                            var sessionId = (uint)setMessage.Values[1];
-                            var symbolId = (uint)setMessage.Values[2];
+                            var sessionId = (uint)(int)setMessage.Values[1];
+                            var symbolId = (uint)(int)setMessage.Values[2];
                             var posX = (float)setMessage.Values[3];
                             var posY = (float)setMessage.Values[4];
                             var position = new Vector2(posX, posY);
@@ -259,7 +259,7 @@ namespace TuioNet.Tuio11
             }
         }
 
-        private void On2Dcur(object sender, OSCMessage oscMessage)
+        internal void On2Dcur(object sender, OSCMessage oscMessage)
         {
             var command = (string)oscMessage.Values[0];
             if (command == "set")
@@ -281,7 +281,7 @@ namespace TuioNet.Tuio11
                         var aliveSIds = new HashSet<uint>();
                         for (int i = 1; i < _cursorAliveMessage.Values.Count; i++)
                         {
-                            aliveSIds.Add((uint)_cursorAliveMessage.Values[i]);
+                            aliveSIds.Add((uint)(int)_cursorAliveMessage.Values[i]);
                         }
 
                         var removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
@@ -298,7 +298,7 @@ namespace TuioNet.Tuio11
                         _freeCursorIds.Sort();
                         foreach (var setMessage in _cursorSetMessages)
                         {
-                            var sessionId = (uint)setMessage.Values[1];
+                            var sessionId = (uint)(int)setMessage.Values[1];
                             var posX = (float)setMessage.Values[2];
                             var posY = (float)setMessage.Values[3];
                             var position = new Vector2(posX, posY);
@@ -338,7 +338,7 @@ namespace TuioNet.Tuio11
             }
         }
 
-        private void On2Dblb(object sender, OSCMessage oscMessage)
+        internal void On2Dblb(object sender, OSCMessage oscMessage)
         {
             var command = (string)oscMessage.Values[0];
             if (command == "set")
@@ -360,7 +360,7 @@ namespace TuioNet.Tuio11
                         var aliveSIds = new HashSet<uint>();
                         for (int i = 1; i < _blobAliveMessage.Values.Count; i++)
                         {
-                            aliveSIds.Add((uint)_blobAliveMessage.Values[i]);
+                            aliveSIds.Add((uint)(int)_blobAliveMessage.Values[i]);
                         }
 
                         var removedSIds = new HashSet<uint>(currentSIds.Except(aliveSIds));
@@ -377,7 +377,7 @@ namespace TuioNet.Tuio11
                         _freeBlobIds.Sort();
                         foreach (var setMessage in _blobSetMessages)
                         {
-                            var sessionId = (uint)setMessage.Values[1];
+                            var sessionId = (uint)(int)setMessage.Values[1];
                             var posX = (float)setMessage.Values[2];
                             var posY = (float)setMessage.Values[3];
                             var position = new Vector2(posX, posY);
