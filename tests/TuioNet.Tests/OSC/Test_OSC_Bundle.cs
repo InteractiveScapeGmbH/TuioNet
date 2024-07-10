@@ -11,7 +11,9 @@ public class Test_OSC_Bundle
     {
         var bundle = new OSCBundle();
         var sourceMessage = new OSCMessage("/tuio2/frm");
-        sourceMessage.Append((uint)1);
+        uint frame_id = UInt32.MaxValue;
+        int frame_id_cast = (int)frame_id;
+        sourceMessage.Append(frame_id_cast);
         sourceMessage.Append(new OscTimeTag(DateTime.Now));
         sourceMessage.Append(36);
         sourceMessage.Append("Test");
@@ -21,6 +23,6 @@ public class Test_OSC_Bundle
         var packet = OSCPacket.Unpack(byteMessage);
 
         var targetMessage = (OSCMessage)packet.Values[0];
-        Assert.AreEqual((uint)targetMessage.Values[0], 1);
+        Assert.AreEqual((uint)(int)targetMessage.Values[0], frame_id);
     }
 }
