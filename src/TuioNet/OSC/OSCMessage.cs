@@ -41,7 +41,6 @@ namespace OSC.NET
 	{
 //      These Attributes adhere to the OSC Specs 1.0
         protected const char INTEGER  = 'i'; // int32 8byte
-        protected const char UNSIGNED = 'u'; // uint32 8byte
 		protected const char FLOAT	  = 'f'; //float32 8byte
 		protected const char LONG	  = 'h';  //int64 16byte
 		protected const char DOUBLE   = 'd'; // float64 16byte
@@ -92,7 +91,6 @@ namespace OSC.NET
 			{
 				if(value is int) addBytes(data, packInt((int)value));
 				else if(value is long) addBytes(data, packLong((long)value));
-				else if(value is uint) addBytes(data, packUint((uint)value));
 				else if(value is float) addBytes(data, packFloat((float)value));
 				else if(value is double) addBytes(data, packDouble((double)value));
 				else if(value is string) {
@@ -128,7 +126,6 @@ namespace OSC.NET
 				//Console.WriteLine("tag: " + tag + " @ "+start);
 				if(tag == ',') continue;
 				else if(tag == INTEGER) msg.Append(unpackInt(bytes, ref start));
-				else if(tag == UNSIGNED) msg.Append(unpackUint(bytes, ref start));
 				else if(tag == LONG) msg.Append(unpackLong(bytes, ref start));
 				else if(tag == DOUBLE) msg.Append(unpackDouble(bytes, ref start));
 				else if(tag == FLOAT) msg.Append(unpackFloat(bytes, ref start));
@@ -149,10 +146,6 @@ namespace OSC.NET
 			if(value is int)
 			{
 				AppendTag(INTEGER);
-			}
-			else if (value is uint)
-			{
-				AppendTag(UNSIGNED);
 			}
 			else if(value is long)
 			{

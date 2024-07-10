@@ -88,13 +88,6 @@ namespace OSC.NET
 			return data;
 		}
 		
-		protected static byte[] packUint(uint value)
-		{
-			byte[] data = BitConverter.GetBytes(value);
-			if(BitConverter.IsLittleEndian)	data = swapEndian(data);
-			return data;
-		}
-
 		protected static byte[] packLong(long value)
 		{
 			byte[] data = BitConverter.GetBytes(value);
@@ -171,14 +164,6 @@ namespace OSC.NET
 			return BitConverter.ToInt32(data, 0);
 		}
 		
-		protected static uint unpackUint(byte[] bytes, ref int start)
-		{
-			byte[] data = new byte[sizeof(uint)];
-			for(int i = 0 ; i < sizeof(uint) ; i++, start++) data[i] = bytes[start];
-			if(BitConverter.IsLittleEndian) data = swapEndian(data);
-			return BitConverter.ToUInt32(data, 0);
-		}
-
 		protected static long unpackLong(byte[] bytes, ref int start)
 		{
 			byte[] data = new byte[sizeof(long)];
