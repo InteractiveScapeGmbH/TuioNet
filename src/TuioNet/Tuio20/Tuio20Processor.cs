@@ -62,7 +62,12 @@ namespace TuioNet.Tuio20
         /// <summary>
         /// The sensor dimension. The first two bytes represent the width. The last two byte represent the height.
         /// </summary>
-        internal uint SensorDimension { get; private set; } = 0;
+        internal uint SensorDimensionEncoded { get; private set; } = 0;
+
+        /// <summary>
+        /// The sensor dimension as Vector2 {width, height}.
+        /// </summary>
+        internal Vector2 SensorDimension => Utils.ToDimension(SensorDimensionEncoded);
         
         /// <summary>
         /// Provide additional information about the TUIO source.
@@ -190,7 +195,7 @@ namespace TuioNet.Tuio20
             if (frameId >= _prevFrameId || frameId == 0 || 
                 (currentFrameTime - _currentTime).GetTotalMilliseconds() >= 1000)
             {
-                SensorDimension = sensorDimension;
+                SensorDimensionEncoded = sensorDimension;
                 Source = source;
                 HashSet<uint> currentSIds = new HashSet<uint>(_tuioObjects.Keys);
                 HashSet<uint> aliveSIds = new HashSet<uint>();

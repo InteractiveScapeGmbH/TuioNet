@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using TuioNet.Common;
 
 namespace TuioNet.Tuio20;
@@ -35,6 +36,9 @@ public class Tuio20Dispatcher : ITuioDispatcher
         _processor.OnObjectRemoved -= RemoveObject;
         _processor.OnRefreshed -= Refresh;
     }
+
+    public Vector2 SensorDimension => _processor?.SensorDimension ?? Vector2.Zero;
+    public string Source => _processor == null ? string.Empty : _processor.Source;
 
     public List<Tuio20Pointer> GetTuioPointer()
     {
