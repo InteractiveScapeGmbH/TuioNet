@@ -9,6 +9,7 @@ namespace TuioNet.Tuio11
 {
     internal class Tuio11Processor
     {
+        internal Tuio11Processor(){}
         internal Tuio11Processor(TuioClient client)
         {
             client.AddMessageListeners(new List<MessageListener>()
