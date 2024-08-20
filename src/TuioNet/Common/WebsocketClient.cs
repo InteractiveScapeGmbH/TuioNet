@@ -44,6 +44,7 @@ public class WebsocketClient
                     }
                     catch (OperationCanceledException)
                     {
+                        Console.WriteLine($"[WebsocketClient] There was a problem while receiving messages from: {_boxUrl}");
                         break;
                     }
                     catch (WebSocketException exception)
