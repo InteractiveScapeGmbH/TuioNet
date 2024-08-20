@@ -1,4 +1,5 @@
-﻿using TuioNet.Common;
+﻿using Microsoft.Extensions.Logging;
+using TuioNet.Common;
 using TuioNet.Tuio11;
 
 namespace TuioNet.Demo;
@@ -7,7 +8,9 @@ class Program
 {
     private static void Main(string[] args)
     {
-        using (var tuioSession = new TuioSession(TuioVersion.Tuio11, TuioConnectionType.UDP))
+        using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
+        using (var tuioSession = new TuioSession(logger, TuioVersion.Tuio11, TuioConnectionType.UDP))
         {
             var dispatcher = (Tuio11Dispatcher)tuioSession.TuioDispatcher;
             dispatcher.OnCursorAdd += CursorAdded;
