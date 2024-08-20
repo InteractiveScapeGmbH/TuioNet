@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <Nullable>enable</Nullable>
-        <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <TargetFrameworks>netstandard2.1;net8.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
