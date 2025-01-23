@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace TuioNet.Common
 {
@@ -11,9 +12,9 @@ namespace TuioNet.Common
         /// <param name="address">The IP address of the TUIO sender.</param>
         /// <param name="port">The port the client listen to for new TUIO messages. Default UDP port is 3333.</param>
         /// <param name="isAutoProcess">If set, the receiver processes incoming messages automatically. Otherwise the ProcessMessages() methods needs to be called manually.</param>
-        public TuioClient(TuioConnectionType connectionType, string address = "0.0.0.0", int port = 3333, bool isAutoProcess = true)
+        public TuioClient(TuioConnectionType connectionType,ILogger logger, string address = "0.0.0.0", int port = 3333, bool isAutoProcess = true)
         {
-            _tuioReceiver = TuioReceiver.FromConnectionType(connectionType, address, port, isAutoProcess);
+            _tuioReceiver = TuioReceiver.FromConnectionType(connectionType, address, port, isAutoProcess, logger);
         }
 
         private readonly TuioReceiver _tuioReceiver;
