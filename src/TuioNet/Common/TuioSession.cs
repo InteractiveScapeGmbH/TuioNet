@@ -1,6 +1,8 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using TuioNet.Tuio11;
 using TuioNet.Tuio20;
+
 
 namespace TuioNet.Common;
 
@@ -13,13 +15,14 @@ public class TuioSession : IDisposable
 
     public ITuioDispatcher TuioDispatcher { get; }
 
-
+    private readonly ILogger _logger;
     private TuioClient _tuioClient;
     private bool _isInitialized;
 
-    public TuioSession(TuioVersion tuioVersion = TuioVersion.Tuio11,
+    public TuioSession(ILogger logger, TuioVersion tuioVersion = TuioVersion.Tuio11,
         TuioConnectionType connectionType = TuioConnectionType.UDP, string ipAddress = "127.0.0.1", int port = 3333, bool isAutoProcess = true)
     {
+        _logger = logger;
         TuioVersion = tuioVersion;
         ConnectionType = connectionType;
         IpAddress = ipAddress;
@@ -32,12 +35,13 @@ public class TuioSession : IDisposable
         };
 
         Initialize(isAutoProcess);
+        logger.LogInformation("[TuioSession] Session initialized!");
     }
 
     private void Initialize(bool isAutoProcess)
     {
         if (_isInitialized) return;
-        _tuioClient = new TuioClient(ConnectionType, IpAddress, Port, isAutoProcess);
+        _tuioClient = new TuioClient(ConnectionType, _logger, IpAddress, Port, isAutoProcess);
         TuioDispatcher.SetupProcessor(_tuioClient);
         TuioDispatcher.RegisterCallbacks();
         _tuioClient.Connect();

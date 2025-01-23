@@ -1,4 +1,6 @@
-﻿namespace TuioNet.Common
+﻿using Microsoft.Extensions.Logging;
+
+namespace TuioNet.Common
 {
     public class WebsocketTuioReceiver : TuioReceiver
     {
@@ -6,9 +8,9 @@
 
         public override bool IsConnected => _client.IsConnected;
         
-        internal WebsocketTuioReceiver(string address, int port, bool isAutoProcess) : base(isAutoProcess)
+        internal WebsocketTuioReceiver(string address, int port, bool isAutoProcess, ILogger logger) : base(isAutoProcess)
         {
-            _client = new WebsocketClient(address, port, CancellationTokenSource);
+            _client = new WebsocketClient(address, port,logger, CancellationTokenSource);
             _client.OnMessageReceived += MessageReceived;
         }
 

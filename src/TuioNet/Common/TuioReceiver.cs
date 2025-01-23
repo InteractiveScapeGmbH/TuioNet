@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using OSC.NET;
 
 namespace TuioNet.Common
@@ -31,13 +32,13 @@ namespace TuioNet.Common
         /// <param name="port">The port on which the receiver should listen to.</param>
         /// <param name="isAutoProcess">If true the TUIO messages gets processed automatically. No need for calling the ProcessMessages() method manually.</param>
         /// <returns>A TuioReceiver object. </returns>
-        internal static TuioReceiver FromConnectionType(TuioConnectionType tuioConnectionType, string address, int port, bool isAutoProcess){
+        internal static TuioReceiver FromConnectionType(TuioConnectionType tuioConnectionType, string address, int port, bool isAutoProcess, ILogger logger){
             switch(tuioConnectionType)
             {
                 case TuioConnectionType.UDP:
                     return new UdpTuioReceiver(port, isAutoProcess);
                 case TuioConnectionType.Websocket:
-                    return new WebsocketTuioReceiver(address, port, isAutoProcess);
+                    return new WebsocketTuioReceiver(address, port, isAutoProcess, logger);
             }
             return null;
         }
