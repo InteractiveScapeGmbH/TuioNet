@@ -11,37 +11,66 @@ class Program
     {
         using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
         ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
-        using (var tuioSession = new TuioSession(logger, TuioVersion.Tuio11, TuioConnectionType.UDP))
+        // Setup TUIO version and connection type
+        var tuioVersion = TuioVersion.Tuio11;
+        var connectionType = TuioConnectionType.Websocket;
+        using var tuioSession = new TuioSession(logger, tuioVersion, connectionType);
+        AddCallbacks(tuioSession);
+        Console.WriteLine("Connect...");
+        while (true)
         {
-            var dispatcher = (Tuio20Dispatcher)tuioSession.TuioDispatcher;
-            dispatcher.OnObjectAdd += Tuio20Add;
-            dispatcher.OnObjectUpdate += Tuio20Update;
-            dispatcher.OnObjectRemove += Tuio20Remove;
-            // dispatcher.OnCursorAdd += CursorAdded;
-            // dispatcher.OnCursorUpdate += UpdateCursor;
-            // dispatcher.OnCursorRemove += RemoveCursor;
-            //
-            // dispatcher.OnObjectAdd += ObjectAdded;
-            // dispatcher.OnObjectUpdate += UpdateObject;
-            // dispatcher.OnObjectRemove += RemoveObject;
-            Console.WriteLine("Connect...");
-            while (true)
-            {
-                if (!Console.KeyAvailable) continue;
-                var pressedKey = Console.ReadKey().Key;
-                if (pressedKey == ConsoleKey.Q) break;
-            }
-            Console.WriteLine("Disconnect...");
-            // dispatcher.OnCursorAdd -= CursorAdded;
-            // dispatcher.OnCursorUpdate -= UpdateCursor;
-            // dispatcher.OnCursorRemove -= RemoveCursor;
-            //
-            // dispatcher.OnObjectAdd -= ObjectAdded;
-            // dispatcher.OnObjectUpdate -= UpdateObject;
-            // dispatcher.OnObjectRemove -= RemoveObject;
-            dispatcher.OnObjectAdd -= Tuio20Add;
-            dispatcher.OnObjectUpdate -= Tuio20Update;
-            dispatcher.OnObjectRemove -= Tuio20Remove;
+            if (!Console.KeyAvailable) continue;
+            var pressedKey = Console.ReadKey().Key;
+            if (pressedKey == ConsoleKey.Q) break;
+        }
+        Console.WriteLine("Disconnect...");
+        RemoveCallbacks(tuioSession);
+    }
+
+    private static void AddCallbacks(TuioSession tuioSession)
+    {
+        switch (tuioSession.TuioVersion)
+        {
+            case TuioVersion.Tuio11:
+                var dispatcher11 = (Tuio11Dispatcher)tuioSession.TuioDispatcher;
+                dispatcher11.OnCursorAdd += CursorAdded;
+                dispatcher11.OnCursorUpdate += UpdateCursor;
+                dispatcher11.OnCursorRemove += RemoveCursor;
+                
+                dispatcher11.OnObjectAdd += ObjectAdded;
+                dispatcher11.OnObjectUpdate += UpdateObject;
+                dispatcher11.OnObjectRemove += RemoveObject;
+                break;
+            case TuioVersion.Tuio20:
+                var dispatcher20 = (Tuio20Dispatcher)tuioSession.TuioDispatcher;
+                dispatcher20.OnObjectAdd += Tuio20Add;
+                dispatcher20.OnObjectUpdate += Tuio20Update;
+                dispatcher20.OnObjectRemove += Tuio20Remove;
+                break;
+        }
+    }
+    
+    private static void RemoveCallbacks(TuioSession tuioSession)
+    {
+        switch (tuioSession.TuioVersion)
+        {
+            case TuioVersion.Tuio11:
+                var dispatcher11 = (Tuio11Dispatcher)tuioSession.TuioDispatcher;
+                dispatcher11.OnCursorAdd -= CursorAdded;
+                dispatcher11.OnCursorUpdate -= UpdateCursor;
+                dispatcher11.OnCursorRemove -= RemoveCursor;
+                
+                dispatcher11.OnObjectAdd -= ObjectAdded;
+                dispatcher11.OnObjectUpdate -= UpdateObject;
+                dispatcher11.OnObjectRemove -= RemoveObject;
+                break;
+            case TuioVersion.Tuio20:
+                var dispatcher20 = (Tuio20Dispatcher)tuioSession.TuioDispatcher;
+                dispatcher20.OnObjectAdd -= Tuio20Add;
+                dispatcher20.OnObjectUpdate -= Tuio20Update;
+                dispatcher20.OnObjectRemove -= Tuio20Remove;
+                break;
+                
         }
     }
 
