@@ -14,7 +14,9 @@ class Program
         // Setup TUIO version and connection type
         var tuioVersion = TuioVersion.Tuio11;
         var connectionType = TuioConnectionType.Websocket;
-        using var tuioSession = new TuioSession(logger, tuioVersion, connectionType);
+        var ipAddress = "127.0.0.1";
+        var port = 3333;
+        using var tuioSession = new TuioSession(logger, tuioVersion, connectionType, ipAddress, port);
         AddCallbacks(tuioSession);
         Console.WriteLine("Connect...");
         while (true)
