@@ -23,10 +23,10 @@ public class WebsocketClient
     {
         _logger = logger;
         _boxUrl = new Uri($"ws://{ipAddress}:{port}");
-        if(tokenSource != null)
+        if (tokenSource != null)
             _tokenSource = tokenSource;
     }
-    
+
     public void Connect()
     {
         _token = _tokenSource.Token;
@@ -36,29 +36,29 @@ public class WebsocketClient
             while (_socket is not { State: WebSocketState.Open })
             {
                 if (_token.IsCancellationRequested) break;
-                using(_socket = new ClientWebSocket())
+                using (_socket = new ClientWebSocket())
                 {
                     try
                     {
-                        _logger.LogInformation($"[WebsocketClient] Try to connect to: {_boxUrl}");
+                        _logger.LogInformation("[WebsocketClient] Try to connect to: {BoxUrl}", _boxUrl);
                         await _socket.ConnectAsync(_boxUrl, _token);
-                        _logger.LogInformation($"[WebsocketClient] Connected to {_boxUrl}.");
+                        _logger.LogInformation("[WebsocketClient] Connected to {BoxUrl}.", _boxUrl);
                         IsConnected = true;
                         await ReceiveMessages();
                     }
                     catch (OperationCanceledException)
                     {
-                        _logger.LogError($"[WebsocketClient] There was a problem while receiving messages from: {_boxUrl}");
+                        _logger.LogError("[WebsocketClient] There was a problem while receiving messages from: {BoxUrl}", _boxUrl);
                         break;
                     }
                     catch (WebSocketException exception)
                     {
-                        _logger.LogError($"[WebsocketClient] Could not connect to {_boxUrl} -> {exception.Message}");
+                        _logger.LogError("[WebsocketClient] Could not connect to {BoxUrl} -> {Message}", _boxUrl, exception.Message);
                         _logger.LogError("[WebsocketClient] Try to establish connection again.");
                     }
                 }
             }
-            _logger.LogInformation($"[WebsocketClient] Shutdown websocket to {_boxUrl}.");
+            _logger.LogInformation("[WebsocketClient] Shutdown websocket to {BoxUrl}.", _boxUrl);
             IsConnected = false;
         }, _token);
     }
@@ -81,7 +81,7 @@ public class WebsocketClient
                 }
                 catch (WebSocketException exception)
                 {
-                    _logger.LogError($"[WebsocketClient] Could not receive message from {_boxUrl} -> {exception.Message}");
+                    _logger.LogError("[WebsocketClient] Could not receive message from {BoxUrl} -> {Message}", _boxUrl, exception.Message);
                     break;
                 }
             }
