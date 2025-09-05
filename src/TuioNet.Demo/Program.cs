@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using CommandLine;
+using Microsoft.Extensions.Logging;
 using TuioNet.Client.Common;
 using TuioNet.Client.Tuio11;
 using TuioNet.Client.Tuio20;
@@ -10,26 +11,38 @@ namespace TuioNet.Demo;
 
 class Program
 {
+    public class Options
+    {
+        [Option('i', "ip", HelpText = "Set the ip address of the tuio sender.", Default = "127.0.0.1")]
+        public string IpAddress { get; set; }
+        [Option('p', "port", HelpText = "Set the port.", Default = 3333)]
+        public int Port { get; set; }
+        [Option('l', "logLevel", HelpText = "Set the minimum log level [Trace, Debug, Information, Warning, Error, Critical, None].", Default = LogLevel.Information)]
+        public LogLevel LogLevel { get; set; }
+        [Option('v', "tuioVersion", HelpText = "Set the tuio version [Tuio11, Tuio20].", Default = TuioVersion.Tuio11)]
+        public TuioVersion TuioVersion { get; set; }
+        [Option('c', "connection", HelpText = "Set the connection type [UDP, Websocket].", Default = TuioConnectionType.UDP)]
+        public TuioConnectionType ConnectionType { get; set; }
+    }
+    
     private static void Main(string[] args)
     {
-        using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-        ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
-        // Setup TUIO version and connection type
-        var tuioVersion = TuioVersion.Tuio11;
-        var connectionType = TuioConnectionType.Websocket;
-        var ipAddress = "127.0.0.1";
-        var port = 3333;
-        using var tuioSession = new TuioSession(logger, tuioVersion, connectionType, ipAddress, port);
-        AddCallbacks(tuioSession);
-        Console.WriteLine("Connect...");
-        while (true)
+        Parser.Default.ParseArguments<Options>(args).WithParsed(option =>
         {
-            if (!Console.KeyAvailable) continue;
-            var pressedKey = Console.ReadKey().Key;
-            if (pressedKey == ConsoleKey.Q) break;
-        }
-        Console.WriteLine("Disconnect...");
-        RemoveCallbacks(tuioSession);
+            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
+            using var tuioSession = new TuioSession(logger, option.TuioVersion, option.ConnectionType, option.IpAddress, option.Port);
+            AddCallbacks(tuioSession);
+            Console.WriteLine("Connect...");
+            while (true)
+            {
+                if (!Console.KeyAvailable) continue;
+                var pressedKey = Console.ReadKey().Key;
+                if (pressedKey == ConsoleKey.Q) break;
+            }
+            Console.WriteLine("Disconnect...");
+            RemoveCallbacks(tuioSession);
+        });
     }
 
     private static void AddCallbacks(TuioSession tuioSession)
@@ -78,59 +91,75 @@ class Program
                 
         }
     }
-
-    private static void Tuio20Remove(object? sender, Tuio20Object e)
+    
+    private static void Tuio20Add(object? sender, Tuio20Object tuio20Object)
     {
-        Console.WriteLine($"Object {e.SessionId} removed");
-    }
-
-    private static void Tuio20Update(object? sender, Tuio20Object e)
-    {
-        if (e.ContainsTuioPointer())
+        if (tuio20Object.ContainsTuioPointer())
         {
-            Console.WriteLine($"Pointer {e.SessionId} -> Position: {e.Pointer.Position}");
+            Console.WriteLine($"[Tuio 2.0] Pointer added -> SessionId: {tuio20Object.SessionId}");
         }
 
-        if (e.ContainsTuioToken())
+        if (tuio20Object.ContainsTuioToken())
         {
-            Console.WriteLine($"Pointer {e.Token.ComponentId} -> Position: {e.Token.Position}, Angle: {e.Token.Angle}");
-
+            Console.WriteLine($"[Tuio 2.0] Token added -> SessionId: {tuio20Object.SessionId}, ComponentId: {tuio20Object.Token.ComponentId}");
         }
     }
 
-    private static void Tuio20Add(object? sender, Tuio20Object e)
+    private static void Tuio20Remove(object? sender, Tuio20Object tuio20Object)
     {
-        Console.WriteLine($"New object added -> ID: {e.SessionId}");
+        if (tuio20Object.ContainsTuioPointer())
+        {
+            Console.WriteLine($"[Tuio 2.0] Pointer removed -> SessionId: {tuio20Object.SessionId}");
+        }
+
+        if (tuio20Object.ContainsTuioToken())
+        {
+            Console.WriteLine($"[Tuio 2.0] Token removed -> SessionId: {tuio20Object.SessionId}, ComponentId: {tuio20Object.Token.ComponentId}");
+        }
     }
 
-    private static void RemoveObject(object? sender, Tuio11Object e)
+    private static void Tuio20Update(object? sender, Tuio20Object tuio20Object)
     {
-        Console.WriteLine($"Object {e.SymbolId} removed");
+        if (tuio20Object.ContainsTuioPointer())
+        {
+            Console.WriteLine($"[Tuio 2.0] Pointer {tuio20Object.SessionId} -> Position: {tuio20Object.Pointer.Position}");
+        }
+
+        if (tuio20Object.ContainsTuioToken())
+        {
+            Console.WriteLine($"[Tuio 2.0] Token {tuio20Object.Token.ComponentId} -> Position: {tuio20Object.Token.Position}, Angle: {tuio20Object.Token.Angle}");
+
+        }
     }
 
-    private static void UpdateObject(object? sender, Tuio11Object e)
+    private static void ObjectAdded(object? sender, Tuio11Object tuio11Object)
     {
-        Console.WriteLine($"Object {e.SymbolId} -> Position: {e.Position}");
+        Console.WriteLine($"[Tuio 1.1] Object added -> SessionId: {tuio11Object.SessionId}, SymbolId: {tuio11Object.SymbolId}");
     }
 
-    private static void ObjectAdded(object? sender, Tuio11Object e)
+    private static void UpdateObject(object? sender, Tuio11Object tuio11Object)
     {
-        Console.WriteLine($"New object added -> ID: {e.SymbolId}");
+        Console.WriteLine($"[Tuio 1.1] Object {tuio11Object.SymbolId} -> Position: {tuio11Object.Position}");
     }
 
-    private static void RemoveCursor(object? sender, Tuio11Cursor cursor)
+    private static void RemoveObject(object? sender, Tuio11Object tuio11Object)
     {
-        Console.WriteLine($"Cursor {cursor.CursorId} removed");
+        Console.WriteLine($"[Tuio 1.1] Object removed -> SessionId: {tuio11Object.SessionId}, SymbolId: {tuio11Object.SymbolId}");
+    }
+    private static void CursorAdded(object? sender, Tuio11Cursor tuio11Cursor)
+    {
+        Console.WriteLine($"[Tuio 1.1] Cursor added -> SessionId: {tuio11Cursor.SessionId}");
     }
 
-    private static void UpdateCursor(object? sender, Tuio11Cursor cursor)
+    private static void UpdateCursor(object? sender, Tuio11Cursor tuio11Cursor)
     {
-        Console.WriteLine($"Cursor {cursor.CursorId} -> Position: {cursor.Position}");
+        Console.WriteLine($"[Tuio 1.1] Cursor {tuio11Cursor.SessionId} -> Position: {tuio11Cursor.Position}");
+    }
+    
+    private static void RemoveCursor(object? sender, Tuio11Cursor tuio11Cursor)
+    {
+        Console.WriteLine($"[Tuio 1.1] Cursor removed -> SessionId: {tuio11Cursor.SessionId}");
     }
 
-    private static void CursorAdded(object? sender, Tuio11Cursor cursor)
-    {
-        Console.WriteLine($"New cursor added -> ID: {cursor.CursorId}");
-    }
 }
 
