@@ -56,12 +56,12 @@ namespace TuioNet.Tuio11
             return PrevPoints.ToList();
         }
 
-        internal void UpdateTime(TuioTime currentTime)
+        public void UpdateTime(TuioTime currentTime)
         {
             CurrentTime = currentTime - StartTime;
         }
 
-        internal void UpdateContainer(TuioTime currentTime, Vector2 position, Vector2 velocity, float acceleration, bool isCalculateSpeeds)
+        public void UpdateContainer(TuioTime currentTime, Vector2 position, Vector2 velocity, float acceleration, bool isCalculateSpeeds)
         {
             var lastPoint = PrevPoints[PrevPoints.Count - 1];
             Position = position;
@@ -105,7 +105,7 @@ namespace TuioNet.Tuio11
             }
         }
 
-        internal void Remove()
+        public void Remove()
         {
             State = TuioState.Removed;
         }

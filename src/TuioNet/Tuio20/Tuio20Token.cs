@@ -24,7 +24,7 @@ namespace TuioNet.Tuio20
             ComponentId = componentId;
         }
         
-        internal bool HasChanged(uint typeUserId, uint componentId, Vector2 position, float angle, Vector2 velocity,
+        public bool HasChanged(uint typeUserId, uint componentId, Vector2 position, float angle, Vector2 velocity,
             float rotationSpeed, float acceleration, float rotationAcceleration)
         {
             return !(typeUserId == TypeUserId && componentId == ComponentId && position == Position && angle == Angle &&

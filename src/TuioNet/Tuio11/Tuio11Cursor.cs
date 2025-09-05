@@ -16,7 +16,7 @@ namespace TuioNet.Tuio11
             CursorId = cursorId;
         }
         
-        internal bool HasChanged(Vector2 position, Vector2 velocity, float acceleration)
+        public bool HasChanged(Vector2 position, Vector2 velocity, float acceleration)
         {
             return !(Position == position && Velocity == velocity && Acceleration == acceleration);
         }

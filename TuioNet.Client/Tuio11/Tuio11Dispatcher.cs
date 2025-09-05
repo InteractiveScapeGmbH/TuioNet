@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using TuioNet.Client.Common;
 using TuioNet.Common;
+using TuioNet.Tuio11;
 
-namespace TuioNet.Tuio11;
+namespace TuioNet.Client.Tuio11;
 
 public class Tuio11Dispatcher : ITuioDispatcher
 {

@@ -126,7 +126,7 @@ namespace TuioNet.Tuio20
             State = TuioState.Idle;
         }
 
-        internal void Remove(TuioTime currentTime)
+        public void Remove(TuioTime currentTime)
         {
             CurrentTime = currentTime;
             Token?.Remove(currentTime);

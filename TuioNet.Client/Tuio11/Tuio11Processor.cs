@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using OSC.NET;
+using TuioNet.Client.Common;
 using TuioNet.Common;
+using TuioNet.Tuio11;
 
-namespace TuioNet.Tuio11
+namespace TuioNet.Client.Tuio11
 {
     internal class Tuio11Processor
     {

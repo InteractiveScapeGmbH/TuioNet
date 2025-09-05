@@ -1,18 +1,27 @@
 ﻿using OSC.NET;
 using TuioNet.Tuio11;
 
-namespace TuioNet.Server;
-
+namespace TuioNet.Server
+{
+    
 public class Tuio11Manager : ITuioManager
 {
+    private readonly Tuio11Repository _blobRepository;
     private readonly Tuio11Repository _cursorRepository;
     private readonly Tuio11Repository _objectRepository;
-    private readonly Tuio11Repository _blobRepository;
-    
+
     private OSCBundle _frameBundle;
     private uint _frameId = 1;
 
-    public uint CurrentSessionId { get; private set; } = 0;
+    public Tuio11Manager(string sourceName)
+    {
+        _cursorRepository = new Tuio11Repository(sourceName, "/tuio/2Dcur");
+        _objectRepository = new Tuio11Repository(sourceName, "/tuio/2Dobj");
+        _blobRepository = new Tuio11Repository(sourceName, "/tuio/2Dblb");
+    }
+
+    public uint CurrentSessionId { get; private set; }
+
     public OSCBundle FrameBundle
     {
         get
@@ -20,6 +29,23 @@ public class Tuio11Manager : ITuioManager
             UpdateFrameBundle();
             return _frameBundle;
         }
+    }
+
+
+    public void Update()
+    {
+        _frameId += 1;
+        _cursorRepository.Update(_frameId);
+        _objectRepository.Update(_frameId);
+        _blobRepository.Update(_frameId);
+    }
+
+    public void Quit()
+    {
+        _cursorRepository.Clear();
+        _objectRepository.Clear();
+        _blobRepository.Clear();
+        Update();
     }
 
     public void AddCursor(Tuio11Cursor tuioCursor)
@@ -54,30 +80,6 @@ public class Tuio11Manager : ITuioManager
     {
         _blobRepository.Remove(tuioBlob);
     }
-    
-    public Tuio11Manager(string sourceName)
-    {
-        _cursorRepository = new Tuio11Repository(sourceName, "/tuio/2Dcur");
-        _objectRepository = new Tuio11Repository(sourceName, "/tuio/2Dobj");
-        _blobRepository = new Tuio11Repository(sourceName, "/tuio/2Dblb");
-    }
-    
-    
-    public void Update()
-    {
-        _frameId += 1;
-        _cursorRepository.Update(_frameId);
-        _objectRepository.Update(_frameId);
-        _blobRepository.Update(_frameId);
-    }
-
-    public void Quit()
-    {
-        _cursorRepository.Clear();
-        _objectRepository.Clear();
-        _blobRepository.Clear();
-        Update();
-    }
 
     private void UpdateFrameBundle()
     {
@@ -86,4 +88,5 @@ public class Tuio11Manager : ITuioManager
         _objectRepository.UpdateBundle(_frameBundle);
         _blobRepository.UpdateBundle(_frameBundle);
     }
+}
 }

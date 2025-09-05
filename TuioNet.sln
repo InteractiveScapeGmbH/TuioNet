@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet.Tests", "tests\Tuio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet.Demo", "src\TuioNet.Demo\TuioNet.Demo.csproj", "{E8DF05DA-653C-4D4B-BEDC-6AB1F39CCC03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet.Client", "TuioNet.Client\TuioNet.Client.csproj", "{1F4C9E8A-97D7-4E4A-9A6C-AEF1A4026B01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet.Server", "TuioNet.Server\TuioNet.Server.csproj", "{DF66A589-DFDB-4A35-B734-2C35F6433287}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,5 +27,13 @@ Global
 		{E8DF05DA-653C-4D4B-BEDC-6AB1F39CCC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8DF05DA-653C-4D4B-BEDC-6AB1F39CCC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8DF05DA-653C-4D4B-BEDC-6AB1F39CCC03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F4C9E8A-97D7-4E4A-9A6C-AEF1A4026B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4C9E8A-97D7-4E4A-9A6C-AEF1A4026B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4C9E8A-97D7-4E4A-9A6C-AEF1A4026B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4C9E8A-97D7-4E4A-9A6C-AEF1A4026B01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF66A589-DFDB-4A35-B734-2C35F6433287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF66A589-DFDB-4A35-B734-2C35F6433287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF66A589-DFDB-4A35-B734-2C35F6433287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF66A589-DFDB-4A35-B734-2C35F6433287}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

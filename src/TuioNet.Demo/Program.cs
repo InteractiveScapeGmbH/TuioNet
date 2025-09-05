@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using TuioNet.Client.Common;
+using TuioNet.Client.Tuio11;
+using TuioNet.Client.Tuio20;
 using TuioNet.Common;
 using TuioNet.Tuio11;
 using TuioNet.Tuio20;

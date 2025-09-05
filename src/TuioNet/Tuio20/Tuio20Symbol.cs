@@ -35,7 +35,7 @@ namespace TuioNet.Tuio20
             Data = data;
         }
         
-        internal bool HasChanged(uint typeUserId, uint componentId, string group, string data)
+        public bool HasChanged(uint typeUserId, uint componentId, string group, string data)
         {
             return !(typeUserId == TypeUserId && componentId == ComponentId && group == Group && data == Data);
         }

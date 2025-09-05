@@ -1,9 +1,6 @@
-﻿using System;
-using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net.Sockets;
 
-namespace TuioNet.Common
+namespace TuioNet.Client.Common
 {
     public class UdpTuioReceiver : TuioReceiver
     {

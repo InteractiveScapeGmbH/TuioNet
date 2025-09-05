@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using Microsoft.Extensions.Logging;
 using OSC.NET;
+using TuioNet.Common;
 
-namespace TuioNet.Common
+namespace TuioNet.Client.Common
 {
     public abstract class TuioReceiver
     {

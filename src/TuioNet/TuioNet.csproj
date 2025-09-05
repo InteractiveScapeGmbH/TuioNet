@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>10</LangVersion>
         <TargetFrameworks>net8.0;netstandard2.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
 
@@ -12,7 +12,6 @@
 
     <ItemGroup>
       <PackageReference Include="WebSocketSharp" Version="1.0.3-rc11" />
-      <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
       <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     </ItemGroup>
 </Project>

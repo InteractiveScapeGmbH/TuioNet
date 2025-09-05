@@ -41,7 +41,7 @@ namespace TuioNet.Tuio11
             RotationAcceleration = rotationAcceleration;
         }
         
-        internal bool HasChanged(Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration)
+        public bool HasChanged(Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration)
         {
             return !(position.X == ((Tuio11Point)this).Position.X && position.Y == ((Tuio11Point)this).Position.Y && angle == Angle && velocity.X == base.Velocity.X && velocity.Y == base.Velocity.Y &&
                      rotationSpeed == RotationSpeed && acceleration == Acceleration && rotationAcceleration == RotationAcceleration);

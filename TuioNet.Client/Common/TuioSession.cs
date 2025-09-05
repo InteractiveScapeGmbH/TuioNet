@@ -1,10 +1,11 @@
-﻿using System;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using TuioNet.Client.Tuio11;
+using TuioNet.Client.Tuio20;
+using TuioNet.Common;
 using TuioNet.Tuio11;
 using TuioNet.Tuio20;
 
-
-namespace TuioNet.Common;
+namespace TuioNet.Client.Common;
 
 public class TuioSession : IDisposable
 {

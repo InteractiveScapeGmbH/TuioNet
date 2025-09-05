@@ -52,7 +52,7 @@ namespace TuioNet.Tuio20
             PressureAcceleration = pressureAcceleration;
         }
         
-        internal bool HasChanged(uint typeUserId, uint componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration)
+        public bool HasChanged(uint typeUserId, uint componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration)
         {
             return !(typeUserId == TypeUserId && componentId == ComponentId && position == Position && angle == Angle && shear == Shear &&radius == Radius &&pressure == Pressure &&
                      velocity == Velocity && pressureSpeed == this.PressureSpeed && acceleration == base.Acceleration && pressureAcceleration == this.PressureAcceleration);

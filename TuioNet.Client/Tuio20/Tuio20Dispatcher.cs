@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
+using TuioNet.Client.Common;
 using TuioNet.Common;
+using TuioNet.Tuio20;
 
-namespace TuioNet.Tuio20;
+namespace TuioNet.Client.Tuio20;
 
 public class Tuio20Dispatcher : ITuioDispatcher
 {

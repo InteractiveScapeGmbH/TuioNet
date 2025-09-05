@@ -1,11 +1,9 @@
-﻿using System;
-using System.Net.WebSockets;
+﻿using System.Net.WebSockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using TuioNet.Common;
 
-namespace TuioNet.Common;
+namespace TuioNet.Client.Common;
 
 public class WebsocketClient
 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using TuioNet.Common;
 
-namespace TuioNet.Common
+namespace TuioNet.Client.Common
 {
     public class WebsocketTuioReceiver : TuioReceiver
     {

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using TuioNet.Common;
 
-namespace TuioNet.Common
+namespace TuioNet.Client.Common
 {
     public class TuioClient
     {

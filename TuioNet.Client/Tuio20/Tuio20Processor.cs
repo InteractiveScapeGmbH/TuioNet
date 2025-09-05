@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using OSC.NET;
+using TuioNet.Client.Common;
 using TuioNet.Common;
+using TuioNet.Tuio20;
 
 [assembly: InternalsVisibleTo("TuioNet.Tests")]
-namespace TuioNet.Tuio20
+namespace TuioNet.Client.Tuio20
 {
     internal class Tuio20Processor
     {

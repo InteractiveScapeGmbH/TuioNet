@@ -1,4 +1,6 @@
-﻿namespace TuioNet.Common;
+﻿using TuioNet.Common;
+
+namespace TuioNet.Client.Common;
 
 public interface ITuioDispatcher
 {
