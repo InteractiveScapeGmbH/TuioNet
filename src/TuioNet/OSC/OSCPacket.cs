@@ -65,9 +65,13 @@ namespace OSC.NET
 		{
 			byte zero = 0;
 			int pad = 4 - (data.Count % 4);
-			for (int i = 0; i < pad; i++)
+			if (pad < 4)
 			{
-				data.Add(zero);
+				for (int i = 0; i < pad; i++)
+				{
+					data.Add(zero);
+				}
+				
 			}
 		}
 
