@@ -36,7 +36,9 @@ namespace OSC.NET
         /// <summary>
         /// Osc Time Epoch (January 1, 1900 00:00:00).
         /// </summary>
-        public static readonly DateTime Epoch = new DateTime(1900, 1, 1, 0, 0, 0, 0);
+        public static readonly DateTime Epoch = new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+
+        public static OscTimeTag Immediate => new OscTimeTag(true);
 
         /// <summary>
         /// Minimum Osc Time Tag.
@@ -53,6 +55,8 @@ namespace OSC.NET
                 return (uint)(mTimeStamp - Epoch).TotalSeconds;
             }
         }
+        
+        public bool IsImmediate { get; private set; }
 
         /// <summary>
         /// Gets the last 32 bits of the Osc Time Tag. Specifies the fractional part of a second.
@@ -94,6 +98,12 @@ namespace OSC.NET
             Set(timeStamp);
         }
 
+        private OscTimeTag(bool isImmediate)
+        {
+            IsImmediate = isImmediate;
+            mTimeStamp = Epoch;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OscTimeTag"/> class.
         /// </summary>
@@ -115,6 +125,13 @@ namespace OSC.NET
             uint secondsSinceEpoch = BitConverter.ToUInt32(secondsSinceEpochData, 0);
             uint fractionalSecond = BitConverter.ToUInt32(fractionalSecondData, 0);
 
+            if (secondsSinceEpoch == 0u && fractionalSecond == 1u)
+            {
+                IsImmediate = true;
+                mTimeStamp = Epoch;
+                return;
+            }
+
             DateTime timeStamp = Epoch.AddSeconds(secondsSinceEpoch).AddMilliseconds(fractionalSecond);
             if (!IsValidTime(timeStamp)) throw new Exception("Not a valid OSC Timetag discovered.");
             mTimeStamp = timeStamp;
@@ -126,6 +143,11 @@ namespace OSC.NET
         /// <returns>A byte array containing the Osc Time Tag.</returns>
         public byte[] ToByteArray()
         {
+            if (IsImmediate)
+            {
+                return new byte[] { 0,0,0,0,0,0,0,1 };
+            }
+            
             List<byte> timeStamp = new List<byte>();
 
             byte[] secondsSinceEpoch = BitConverter.GetBytes(SecondsSinceEpoch);
@@ -247,6 +269,7 @@ namespace OSC.NET
         /// <param name="timeStamp">The time stamp to use to set the Osc Time Tag.</param>
         public void Set(DateTime timeStamp)
         {
+            IsImmediate = false;
             timeStamp = new DateTime(timeStamp.Ticks - (timeStamp.Ticks % TimeSpan.TicksPerMillisecond), timeStamp.Kind);
 
             if(!IsValidTime(timeStamp)) throw new Exception("Not a valid OSC Timetag.");
