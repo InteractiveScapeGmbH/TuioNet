@@ -53,7 +53,7 @@ public class Tuio20Manager : ITuioManager
 
     private void UpdateFrameBundle()
     {
-        _frameBundle = new OSCBundle();
+        _frameBundle = new OSCBundle(OscTimeTag.Immediate);
         _repository.UpdateBundle(_frameBundle);
     }
 }

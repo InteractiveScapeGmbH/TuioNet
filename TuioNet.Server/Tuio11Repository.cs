@@ -77,7 +77,6 @@ public class Tuio11Repository
 
     public OSCBundle UpdateBundle(OSCBundle bundle)
     {
-        if (!(_entities.Count > 0)) return bundle;
         bundle.Append(SourceMessage);
         bundle.Append(AliveMessage);
         foreach (var entity in _entities) bundle.Append(entity.OscMessage);

@@ -83,7 +83,7 @@ public class Tuio11Manager : ITuioManager
 
     private void UpdateFrameBundle()
     {
-        _frameBundle = new OSCBundle();
+        _frameBundle = new OSCBundle(OscTimeTag.Immediate);
         _cursorRepository.UpdateBundle(_frameBundle);
         _objectRepository.UpdateBundle(_frameBundle);
         _blobRepository.UpdateBundle(_frameBundle);
