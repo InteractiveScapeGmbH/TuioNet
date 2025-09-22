@@ -20,6 +20,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\TuioNet\TuioNet.csproj" />
+      <ProjectReference Include="..\..\TuioNet.Client\TuioNet.Client.csproj" />
+      <ProjectReference Include="..\..\TuioNet.Server\TuioNet.Server.csproj" />
     </ItemGroup>
 
 </Project>

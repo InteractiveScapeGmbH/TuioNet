@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using NUnit.Framework;
 using OSC.NET;
+using TuioNet.Client.Tuio11;
 using TuioNet.Common;
 using TuioNet.Server;
 using TuioNet.Tuio11;

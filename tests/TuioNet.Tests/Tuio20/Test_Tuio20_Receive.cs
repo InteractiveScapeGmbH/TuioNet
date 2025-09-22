@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using NUnit.Framework;
 using OSC.NET;
+using TuioNet.Client.Tuio20;
 using TuioNet.Common;
 using TuioNet.Tuio20;
 
