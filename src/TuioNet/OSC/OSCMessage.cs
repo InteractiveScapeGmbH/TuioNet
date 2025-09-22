@@ -102,7 +102,11 @@ namespace OSC.NET
                     padNull(data);
                 }
                 //else if (value is RGBAColor) addBytes(data, packColor((RGBAColor)value));
-                else if (value is char) addBytes(data, packChar((char)value));
+                else if (value is char)
+                {
+	                addBytes(data, packChar((char)value));
+	                padNull(data);
+                }
                 else if (value is OscTimeTag)
                 {
                     addBytes(data, packTimeTag((OscTimeTag)value));
