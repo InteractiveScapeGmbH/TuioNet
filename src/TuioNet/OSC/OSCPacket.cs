@@ -32,6 +32,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace OSC.NET
@@ -115,7 +116,7 @@ namespace OSC.NET
 
 		protected static byte[] packString(string value)
 		{
-			return ASCIIEncoding8Bit.GetBytes(value);
+			return ASCIIEncoding8Bit.GetBytes(value).Concat(new byte[]{0}).ToArray();
 		}
 
 
