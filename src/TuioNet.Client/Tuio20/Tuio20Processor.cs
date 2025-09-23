@@ -1,8 +1,8 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using OSC.NET;
 using TuioNet.Client.Common;
 using TuioNet.Common;
+using TuioNet.OSC;
 using TuioNet.Tuio20;
 
 [assembly: InternalsVisibleTo("TuioNet.Tests")]

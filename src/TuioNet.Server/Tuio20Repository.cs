@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using OSC.NET;
 using TuioNet.Common;
+using TuioNet.OSC;
 
 namespace TuioNet.Server
 {

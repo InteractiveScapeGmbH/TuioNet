@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using OSC.NET;
+using TuioNet.OSC;
 
 namespace TuioNet.Tests.OSC;
 

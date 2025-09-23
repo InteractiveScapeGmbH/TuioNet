@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
-using OSC.NET;
 using TuioNet.Client.Common;
 using TuioNet.Common;
+using TuioNet.OSC;
 using TuioNet.Tuio11;
 
 namespace TuioNet.Client.Tuio11

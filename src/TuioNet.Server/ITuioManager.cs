@@ -1,4 +1,4 @@
-﻿using OSC.NET;
+﻿using TuioNet.OSC;
 
 namespace TuioNet.Server
 {

@@ -29,7 +29,7 @@ A "contributor" is any person that distributes its contribution under this licen
 using System;
 using System.Collections.Generic;
 
-namespace OSC.NET
+namespace TuioNet.OSC
 {
     public class OscTimeTag
     {

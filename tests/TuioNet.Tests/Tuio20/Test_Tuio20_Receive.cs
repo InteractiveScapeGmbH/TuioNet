@@ -1,8 +1,8 @@
 ﻿using System.Numerics;
 using NUnit.Framework;
-using OSC.NET;
 using TuioNet.Client.Tuio20;
 using TuioNet.Common;
+using TuioNet.OSC;
 using TuioNet.Tuio20;
 
 namespace TuioNet.Tests.Tuio20;

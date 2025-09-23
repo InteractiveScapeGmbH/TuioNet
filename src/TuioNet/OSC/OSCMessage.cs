@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace OSC.NET
+namespace TuioNet.OSC
 {
 	/// <summary>
 	/// OSCMessage

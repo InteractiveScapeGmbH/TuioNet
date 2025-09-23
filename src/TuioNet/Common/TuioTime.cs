@@ -1,5 +1,5 @@
 ﻿using System;
-using OSC.NET;
+using TuioNet.OSC;
 
 namespace TuioNet.Common
 {

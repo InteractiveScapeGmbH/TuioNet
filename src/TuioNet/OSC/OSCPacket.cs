@@ -35,7 +35,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OSC.NET
+namespace TuioNet.OSC
 {
 	/// <summary>
 	/// OSCPacket

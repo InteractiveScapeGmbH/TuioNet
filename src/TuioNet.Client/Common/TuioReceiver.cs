@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
-using OSC.NET;
 using TuioNet.Common;
+using TuioNet.OSC;
 
 namespace TuioNet.Client.Common
 {
