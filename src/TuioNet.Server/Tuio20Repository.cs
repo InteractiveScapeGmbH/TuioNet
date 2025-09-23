@@ -9,7 +9,7 @@ namespace TuioNet.Server
     
 public class Tuio20Repository
 {
-    private readonly IList<ITuioEntity> _entities;
+    private readonly List<ITuioEntity> _entities;
     private readonly string _sourceName;
     private uint _frameId = 1;
     private readonly uint _screenResolution;

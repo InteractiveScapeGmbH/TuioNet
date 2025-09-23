@@ -10,7 +10,7 @@ public class Tuio11Repository
     private readonly string _sourceName;
 
     private readonly string _tuioAddress;
-    private readonly IList<ITuioEntity> _entities;
+    private readonly List<ITuioEntity> _entities;
 
     private uint _frameId = 1;
 
