@@ -9,25 +9,25 @@ using TuioNet.Tuio11;
 namespace TuioNet.Tests.Tuio11;
 
 [TestFixture]
-public class Test_Tuio11_Send
+public class TestTuio11Send
 {
-    private string sourceName;
-    private Tuio11Manager manager;
+    private string _sourceName;
+    private Tuio11Manager _manager;
 
     [SetUp]
     public void Init()
     {
-        sourceName = "test-source";
+        _sourceName = "test-source";
         TuioTime.Init();
-        manager = new Tuio11Manager(sourceName);
+        _manager = new Tuio11Manager(_sourceName);
     }
     
     [Test]
     public void Test_Cursor_Send()
     {
-        Tuio11Cursor cursor = new Tuio11Cursor(TuioTime.GetSystemTime(), 1234, 6543, Vector2.One, Vector2.Zero, 0f);
-        manager.AddCursor(cursor);
-        var bundle = manager.FrameBundle;
+        var cursor = new Tuio11Cursor(TuioTime.GetSystemTime(), 1234, 6543, Vector2.One, Vector2.Zero, 0f);
+        _manager.AddCursor(cursor);
+        var bundle = _manager.FrameBundle;
         var byteBundle = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteBundle);
         var targetSourceMessage = (OSCMessage)packet.Values[0];
@@ -41,21 +41,21 @@ public class Test_Tuio11_Send
         processor.On2Dcur(this, targetCursorMessage);
         processor.On2Dcur(this, targetFseqMessage);
         
-        Assert.AreEqual(1, processor.GetTuioCursors().Count);
+        Assert.That(processor.GetTuioCursors().Count, Is.EqualTo(1));
         var receivedCursor = processor.GetTuioCursors()[0];
         
-        Assert.AreEqual(sourceName, processor.Source);
-        Assert.AreEqual(1234, receivedCursor.SessionId);
+        Assert.That(processor.Source, Is.EqualTo(_sourceName));
+        Assert.That(receivedCursor.SessionId, Is.EqualTo(1234));
     }   
     
     [Test]
     public void Test_Object_Send()
     {
-        Tuio11Object tuioObject = new Tuio11Object(TuioTime.GetSystemTime(), 1234, 4321, Vector2.Zero, 0f, Vector2.One,
+        var tuioObject = new Tuio11Object(TuioTime.GetSystemTime(), 1235, 4321, Vector2.Zero, 0f, Vector2.One,
             0f, 0f, 0f);
 
-        manager.AddObject(tuioObject);
-        var bundle = manager.FrameBundle;
+        _manager.AddObject(tuioObject);
+        var bundle = _manager.FrameBundle;
         var byteBundle = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteBundle);
         var targetSourceMessage = (OSCMessage)packet.Values[3];
@@ -69,21 +69,21 @@ public class Test_Tuio11_Send
         processor.On2Dobj(this, targetCursorMessage);
         processor.On2Dobj(this, targetFseqMessage);
         
-        Assert.AreEqual(1, processor.GetTuioObjects().Count);
-        Assert.AreEqual(sourceName, processor.Source);
+        Assert.That(processor.GetTuioObjects().Count, Is.EqualTo(1));
+        Assert.That(processor.Source, Is.EqualTo(_sourceName));
 
         var receivedObject = processor.GetTuioObjects()[0];
-        Assert.AreEqual(4321, receivedObject.SymbolId);
+        Assert.That(receivedObject.SymbolId, Is.EqualTo(4321));
     }
     
     [Test]
     public void Test_Blob_Send()
     {
-        Tuio11Blob blob = new Tuio11Blob(TuioTime.GetSystemTime(), 1234, 4321, Vector2.Zero, 0f, Vector2.One, 1f,
+        var blob = new Tuio11Blob(TuioTime.GetSystemTime(), 1234, 4321, Vector2.Zero, 0f, Vector2.One, 1f,
             Vector2.Zero, 0f, 0f, 0f);
 
-        manager.AddBlob(blob);
-        var bundle = manager.FrameBundle;
+        _manager.AddBlob(blob);
+        var bundle = _manager.FrameBundle;
         var byteBundle = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteBundle);
         var targetSourceMessage = (OSCMessage)packet.Values[6];
@@ -97,10 +97,10 @@ public class Test_Tuio11_Send
         processor.On2Dblb(this, targetCursorMessage);
         processor.On2Dblb(this, targetFseqMessage);
         
-        Assert.AreEqual(1, processor.GetTuioBlobs().Count);
-        Assert.AreEqual(sourceName, processor.Source);
+        Assert.That(processor.GetTuioBlobs().Count, Is.EqualTo(1));
+        Assert.That(processor.Source, Is.EqualTo(_sourceName));
 
         var receivedBlob = processor.GetTuioBlobs()[0];
-        Assert.AreEqual(1234, receivedBlob.SessionId);
+        Assert.That(receivedBlob.SessionId, Is.EqualTo(1234));
     }   
 }
