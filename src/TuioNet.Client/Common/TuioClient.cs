@@ -9,6 +9,7 @@ namespace TuioNet.Client.Common
         /// Create new client for TUIO connection.
         /// </summary>
         /// <param name="connectionType">Type of the protocol which gets used to connect to the sender.</param>
+        /// <param name="logger">Custom logger to log events.</param>
         /// <param name="address">The IP address of the TUIO sender.</param>
         /// <param name="port">The port the client listen to for new TUIO messages. Default UDP port is 3333.</param>
         /// <param name="isAutoProcess">If set, the receiver processes incoming messages automatically. Otherwise the ProcessMessages() methods needs to be called manually.</param>
