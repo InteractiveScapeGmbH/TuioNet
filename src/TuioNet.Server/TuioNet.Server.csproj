@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\src\TuioNet\TuioNet.csproj"/>
+        <ProjectReference Include="..\TuioNet\TuioNet.csproj"/>
     </ItemGroup>
 
 </Project>

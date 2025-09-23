@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\TuioNet.Client\TuioNet.Client.csproj" />
+      <ProjectReference Include="..\TuioNet.Client\TuioNet.Client.csproj" />
       <ProjectReference Include="..\TuioNet\TuioNet.csproj" />
     </ItemGroup>
 
