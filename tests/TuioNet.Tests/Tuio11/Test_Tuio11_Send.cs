@@ -68,14 +68,15 @@ public class TestTuio11Send
         processor.On2Dobj(this, targetAliveMessage);
         processor.On2Dobj(this, targetCursorMessage);
         processor.On2Dobj(this, targetFseqMessage);
-        
-        Assert.That(processor.GetTuioObjects().Count, Is.EqualTo(1));
-        Assert.That(processor.Source, Is.EqualTo(_sourceName));
-
+        Assert.Multiple(() =>
+        {
+            Assert.That(processor.GetTuioObjects(), Has.Count.EqualTo(1));
+            Assert.That(processor.Source, Is.EqualTo(_sourceName));
+        });
         var receivedObject = processor.GetTuioObjects()[0];
         Assert.That(receivedObject.SymbolId, Is.EqualTo(4321));
     }
-    
+
     [Test]
     public void Test_Blob_Send()
     {
@@ -96,11 +97,12 @@ public class TestTuio11Send
         processor.On2Dblb(this, targetAliveMessage);
         processor.On2Dblb(this, targetCursorMessage);
         processor.On2Dblb(this, targetFseqMessage);
-        
-        Assert.That(processor.GetTuioBlobs().Count, Is.EqualTo(1));
-        Assert.That(processor.Source, Is.EqualTo(_sourceName));
-
+        Assert.Multiple(() =>
+        {
+            Assert.That(processor.GetTuioBlobs(), Has.Count.EqualTo(1));
+            Assert.That(processor.Source, Is.EqualTo(_sourceName));
+        });
         var receivedBlob = processor.GetTuioBlobs()[0];
         Assert.That(receivedBlob.SessionId, Is.EqualTo(1234));
-    }   
+    }
 }

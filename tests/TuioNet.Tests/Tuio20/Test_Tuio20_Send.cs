@@ -9,24 +9,24 @@ using TuioNet.Tuio20;
 namespace TuioNet.Tests.Tuio20;
 
 [TestFixture]
-public class Test_Tuio20_Send
+public class TestTuio20Send
 {
-    private string sourceName;
-    private Vector2 resolution;
+    private string _sourceName;
+    private Vector2 _resolution;
     
     [SetUp]
     public void Init()
     {
-        sourceName = "test-source";
-        resolution = new Vector2(800, 600);
+        _sourceName = "test-source";
+        _resolution = new Vector2(800, 600);
     }
     
     [Test]
     public void Test_Token_Send()
     {
-        Tuio20Manager manager = new Tuio20Manager(sourceName, resolution);
-        Tuio20Object container = new Tuio20Object(TuioTime.GetSystemTime(), 1234);
-        Tuio20Token token = new Tuio20Token(TuioTime.GetSystemTime(), container, 456, 987, Vector2.Zero, 0f,
+        var manager = new Tuio20Manager(_sourceName, _resolution);
+        var container = new Tuio20Object(TuioTime.GetSystemTime(), 1234);
+        var token = new Tuio20Token(TuioTime.GetSystemTime(), container, 456, 987, Vector2.Zero, 0f,
             Vector2.One, 0f, 0f, 0f);
         manager.AddEntity(token);
 
@@ -42,11 +42,14 @@ public class Test_Tuio20_Send
         processor.OnOther(this, targetTokenMessage);
         processor.OnAlv(this, targetAliveMessage);
 
-        Assert.AreEqual(1, processor.GetTuioTokenList().Count);
+        Assert.That(processor.GetTuioTokenList(), Has.Count.EqualTo(1));
 
         var receivedToken = processor.GetTuioTokenList()[0];
-        Assert.AreEqual(resolution, processor.SensorDimension);
-        Assert.AreEqual(sourceName, processor.Source);
-        Assert.AreEqual(1234, receivedToken.SessionId);
+        Assert.Multiple(() =>
+        {
+            Assert.That(processor.SensorDimension, Is.EqualTo(_resolution));
+            Assert.That(processor.Source, Is.EqualTo(_sourceName));
+            Assert.That(receivedToken.SessionId, Is.EqualTo(1234));
+        });
     }
 }

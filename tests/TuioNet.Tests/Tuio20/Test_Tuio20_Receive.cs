@@ -8,58 +8,58 @@ using TuioNet.Tuio20;
 namespace TuioNet.Tests.Tuio20;
 
 [TestFixture]
-public class Test_Tuio20_Receive
+public class TestTuio20Receive
 {
-    private uint sId;
-    private uint typeUserId;
-    private uint componentId;
-    private Tuio20Object container;
-    private Vector2 position;
-    private float angle;
-    private Vector2 velocity;
-    private float rotationSpeed;
-    private float acceleration;
-    private float rotationAcceleration;
-    private float shear;
-    private float radius;
-    private float pressure;
-    private float pressureSpeed;
-    private float pressureAcceleration;
-    private Vector2 size;
-    private float area;
-    private string group;
-    private string data;
+    private uint _sId;
+    private uint _typeUserId;
+    private uint _componentId;
+    private Tuio20Object _container;
+    private Vector2 _position;
+    private float _angle;
+    private Vector2 _velocity;
+    private float _rotationSpeed;
+    private float _acceleration;
+    private float _rotationAcceleration;
+    private float _shear;
+    private float _radius;
+    private float _pressure;
+    private float _pressureSpeed;
+    private float _pressureAcceleration;
+    private Vector2 _size;
+    private float _area;
+    private string _group;
+    private string _data;
 
-    private Tuio20Processor processor;
-    private OSCMessage frameMessage;
-    private OSCMessage aliveMessage;
+    private Tuio20Processor _processor;
+    private OSCMessage _frameMessage;
+    private OSCMessage _aliveMessage;
     
     [SetUp]
     public void Init()
     {
-        sId = UInt32.MaxValue;
-        typeUserId = UInt32.MaxValue;
-        componentId = UInt32.MaxValue;
-        container = new Tuio20Object(TuioTime.GetSystemTime(), sId);
-        position = new Vector2(2.3f, 6.3f);
-        angle = float.MaxValue;
-        velocity = new Vector2(8.3f, 4.3f);
-        rotationSpeed = float.MaxValue;
-        acceleration = float.MaxValue;
-        rotationAcceleration = float.MaxValue;
-        shear = float.MaxValue;
-        radius = float.MaxValue;
-        pressure = float.MaxValue;
-        pressureSpeed = float.MaxValue;
-        pressureAcceleration = float.MaxValue;
-        size = new Vector2(2.45f, 7.34f);
-        area = float.MaxValue;
-        group = "test-group";
-        data = "test-data";
+        _sId = uint.MaxValue;
+        _typeUserId = uint.MaxValue;
+        _componentId = uint.MaxValue;
+        _container = new Tuio20Object(TuioTime.GetSystemTime(), _sId);
+        _position = new Vector2(2.3f, 6.3f);
+        _angle = float.MaxValue;
+        _velocity = new Vector2(8.3f, 4.3f);
+        _rotationSpeed = float.MaxValue;
+        _acceleration = float.MaxValue;
+        _rotationAcceleration = float.MaxValue;
+        _shear = float.MaxValue;
+        _radius = float.MaxValue;
+        _pressure = float.MaxValue;
+        _pressureSpeed = float.MaxValue;
+        _pressureAcceleration = float.MaxValue;
+        _size = new Vector2(2.45f, 7.34f);
+        _area = float.MaxValue;
+        _group = "test-group";
+        _data = "test-data";
         
-        processor = new Tuio20Processor();
-        frameMessage = SetFrameMessage(5);
-        aliveMessage = SetAliveMessage(sId);
+        _processor = new Tuio20Processor();
+        _frameMessage = SetFrameMessage(5);
+        _aliveMessage = SetAliveMessage(_sId);
     }
 
     private OSCMessage SetAliveMessage(uint sId)
@@ -82,139 +82,151 @@ public class Test_Tuio20_Receive
     [Test]
     public void Test_Tuio20_Token_OSC_Receive()
     {
-        var token = new Tuio20Token(TuioTime.GetSystemTime(), container, typeUserId, componentId, position, angle,
-            velocity, rotationSpeed, acceleration, rotationAcceleration);
+        var token = new Tuio20Token(TuioTime.GetSystemTime(), _container, _typeUserId, _componentId, _position, _angle,
+            _velocity, _rotationSpeed, _acceleration, _rotationAcceleration);
         var bundle = new OSCBundle();
         var oscMessage = token.OscMessage;
-        bundle.Append(frameMessage);
+        bundle.Append(_frameMessage);
         bundle.Append(oscMessage);
-        bundle.Append(aliveMessage);
+        bundle.Append(_aliveMessage);
         var byteMessage = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteMessage);
         var targetFrameMessage = (OSCMessage)packet.Values[0];
         var targetTokenMessage = (OSCMessage)packet.Values[1];
         var targetAliveMessage = (OSCMessage)packet.Values[2];
         
-        processor.OnFrm(this, targetFrameMessage);
-        processor.OnOther(this, targetTokenMessage);
-        processor.OnAlv(this, targetAliveMessage);
+        _processor.OnFrm(this, targetFrameMessage);
+        _processor.OnOther(this, targetTokenMessage);
+        _processor.OnAlv(this, targetAliveMessage);
 
-        Assert.AreEqual(1, processor.GetTuioTokenList().Count);
+        Assert.That(_processor.GetTuioTokenList(), Has.Count.EqualTo(1));
         
-        var targetToken = processor.GetTuioTokenList()[0];
-        Assert.AreEqual(sId, targetToken.SessionId);
-        Assert.AreEqual(typeUserId, targetToken.TypeUserId);
-        Assert.AreEqual(componentId, targetToken.ComponentId);
-        Assert.AreEqual(position.X, targetToken.Position.X);
-        Assert.AreEqual(position.Y, targetToken.Position.Y);
-        Assert.AreEqual(angle, targetToken.Angle);
-        Assert.AreEqual(velocity.X, targetToken.Velocity.X);
-        Assert.AreEqual(velocity.Y, targetToken.Velocity.Y);
-        Assert.AreEqual(rotationSpeed, targetToken.RotationSpeed);
-        Assert.AreEqual(acceleration, targetToken.Acceleration);
-        Assert.AreEqual(rotationAcceleration, targetToken.RotationAcceleration);
+        var targetToken = _processor.GetTuioTokenList()[0];
+        Assert.Multiple(() =>
+        {
+            Assert.That(targetToken.SessionId, Is.EqualTo(_sId));
+            Assert.That(targetToken.TypeUserId, Is.EqualTo(_typeUserId));
+            Assert.That(targetToken.ComponentId, Is.EqualTo(_componentId));
+            Assert.That(targetToken.Position.X, Is.EqualTo(_position.X));
+            Assert.That(targetToken.Position.Y, Is.EqualTo(_position.Y));
+            Assert.That(targetToken.Angle, Is.EqualTo(_angle));
+            Assert.That(targetToken.Velocity.X, Is.EqualTo(_velocity.X));
+            Assert.That(targetToken.Velocity.Y, Is.EqualTo(_velocity.Y));
+            Assert.That(targetToken.RotationSpeed, Is.EqualTo(_rotationSpeed));
+            Assert.That(targetToken.Acceleration, Is.EqualTo(_acceleration));
+            Assert.That(targetToken.RotationAcceleration, Is.EqualTo(_rotationAcceleration));
+        });
     }
-    
+
     [Test]
     public void Test_Tuio20_Pointer_OSC_Receive()
     {
-        var pointer = new Tuio20Pointer(TuioTime.GetSystemTime(), container, typeUserId, componentId, position, angle, shear, radius, pressure, velocity, pressureSpeed, acceleration, pressureAcceleration);
+        var pointer = new Tuio20Pointer(TuioTime.GetSystemTime(), _container, _typeUserId, _componentId, _position, _angle, _shear, _radius, _pressure, _velocity, _pressureSpeed, _acceleration, _pressureAcceleration);
         var bundle = new OSCBundle();
         var oscMessage = pointer.OscMessage;
-        bundle.Append(frameMessage);
+        bundle.Append(_frameMessage);
         bundle.Append(oscMessage);
-        bundle.Append(aliveMessage);
+        bundle.Append(_aliveMessage);
         var byteMessage = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteMessage);
         var targetFrameMessage = (OSCMessage)packet.Values[0];
         var targetTokenMessage = (OSCMessage)packet.Values[1];
         var targetAliveMessage = (OSCMessage)packet.Values[2];
         
-        processor.OnFrm(this, targetFrameMessage);
-        processor.OnOther(this, targetTokenMessage);
-        processor.OnAlv(this, targetAliveMessage);
+        _processor.OnFrm(this, targetFrameMessage);
+        _processor.OnOther(this, targetTokenMessage);
+        _processor.OnAlv(this, targetAliveMessage);
         
-        Assert.AreEqual(1, processor.GetTuioPointerList().Count);
+        Assert.That(_processor.GetTuioPointerList(), Has.Count.EqualTo(1));
         
-        var targetPointer = processor.GetTuioPointerList()[0];
-        Assert.AreEqual(sId, targetPointer.SessionId);
-        Assert.AreEqual(typeUserId, targetPointer.TypeUserId);
-        Assert.AreEqual(componentId, targetPointer.ComponentId);
-        Assert.AreEqual(position.X, targetPointer.Position.X);
-        Assert.AreEqual(position.Y, targetPointer.Position.Y);
-        Assert.AreEqual(angle, targetPointer.Angle);
-        Assert.AreEqual(shear, targetPointer.Shear);
-        Assert.AreEqual(radius, targetPointer.Radius);
-        Assert.AreEqual(pressure, targetPointer.Pressure);
-        Assert.AreEqual(velocity.X, targetPointer.Velocity.X);
-        Assert.AreEqual(velocity.Y, targetPointer.Velocity.Y);
-        Assert.AreEqual(pressureSpeed, targetPointer.PressureSpeed);
-        Assert.AreEqual(acceleration, targetPointer.Acceleration);
-        Assert.AreEqual(pressureAcceleration, targetPointer.PressureAcceleration);
+        var targetPointer = _processor.GetTuioPointerList()[0];
+        Assert.Multiple(() =>
+        {
+            Assert.That(targetPointer.SessionId, Is.EqualTo(_sId));
+            Assert.That(targetPointer.TypeUserId, Is.EqualTo(_typeUserId));
+            Assert.That(targetPointer.ComponentId, Is.EqualTo(_componentId));
+            Assert.That(targetPointer.Position.X, Is.EqualTo(_position.X));
+            Assert.That(targetPointer.Position.Y, Is.EqualTo(_position.Y));
+            Assert.That(targetPointer.Angle, Is.EqualTo(_angle));
+            Assert.That(targetPointer.Shear, Is.EqualTo(_shear));
+            Assert.That(targetPointer.Radius, Is.EqualTo(_radius));
+            Assert.That(targetPointer.Pressure, Is.EqualTo(_pressure));
+            Assert.That(targetPointer.Velocity.X, Is.EqualTo(_velocity.X));
+            Assert.That(targetPointer.Velocity.Y, Is.EqualTo(_velocity.Y));
+            Assert.That(targetPointer.PressureSpeed, Is.EqualTo(_pressureSpeed));
+            Assert.That(targetPointer.Acceleration, Is.EqualTo(_acceleration));
+            Assert.That(targetPointer.PressureAcceleration, Is.EqualTo(_pressureAcceleration));
+        });
     }
-    
+
     [Test]
     public void Test_Tuio20_Bounds_OSC_Receive()
     {
-        var bounds = new Tuio20Bounds(TuioTime.GetSystemTime(), container, position, angle, size, area, velocity, rotationSpeed, acceleration, rotationAcceleration);
+        var bounds = new Tuio20Bounds(TuioTime.GetSystemTime(), _container, _position, _angle, _size, _area, _velocity, _rotationSpeed, _acceleration, _rotationAcceleration);
         var bundle = new OSCBundle();
         var oscMessage = bounds.OscMessage;
-        bundle.Append(frameMessage);
+        bundle.Append(_frameMessage);
         bundle.Append(oscMessage);
-        bundle.Append(aliveMessage);
+        bundle.Append(_aliveMessage);
         var byteMessage = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteMessage);
         var targetFrameMessage = (OSCMessage)packet.Values[0];
         var targetTokenMessage = (OSCMessage)packet.Values[1];
         var targetAliveMessage = (OSCMessage)packet.Values[2];
         
-        processor.OnFrm(this, targetFrameMessage);
-        processor.OnOther(this, targetTokenMessage);
-        processor.OnAlv(this, targetAliveMessage);
+        _processor.OnFrm(this, targetFrameMessage);
+        _processor.OnOther(this, targetTokenMessage);
+        _processor.OnAlv(this, targetAliveMessage);
         
-        Assert.AreEqual(1, processor.GetTuioBoundsList().Count);
+        Assert.That(_processor.GetTuioBoundsList(), Has.Count.EqualTo(1));
         
-        var targetBounds = processor.GetTuioBoundsList()[0];
-        Assert.AreEqual(sId, targetBounds.SessionId);
-        Assert.AreEqual(position.X, targetBounds.Position.X);
-        Assert.AreEqual(position.Y, targetBounds.Position.Y);
-        Assert.AreEqual(angle, targetBounds.Angle);
-        Assert.AreEqual(size.X, targetBounds.Size.X);
-        Assert.AreEqual(size.Y, targetBounds.Size.Y);
-        Assert.AreEqual(area, targetBounds.Area);
-        Assert.AreEqual(velocity.X, targetBounds.Velocity.X);
-        Assert.AreEqual(velocity.Y, targetBounds.Velocity.Y);
-        Assert.AreEqual(rotationSpeed, targetBounds.RotationSpeed);
-        Assert.AreEqual(acceleration, targetBounds.Acceleration);
-        Assert.AreEqual(rotationAcceleration, targetBounds.RotationAcceleration);
+        var targetBounds = _processor.GetTuioBoundsList()[0];
+        Assert.Multiple(() =>
+        {
+            Assert.That(targetBounds.SessionId, Is.EqualTo(_sId));
+            Assert.That(targetBounds.Position.X, Is.EqualTo(_position.X));
+            Assert.That(targetBounds.Position.Y, Is.EqualTo(_position.Y));
+            Assert.That(targetBounds.Angle, Is.EqualTo(_angle));
+            Assert.That(targetBounds.Size.X, Is.EqualTo(_size.X));
+            Assert.That(targetBounds.Size.Y, Is.EqualTo(_size.Y));
+            Assert.That(targetBounds.Area, Is.EqualTo(_area));
+            Assert.That(targetBounds.Velocity.X, Is.EqualTo(_velocity.X));
+            Assert.That(targetBounds.Velocity.Y, Is.EqualTo(_velocity.Y));
+            Assert.That(targetBounds.RotationSpeed, Is.EqualTo(_rotationSpeed));
+            Assert.That(targetBounds.Acceleration, Is.EqualTo(_acceleration));
+            Assert.That(targetBounds.RotationAcceleration, Is.EqualTo(_rotationAcceleration));
+        });
     }
 
     [Test]
     public void Test_Tuio20_Symbol_OSC_Receive()
     {
-        var symbol = new Tuio20Symbol(TuioTime.GetSystemTime(), container, typeUserId, componentId, group, data);
+        var symbol = new Tuio20Symbol(TuioTime.GetSystemTime(), _container, _typeUserId, _componentId, _group, _data);
         var bundle = new OSCBundle();
         var oscMessage = symbol.OscMessage;
-        bundle.Append(frameMessage);
+        bundle.Append(_frameMessage);
         bundle.Append(oscMessage);
-        bundle.Append(aliveMessage);
+        bundle.Append(_aliveMessage);
         var byteMessage = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteMessage);
         var targetFrameMessage = (OSCMessage)packet.Values[0];
         var targetTokenMessage = (OSCMessage)packet.Values[1];
         var targetAliveMessage = (OSCMessage)packet.Values[2];
         
-        processor.OnFrm(this, targetFrameMessage);
-        processor.OnOther(this, targetTokenMessage);
-        processor.OnAlv(this, targetAliveMessage);
+        _processor.OnFrm(this, targetFrameMessage);
+        _processor.OnOther(this, targetTokenMessage);
+        _processor.OnAlv(this, targetAliveMessage);
         
-        Assert.AreEqual(1, processor.GetTuioSymbolList().Count);
+        Assert.That(_processor.GetTuioSymbolList(), Has.Count.EqualTo(1));
         
-        var targetSymbol = processor.GetTuioSymbolList()[0];
-        Assert.AreEqual(sId, targetSymbol.SessionId);
-        Assert.AreEqual(typeUserId, targetSymbol.TypeUserId);
-        Assert.AreEqual(componentId, targetSymbol.ComponentId);
-        Assert.AreEqual(group, targetSymbol.Group);
-        Assert.AreEqual(data, targetSymbol.Data);
+        var targetSymbol = _processor.GetTuioSymbolList()[0];
+        Assert.Multiple(() =>
+        {
+            Assert.That(targetSymbol.SessionId, Is.EqualTo(_sId));
+            Assert.That(targetSymbol.TypeUserId, Is.EqualTo(_typeUserId));
+            Assert.That(targetSymbol.ComponentId, Is.EqualTo(_componentId));
+            Assert.That(targetSymbol.Group, Is.EqualTo(_group));
+            Assert.That(targetSymbol.Data, Is.EqualTo(_data));
+        });
     }
 }
