@@ -58,10 +58,10 @@ public class Test_Tuio11_Send
         var bundle = manager.FrameBundle;
         var byteBundle = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteBundle);
-        var targetSourceMessage = (OSCMessage)packet.Values[0];
-        var targetAliveMessage = (OSCMessage)packet.Values[1];
-        var targetCursorMessage = (OSCMessage)packet.Values[2];
-        var targetFseqMessage = (OSCMessage)packet.Values[3];
+        var targetSourceMessage = (OSCMessage)packet.Values[3];
+        var targetAliveMessage = (OSCMessage)packet.Values[4];
+        var targetCursorMessage = (OSCMessage)packet.Values[5];
+        var targetFseqMessage = (OSCMessage)packet.Values[6];
 
         var processor = new Tuio11Processor();
         processor.On2Dobj(this, targetSourceMessage);
@@ -86,10 +86,10 @@ public class Test_Tuio11_Send
         var bundle = manager.FrameBundle;
         var byteBundle = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteBundle);
-        var targetSourceMessage = (OSCMessage)packet.Values[0];
-        var targetAliveMessage = (OSCMessage)packet.Values[1];
-        var targetCursorMessage = (OSCMessage)packet.Values[2];
-        var targetFseqMessage = (OSCMessage)packet.Values[3];
+        var targetSourceMessage = (OSCMessage)packet.Values[6];
+        var targetAliveMessage = (OSCMessage)packet.Values[7];
+        var targetCursorMessage = (OSCMessage)packet.Values[8];
+        var targetFseqMessage = (OSCMessage)packet.Values[9];
 
         var processor = new Tuio11Processor();
         processor.On2Dblb(this, targetSourceMessage);
