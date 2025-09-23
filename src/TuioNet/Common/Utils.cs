@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace TuioNet.Common;
 
-public class Utils
+public static class Utils
 {
     public static uint FromDimension(Vector2 dimension)
     {
