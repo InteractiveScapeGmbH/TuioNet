@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Microsoft.Extensions.Logging;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -7,12 +8,12 @@ namespace TuioNet.Server
 {
     public class WebsocketServer : ITuioServer
     {
-        private readonly Action<string> _onLog;
+        private readonly ILogger _logger;
         private WebSocketServer _server;
     
-        public WebsocketServer(Action<string> onLog)
+        public WebsocketServer(ILogger logger)
         {
-            _onLog = onLog;
+            _logger = logger;
         }
     
         public void Start(IPAddress address, int port)
@@ -42,33 +43,33 @@ namespace TuioNet.Server
         private TuioService CreateService()
         {
             var service = new TuioService();
-            service.Init(_onLog);
+            service.Init(_logger);
             return service;
         }
     }
     
     public class TuioService : WebSocketBehavior
     {
-        private Action<string> OnLog;
+        private ILogger? _logger;
     
-        public void Init(Action<string> onLog)
+        public void Init(ILogger logger)
         {
-            OnLog = onLog;
+            _logger = logger;
         }
     
         protected override void OnOpen()
         {
-            OnLog("[Server] New client connected.");
+            _logger?.LogInformation("[Server] New client connected.");
         }
     
         protected override void OnMessage(MessageEventArgs e)
         {
-            OnLog.Invoke($"[Server] New message from client: {e.Data}");
+            _logger?.LogDebug("[Server] New message from client: {event_data}", e.Data);
         }
     
         protected override void OnClose(CloseEventArgs e)
         {
-            OnLog.Invoke($"[Server] Client disconnected. {e.Reason}");
+            _logger?.LogInformation("[Server] Client disconnected. {event_reason}", e.Reason);
         }
     }
 }
