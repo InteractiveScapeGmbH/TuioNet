@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet", "src\TuioNet\Tuio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet.Tests", "tests\TuioNet.Tests\TuioNet.Tests.csproj", "{65CC734C-2A69-4B02-983F-29377C76A53C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet.Demo", "src\TuioNet.Demo\TuioNet.Demo.csproj", "{E8DF05DA-653C-4D4B-BEDC-6AB1F39CCC03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet.ClientDemo", "src\TuioNet.ClientDemo\TuioNet.ClientDemo.csproj", "{E8DF05DA-653C-4D4B-BEDC-6AB1F39CCC03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuioNet.Client", "src\TuioNet.Client\TuioNet.Client.csproj", "{1F4C9E8A-97D7-4E4A-9A6C-AEF1A4026B01}"
 EndProject

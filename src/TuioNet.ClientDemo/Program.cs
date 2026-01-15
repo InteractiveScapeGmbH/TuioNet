@@ -7,7 +7,7 @@ using TuioNet.Common;
 using TuioNet.Tuio11;
 using TuioNet.Tuio20;
 
-namespace TuioNet.Demo;
+namespace TuioNet.ClientDemo;
 
 class Program
 {
