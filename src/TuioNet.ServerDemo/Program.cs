@@ -33,7 +33,7 @@ class Program
         Parser.Default.ParseArguments<Options>(args).WithParsed(option =>
         {
             using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-            ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
+            var logger = loggerFactory.CreateLogger<Program>();
 
             var resolutionParts = option.Resolution.Split(',');
             var resolution = new Vector2(float.Parse(resolutionParts[0].Trim()),
@@ -46,18 +46,37 @@ class Program
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            ITuioManager tuioManager = option.TuioVersion switch
+            ITuioDataGenerator dataGenerator;
+            ITuioManager tuioManager;
+
+            switch (option.TuioVersion) 
             {
-                TuioVersion.Tuio11 => new Tuio11Manager(option.SourceName),
-                TuioVersion.Tuio20 => new Tuio20Manager(option.SourceName, resolution),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                case TuioVersion.Tuio11:
+                    var manager11 = new Tuio11Manager(option.SourceName);
+                    dataGenerator = new Tuio11DataGenerator(manager11);
+                    tuioManager = manager11;
+                    break;
+                case TuioVersion.Tuio20:
+                    var manager20 = new Tuio20Manager(option.SourceName, resolution);
+                    dataGenerator = new Tuio20DataGenerator(manager20);
+                    tuioManager = manager20;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
 
             var transmitter = new TuioTransmitter(server, tuioManager, logger);
             transmitter.Open(IPAddress.Parse(option.IpAddress), option.Port);
-            transmitter.Send();
+            while (true)
+            {
+                dataGenerator.Update();
+                transmitter.Send();
+                if (!Console.KeyAvailable) continue;
+                var pressedKey = Console.ReadKey().Key;
+                if (pressedKey == ConsoleKey.Q) break;
+            }
             transmitter.Close();
-            
         });
 
     }

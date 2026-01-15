@@ -20,7 +20,7 @@ namespace TuioNet.Server
         {
             _server = new WebSocketServer(address, port);
             _server.AddWebSocketService("/", CreateService);
-            _server.AddWebSocketService<TuioService>("/");
+            // _server.AddWebSocketService<TuioService>("/");
             _server.Start();
         }
     
