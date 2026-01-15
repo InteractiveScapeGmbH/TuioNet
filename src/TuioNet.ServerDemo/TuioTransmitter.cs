@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using TuioNet.Server;
 
@@ -30,6 +31,7 @@ public class TuioTransmitter
         _manager.Update();
         try
         {
+            _logger.LogDebug(Encoding.ASCII.GetString(_manager.FrameBundle.BinaryData));
             _server.Send(_manager.FrameBundle.BinaryData);
         }
         catch (Exception exception)
