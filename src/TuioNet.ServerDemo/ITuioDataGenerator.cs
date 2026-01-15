@@ -2,5 +2,5 @@ namespace TuioNet.ServerDemo;
 
 public interface ITuioDataGenerator
 {
-    public void Update();
+    public void Update(float deltaTime);
 }

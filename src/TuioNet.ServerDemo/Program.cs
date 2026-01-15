@@ -90,7 +90,7 @@ class Program
                 if (deltaTime >= targetFrameTime)
                 {
                     lastTime = currentTime;
-                    dataGenerator.Update();
+                    dataGenerator.Update((float)deltaTime);
                     transmitter.Send();
                 }
                 int sleepMs = (int)((targetFrameTime - deltaTime) * 1000);

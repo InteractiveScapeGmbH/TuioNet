@@ -8,7 +8,7 @@ public class Tuio20DataGenerator : ITuioDataGenerator
     {
         
     }
-    public void Update()
+    public void Update(float deltaTime)
     {
         
     }
