@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace TuioNet.OSC
 {
@@ -55,6 +56,17 @@ namespace TuioNet.OSC
 		{
 			this.address = BUNDLE;
 			this.timestamp = new OscTimeTag(DateTime.Now);
+		}
+
+		public override string ToString()
+		{
+			var stringBuilder = new StringBuilder();
+			foreach (OSCMessage message in values)
+			{
+				stringBuilder.AppendLine(message.ToString());
+			}
+
+			return stringBuilder.ToString();
 		}
 
 		override protected void pack()
