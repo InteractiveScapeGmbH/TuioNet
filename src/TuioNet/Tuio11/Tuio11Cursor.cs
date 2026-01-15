@@ -23,8 +23,12 @@ namespace TuioNet.Tuio11
 
         public void Update(TuioTime currentTime, Vector2 position, Vector2 velocity, float acceleration)
         {
-            var isCalculateSpeeds = (position.X != ((Tuio11Point)this).Position.X && velocity.X == 0) || (position.Y != ((Tuio11Point)this).Position.Y && velocity.Y == 0);
-            UpdateContainer(currentTime, position, velocity, acceleration, isCalculateSpeeds);
+            UpdateContainer(currentTime, position, velocity, acceleration);
+        }
+
+        public void Update(TuioTime currentTime, Vector2 position)
+        {
+            UpdateContainer(currentTime, position);
         }
         
         /// <summary>

@@ -47,39 +47,42 @@ namespace TuioNet.Tuio11
                      rotationSpeed == RotationSpeed && acceleration == Acceleration && rotationAcceleration == RotationAcceleration);
         }
 
+        public void Update(TuioTime currentTime, Vector2 position, float angle)
+        {
+            var lastPoint = PrevPoints[PrevPoints.Count - 1];
+            UpdateContainer(currentTime, position);
+            var dt = (currentTime - lastPoint.StartTime).GetTotalMilliseconds() / 1000.0f;
+            Angle = angle;
+            if (dt > 0)
+            {
+                var lastAngle = Angle;
+                var lastRotationSpeed = RotationSpeed;
+                var da = (angle - lastAngle) / (2 * (float)Math.PI);
+                if (da > 0.5f)
+                {
+                    da -= 1;
+                } 
+                else if (da <= -0.5f)
+                {
+                    da += 1;
+                }
+                RotationSpeed = da / dt;
+                RotationAcceleration = (RotationSpeed - lastRotationSpeed) / dt;
+            }
+            
+            if (State != TuioState.Stopped && RotationAcceleration != 0)
+            {
+                State = TuioState.Rotating;
+            }
+        }
+
         public void Update(TuioTime currentTime, Vector2 position, float angle,
             Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration)
         {
-            var lastPoint = PrevPoints[PrevPoints.Count - 1];
-            var isCalculateSpeeds = (position.X != ((Tuio11Point)this).Position.X && velocity.X == 0) || (position.Y != ((Tuio11Point)this).Position.Y && velocity.Y == 0);
-            UpdateContainer(currentTime, position, velocity, acceleration, isCalculateSpeeds);
+            UpdateContainer(currentTime, position, velocity, acceleration);
 
-            var isCalculateRotation = angle != Angle && rotationSpeed == 0;
-            if(isCalculateRotation)
-            {
-                var dt = (currentTime - lastPoint.StartTime).GetTotalMilliseconds() / 1000.0f;
-                if (dt > 0)
-                {
-                    var lastAngle = Angle;
-                    var lastRotationSpeed = RotationSpeed;
-                    var da = (angle - lastAngle) / (2 * (float)Math.PI);
-                    if (da > 0.5f)
-                    {
-                        da -= 1;
-                    } 
-                    else if (da <= -0.5f)
-                    {
-                        da += 1;
-                    }
-                    RotationSpeed = da / dt;
-                    RotationAcceleration = (RotationSpeed - lastRotationSpeed) / dt;
-                }
-            }
-            else
-            {
-                RotationSpeed = rotationSpeed;
-                RotationAcceleration = rotationAcceleration;
-            }
+            RotationSpeed = rotationSpeed;
+            RotationAcceleration = rotationAcceleration;
             Angle = angle;
 
             if (State != TuioState.Stopped && RotationAcceleration != 0)

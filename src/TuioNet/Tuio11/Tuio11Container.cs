@@ -61,29 +61,27 @@ namespace TuioNet.Tuio11
             CurrentTime = currentTime - StartTime;
         }
 
-        public void UpdateContainer(TuioTime currentTime, Vector2 position, Vector2 velocity, float acceleration, bool isCalculateSpeeds)
+        public void UpdateContainer(TuioTime currentTime, Vector2 position)
         {
             var lastPoint = PrevPoints[PrevPoints.Count - 1];
             Position = position;
-            if (isCalculateSpeeds)
-            {
-                var dt = (currentTime - lastPoint.StartTime).GetTotalMilliseconds() / 1000.0f;
-                var deltaPosition = Position - lastPoint.Position;
-                var distance = deltaPosition.Length();
-                var lastMotionSpeed = Speed;
-                if(dt > 0)
-                {
-                    Velocity = deltaPosition / dt;
-                    Speed = distance / dt;
-                    Acceleration = (Speed - lastMotionSpeed) / dt;
-                }
-            }
-            else
-            {
-                Velocity = velocity;
-                Speed = Velocity.Length();
-                Acceleration = acceleration;
-            }
+            var dt = (currentTime - lastPoint.StartTime).GetTotalMilliseconds() / 1000.0f;
+            if (!(dt > 0)) return;
+            var deltaPosition = Position - lastPoint.Position;
+            var distance = deltaPosition.Length();
+            var lastMotionSpeed = Speed;
+            Velocity = deltaPosition / dt;
+            Speed = distance / dt;
+            Acceleration = (Speed - lastMotionSpeed) / dt;
+
+        }
+
+        public void UpdateContainer(TuioTime currentTime, Vector2 position, Vector2 velocity, float acceleration)
+        {
+            Position = position;
+            Velocity = velocity;
+            Speed = Velocity.Length();
+            Acceleration = acceleration;
 
             PrevPoints.Add(new Tuio11Point(currentTime, position));
             if (PrevPoints.Count > MAX_PATH_LENGTH)
