@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Numerics;
 using CommandLine;
 using Microsoft.Extensions.Logging;
@@ -68,13 +69,33 @@ class Program
 
             var transmitter = new TuioTransmitter(server, tuioManager, logger);
             transmitter.Open(IPAddress.Parse(option.IpAddress), option.Port);
+
+
+            var targetFps = 60;
+            var targetFrameTime = 1.0 / targetFps;
+            var stopwatch = Stopwatch.StartNew();
+            var lastTime = stopwatch.Elapsed.TotalSeconds;
             while (true)
             {
-                dataGenerator.Update();
-                transmitter.Send();
-                if (!Console.KeyAvailable) continue;
-                var pressedKey = Console.ReadKey().Key;
-                if (pressedKey == ConsoleKey.Q) break;
+                if (Console.KeyAvailable)
+                {
+                    var pressedKey = Console.ReadKey().Key;
+                    if (pressedKey == ConsoleKey.Q) break;
+                    
+                }
+
+                var currentTime = stopwatch.Elapsed.TotalSeconds;
+                var deltaTime = currentTime - lastTime;
+
+                if (deltaTime >= targetFrameTime)
+                {
+                    lastTime = currentTime;
+                    dataGenerator.Update();
+                    transmitter.Send();
+                }
+                int sleepMs = (int)((targetFrameTime - deltaTime) * 1000);
+                if (sleepMs > 0)
+                    Thread.Sleep(sleepMs);
             }
             transmitter.Close();
         });
