@@ -27,7 +27,7 @@ public class Tuio11DataGenerator : ITuioDataGenerator
     {
         var time = TuioTime.GetSystemTime();
         var position = MoveOnCircle(_touchRadius, 0.2f, deltaTime, ref _touchAngle);
-        _cursor.Update(time, position, Vector2.Zero, 0);
+        _cursor.Update(time, position);
     }
 
     private Vector2 MoveOnCircle(float radius, float angularSpeed, float deltaTime, ref float angle)
