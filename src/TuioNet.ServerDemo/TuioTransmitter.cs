@@ -31,7 +31,7 @@ public class TuioTransmitter
         _manager.Update();
         try
         {
-            _logger.LogDebug(Encoding.ASCII.GetString(_manager.FrameBundle.BinaryData));
+            _logger.LogDebug(_manager.FrameBundle.ToString());
             _server.Send(_manager.FrameBundle.BinaryData);
         }
         catch (Exception exception)
