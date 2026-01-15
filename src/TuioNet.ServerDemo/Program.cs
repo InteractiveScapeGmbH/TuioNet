@@ -33,7 +33,7 @@ class Program
     {
         Parser.Default.ParseArguments<Options>(args).WithParsed(option =>
         {
-            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole().SetMinimumLevel(option.LogLevel));
             var logger = loggerFactory.CreateLogger<Program>();
 
             var resolutionParts = option.Resolution.Split(',');
@@ -71,7 +71,7 @@ class Program
             transmitter.Open(IPAddress.Parse(option.IpAddress), option.Port);
 
 
-            var targetFps = 60;
+            var targetFps = 5;
             var targetFrameTime = 1.0 / targetFps;
             var stopwatch = Stopwatch.StartNew();
             var lastTime = stopwatch.Elapsed.TotalSeconds;
