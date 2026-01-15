@@ -12,4 +12,10 @@
       <ProjectReference Include="..\src\TuioNet\TuioNet.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.9.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    </ItemGroup>
+
 </Project>
