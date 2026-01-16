@@ -27,8 +27,6 @@ class Program
         public string Resolution { get; set; }
     }
     
-    
-    
     private static void Main(string[] args)
     {
         Parser.Default.ParseArguments<Options>(args).WithParsed(option =>
