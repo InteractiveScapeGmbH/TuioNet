@@ -23,6 +23,6 @@ public class Test_OSC_Bundle
         var packet = OSCPacket.Unpack(byteMessage);
 
         var targetMessage = (OSCMessage)packet.Values[0];
-        Assert.AreEqual((uint)(int)targetMessage.Values[0], frame_id);
+        Assert.That(frame_id, Is.EqualTo((uint)(int)targetMessage.Values[0]));
     }
 }

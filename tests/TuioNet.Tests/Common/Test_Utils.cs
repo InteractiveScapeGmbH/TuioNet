@@ -12,6 +12,6 @@ public class Test_Utils
         var dimension = new Vector2(800, 600);
         var packed = Utils.FromDimension(dimension);
         var unpacked = Utils.ToDimension(packed);
-        Assert.AreEqual(dimension, unpacked);
+        Assert.That(unpacked, Is.EqualTo(dimension));
     }
 }

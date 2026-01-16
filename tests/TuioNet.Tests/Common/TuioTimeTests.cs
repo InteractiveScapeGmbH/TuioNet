@@ -11,8 +11,8 @@ public class TuioTimeTests
         var timeA = new TuioTime(1, 15);
         var timeB = new TuioTime(2, 10);
         var result = timeA + timeB;
-        Assert.AreEqual(result.Seconds, 3);
-        Assert.AreEqual(result.Microseconds, 25);
+        Assert.That(3, Is.EqualTo(result.Seconds));
+        Assert.That(25, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -21,8 +21,8 @@ public class TuioTimeTests
         var timeA = new TuioTime(2, 999999);
         var timeB = new TuioTime(0, 3);
         var result = timeA + timeB;
-        Assert.AreEqual(result.Seconds, 3);
-        Assert.AreEqual(result.Microseconds, 2);
+        Assert.That(3, Is.EqualTo(result.Seconds));
+        Assert.That(2, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -31,8 +31,8 @@ public class TuioTimeTests
         var timeA = new TuioTime(3, 5);
         var timeB = new TuioTime(-2, -3);
         var result = timeA + timeB;
-        Assert.AreEqual(result.Seconds, 1);
-        Assert.AreEqual(result.Microseconds, 2);
+        Assert.That(1, Is.EqualTo(result.Seconds));
+        Assert.That(2, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -41,8 +41,8 @@ public class TuioTimeTests
         var time = new TuioTime(3, 20);
         long microsec = 500;
         var result = time + microsec;
-        Assert.AreEqual(result.Seconds, 3);
-        Assert.AreEqual(result.Microseconds, 520);
+        Assert.That(3, Is.EqualTo(result.Seconds));
+        Assert.That(520, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -51,8 +51,8 @@ public class TuioTimeTests
         var time = new TuioTime(2, 999999);
         var microsec = 3;
         var result = time + microsec;
-        Assert.AreEqual(result.Seconds, 3);
-        Assert.AreEqual(result.Microseconds, 2);
+        Assert.That(3, Is.EqualTo(result.Seconds));
+        Assert.That(2, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -61,8 +61,8 @@ public class TuioTimeTests
         var time = new TuioTime(2, 2);
         var microsec = -3;
         var result = time + microsec;
-        Assert.AreEqual(result.Seconds, 1);
-        Assert.AreEqual(result.Microseconds, 999999);
+        Assert.That(1, Is.EqualTo(result.Seconds));
+        Assert.That(999999, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -71,8 +71,8 @@ public class TuioTimeTests
         var timeA = new TuioTime(3, 25);
         var timeB = new TuioTime(2, 12);
         var result = timeA - timeB;
-        Assert.AreEqual(result.Seconds, 1);
-        Assert.AreEqual(result.Microseconds, 13);
+        Assert.That(1, Is.EqualTo(result.Seconds));
+        Assert.That(13, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -81,8 +81,8 @@ public class TuioTimeTests
         var timeA = new TuioTime(3, 3);
         var timeB = new TuioTime(1, 4);
         var result = timeA - timeB;
-        Assert.AreEqual(result.Seconds, 1);
-        Assert.AreEqual(result.Microseconds, 999999);
+        Assert.That(1, Is.EqualTo(result.Seconds));
+        Assert.That(999999, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -91,8 +91,8 @@ public class TuioTimeTests
         var time = new TuioTime(3, 10);
         var microseconds = 5;
         var result = time - microseconds;
-        Assert.AreEqual(result.Seconds, 3);
-        Assert.AreEqual(result.Microseconds, 5);
+        Assert.That(3, Is.EqualTo(result.Seconds));
+        Assert.That(5, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -101,8 +101,8 @@ public class TuioTimeTests
         var time = new TuioTime(3, 10);
         var microseconds = 11;
         var result = time - microseconds;
-        Assert.AreEqual(result.Seconds, 2);
-        Assert.AreEqual(result.Microseconds, 999999);
+        Assert.That(2, Is.EqualTo(result.Seconds));
+        Assert.That(999999, Is.EqualTo(result.Microseconds));
     }
 
     [Test]
@@ -110,6 +110,6 @@ public class TuioTimeTests
     {
         var timeA = new TuioTime(1, 123);
         var timeB = new TuioTime(1, 123);
-        Assert.AreEqual(true, timeA.Equals(timeB));
+        Assert.That(timeA.Equals(timeB), Is.EqualTo(true));
     }
 }

@@ -8,6 +8,6 @@
 
     <ItemGroup>
       <PackageReference Include="WebSocketSharp" Version="1.0.3-rc11" />
-      <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+      <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
     </ItemGroup>
 </Project>

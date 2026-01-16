@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using TuioNet.OSC;
 
 namespace TuioNet.Tests.OSC;
@@ -19,7 +20,7 @@ public class Test_OSC_Message
         int a = 10;
         _message.Append(a);
         var v = (int)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -28,7 +29,7 @@ public class Test_OSC_Message
         int a = Int32.MinValue;
         _message.Append(a);
         var v = (int)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -37,7 +38,7 @@ public class Test_OSC_Message
         int a = Int32.MaxValue;
         _message.Append(a);
         var v = (int)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -47,7 +48,7 @@ public class Test_OSC_Message
         int a_cast = (int)a;
         _message.Append(a_cast);
         var v = (uint)(int)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -57,7 +58,7 @@ public class Test_OSC_Message
         int a_cast = (int)a;
         _message.Append(a_cast);
         var v = (uint)(int)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -67,7 +68,7 @@ public class Test_OSC_Message
         int a_cast = (int)a;
         _message.Append(a_cast);
         var v = (uint)(int)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -76,7 +77,7 @@ public class Test_OSC_Message
         float a = 1.234f;
         _message.Append(a);
         var v = (float)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -85,7 +86,7 @@ public class Test_OSC_Message
         float a = Single.MinValue;
         _message.Append(a);
         var v = (float)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -94,7 +95,7 @@ public class Test_OSC_Message
         float a = Single.MaxValue;
         _message.Append(a);
         var v = (float)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -103,7 +104,7 @@ public class Test_OSC_Message
         double a = 1.234;
         _message.Append(a);
         var v = (double)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -112,7 +113,7 @@ public class Test_OSC_Message
         double a = Double.MinValue;
         _message.Append(a);
         var v = (double)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -121,7 +122,7 @@ public class Test_OSC_Message
         double a = Double.MaxValue;
         _message.Append(a);
         var v = (double)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -130,7 +131,7 @@ public class Test_OSC_Message
         long a = 123456;
         _message.Append(a);
         var v = (long)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -139,7 +140,7 @@ public class Test_OSC_Message
         long a = long.MinValue;
         _message.Append(a);
         var v = (long)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -148,7 +149,7 @@ public class Test_OSC_Message
         long a = long.MaxValue;
         _message.Append(a);
         var v = (long)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -157,7 +158,7 @@ public class Test_OSC_Message
         string a = "Hello world";
         _message.Append(a);
         var v = (string)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
     [Test]
@@ -166,7 +167,7 @@ public class Test_OSC_Message
         OscTimeTag a = new OscTimeTag(DateTime.Now);
         _message.Append(a);
         var v = (OscTimeTag)_message.Values[0];
-        Assert.AreEqual(a.DateTime, v.DateTime);
+        Assert.That(v.DateTime, Is.EqualTo(a.DateTime));
     }
     
     [Test]
@@ -175,7 +176,7 @@ public class Test_OSC_Message
         char a = 'a';
         _message.Append(a);
         var v = (char)_message.Values[0];
-        Assert.AreEqual(a, v);
+        Assert.That(v, Is.EqualTo(a));
     }
     
 }
