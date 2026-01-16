@@ -5,7 +5,8 @@ using CommandLine;
 using Microsoft.Extensions.Logging;
 using TuioNet.Common;
 using TuioNet.Server;
-using TuioNet.ServerDemo;
+
+namespace TuioNet.ServerDemo;
 
 class Program
 {
