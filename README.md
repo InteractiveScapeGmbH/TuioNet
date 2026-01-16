@@ -28,7 +28,7 @@ It supports [TUIO 1.1](http://tuio.org/?specification) and [TUIO 2.0](http://www
 There are two examples how one can implement a Tuio Sender and Tuio Receiver.
 
 ### TuioNet.ServerDemo
-The Server simulates a Touch and an Object moving in circles.
+The Server simulates a Touch and an Object moving in circles. The server sends only 5 messages per second by default.
 
 ```shell
 ❯ ./TuioNet.ServerDemo --help
