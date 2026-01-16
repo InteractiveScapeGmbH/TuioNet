@@ -120,8 +120,6 @@ info: TuioNet.ClientDemo.Program[0]
 [Tuio 2.0] Token 5 -> Position: <0.6576055, 0.1323582>, Angle: 11.400569
 ```
 
-```
-
 ## Events
 In general there are four different kinds of events for TUIO 1.1 and 2.0: `Add`, `Update`, `Remove` and `Refresh`. The `Refresh` event gets triggered at the end of the current frame after all tuio messages were processed and it provides the current `TuioTime`. There are different `Add`, `Update` and `Remove` events for the different kinds of TUIO messages (cursor, object, blob, token...). All possible events are shown below.
 
