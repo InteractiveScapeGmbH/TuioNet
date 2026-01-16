@@ -47,7 +47,7 @@ class Program
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            ITuioDataGenerator dataGenerator;
+            TuioDataGeneratorBase dataGenerator;
             ITuioManager tuioManager;
 
             switch (option.TuioVersion) 
