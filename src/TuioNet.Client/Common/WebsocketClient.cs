@@ -73,9 +73,24 @@ public class WebsocketClient
             {
                 try
                 {
-                    var result = await _socket.ReceiveAsync(new ArraySegment<byte>(buffer, offset, dataPerPacket), _token);
+                    var result =
+                        await _socket.ReceiveAsync(new ArraySegment<byte>(buffer, offset, dataPerPacket), _token);
+
+                    if (result.MessageType == WebSocketMessageType.Close)
+                    {
+                        _logger.LogInformation("[WebsocketClient] Server initiaded close.");
+                        await Close();
+                        return;
+                    }
+
                     offset += result.Count;
                     if (result.EndOfMessage) break;
+                }
+                catch (OperationCanceledException exception)
+                {
+                    _logger.LogInformation("[WebsocketClient] Receive operation cancelled: {Exception}", exception.Message);
+                    await Close();
+                    return;
                 }
                 catch (WebSocketException exception)
                 {
@@ -107,8 +122,25 @@ public class WebsocketClient
         }
     }
 
-    public void Disconnect()
+    private async Task Close()
     {
-        _tokenSource.Cancel();
+        if (_socket.State == WebSocketState.Open || _socket.State == WebSocketState.CloseReceived)
+        {
+            try
+            {
+                _logger.LogInformation("[WebsocketClient] Closing websocket connection.");
+                await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closing", CancellationToken.None);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogWarning("[WebsocketClient] Error during closing connection: {Exception}", exception.Message);
+            }
+        }
+    }
+
+    public async void Disconnect()
+    {
+        await Close();
+        await _tokenSource.CancelAsync();
     }
 }

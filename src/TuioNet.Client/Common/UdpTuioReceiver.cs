@@ -39,5 +39,10 @@ namespace TuioNet.Client.Common
             });
             IsConnected = false;
         }
+
+        internal override void Disconnect()
+        {
+            CancellationTokenSource.Cancel();
+        }
     }
 }

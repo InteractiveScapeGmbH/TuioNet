@@ -27,5 +27,10 @@ namespace TuioNet.Client.Common
         {
             _client.Connect();
         }
+
+        internal override void Disconnect()
+        {
+            _client.Disconnect();
+        }
     }
 }

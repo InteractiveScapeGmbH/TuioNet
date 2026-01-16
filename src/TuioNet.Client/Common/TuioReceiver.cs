@@ -46,10 +46,7 @@ namespace TuioNet.Client.Common
         /// <summary>
         /// Close the connection to the TUIO sender.
         /// </summary>
-        internal void Disconnect()
-        {
-            CancellationTokenSource.Cancel();
-        }
+        internal abstract void Disconnect();
 
         protected void OnBuffer(byte[] buffer, int end)
         {

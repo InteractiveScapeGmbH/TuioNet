@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Microsoft.Extensions.Logging;
 using WebSocketSharp;
 using WebSocketSharp.Server;
@@ -20,7 +19,6 @@ namespace TuioNet.Server
         {
             _server = new WebSocketServer(address, port);
             _server.AddWebSocketService("/", CreateService);
-            // _server.AddWebSocketService<TuioService>("/");
             _server.Start();
         }
     
@@ -70,6 +68,18 @@ namespace TuioNet.Server
         protected override void OnClose(CloseEventArgs e)
         {
             _logger?.LogInformation("[Server] Client disconnected. {event_reason}", e.Reason);
+        }
+
+        protected override void OnError(ErrorEventArgs e)
+        {
+            if (e.Exception is WebSocketException)
+            {
+                _logger?.LogWarning("[Server] WebSocket error (likely client disconnect): {message}", e.Message);
+            }
+            else
+            {
+                _logger?.LogError(e.Exception, "[Server] Unexpected error");
+            }
         }
     }
 }
