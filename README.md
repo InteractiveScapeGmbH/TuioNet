@@ -3,7 +3,9 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-TuioNet is a .Net implementation of the TUIO specification by Martin Kaltenbrunner. It supports [TUIO 1.1](http://tuio.org/?specification) and [TUIO 2.0](http://www.tuio.org/?tuio20) for the following message profiles:
+TuioNet is a .Net implementation of the TUIO specification by Martin Kaltenbrunner. It provides packages to implement Tuio Sender and Tuio Receiver. (see Demo Projects)
+
+It supports [TUIO 1.1](http://tuio.org/?specification) and [TUIO 2.0](http://www.tuio.org/?tuio20) for the following message profiles:
 
 **TUIO 1.1**
 ```
@@ -22,81 +24,102 @@ TuioNet is a .Net implementation of the TUIO specification by Martin Kaltenbrunn
 /tuio2/sym 
 ```
 
-## Documentation
-A brief overview over the most important classes and how to use them.
+## Demo Console Applications
+There are two examples how one can implement a Tuio Sender and Tuio Receiver.
 
-### Tuio Session
-The Tuio session class is the entry point for the communication between the client application and a TUIO sender. It takes the TUIO protocol version, the connection type and the IP-Address of the TUIO sender.
+### TuioNet.ServerDemo
+The Server simulates a Touch and an Object moving in circles.
 
-Based on the protocol version the `TuioSession` creates a `Processor` which is responsible for parsing the incoming TUIO messages. By default, the `Processor` classes add `MessageListeners` for the currently supported Tuio profiles (see above for a list of the supported profiles). But it is also possible to register for your own custom message profile by calling `AddMessageListener` on the `TuioSession`. Here you are not limited to the Tuio profiles. You can register to every OSC message format your Tuio sender supports.
+```shell
+❯ ./TuioNet.ServerDemo --help
+TuioNet.ServerDemo 1.0.0+f92ea0876914d47908d2f57c8c3265504e935f1f
+Copyright (C) 2026 TuioNet.ServerDemo
 
-```csharp
-using(var session = new TuioSession(TuioVersion.Tuio11, TuioConnectionType.Websocket, "10.0.0.31"))
-{
-    session.AddMessageListener(new MessageListener("/my/profile/example", OnMessage);
-    
-    private void OnMessage(object? sender, OSCMessage message)
-    {
-        // Do something with the message
-    }        
-}
+  -i, --ip             (Default: 127.0.0.1) Set the ip address of the tuio sender.
+
+  -p, --port           (Default: 3333) Set the port.
+
+  -l, --logLevel       (Default: Information) Set the minimum log level [Trace, Debug, Information, Warning, Error, Critical, None].
+
+  -v, --tuioVersion    (Default: Tuio11) Set the tuio version [Tuio11, Tuio20].
+
+  -c, --connection     (Default: UDP) Set the connection type [UDP, Websocket].
+
+  -s, --sourceName     (Default: TuioServerDemo) Set the source name for the Tuio Sender.
+
+  -r, --resolution     (Default: 1280,720) Set the screen resolution as [x,y]. Only valid for Tuio 2.
+
+  --help               Display this help screen.
+
+  --version            Display version information.
 ```
 
-### Tuio Processors
-Tuio processors are responsible for parsing TUIO messages. There are two types of processors, one for TUIO 1.1 and one for TUIO 2.0. They get a client object and can listen to specific messages by register callback methods for them. In the current implementation the TUIO processors listen to the following message profiles.
-
-Tuio11Processor.cs:
-```csharp
-public Tuio11Processor(TuioClient client)
-{
-    client.AddMessageListeners(new List<MessageListener>()
-    {
-        new MessageListener("/tuio/2Dobj", On2Dobj),
-        new MessageListener("/tuio/2Dcur", On2Dcur),
-        new MessageListener("/tuio/2Dblb", On2Dblb)
-    });
-    
-    TuioTime.Init();
-    _currentTime = TuioTime.GetCurrentTime();
-}
+Example (for Tuio 2.0 over Websocket)
+```shell
+❯ ./TuioNet.ServerDemo -l Debug -c Websocket -v Tuio20
+dbug: TuioNet.ServerDemo.Program[0]
+      /tuio2/frm 1 1/16/2026 4:12:35 PM 83886800 TuioServerDemo 
+      /tuio2/ptr 0 0 0 0.89968 0.5159958 0 0 0 0 0 0 0 0 0 
+      /tuio2/tok 1 0 5 0.8980017 0.5399335 0.10000035 0 0 0 0 0 
+      /tuio2/alv 0 1 
+      
+dbug: TuioNet.ServerDemo.Program[0]
+      /tuio2/frm 2 1/16/2026 4:12:35 PM 83886800 TuioServerDemo 
+      /tuio2/ptr 0 0 0 0.8987207 0.531966 0 0 0 0 0 0 0 0 0 
+      /tuio2/tok 1 0 5 0.8920266 0.5794679 0.2000004 0 0 0 0 0 
+      /tuio2/alv 0 1 
+      
+dbug: TuioNet.ServerDemo.Program[0]
+      /tuio2/frm 3 1/16/2026 4:12:35 PM 83886800 TuioServerDemo 
+      /tuio2/ptr 0 0 0 0.89712316 0.5478873 0 0 0 0 0 0 0 0 0 
+      /tuio2/tok 1 0 5 0.88213277 0.618214 0.30001557 0 0 0 0 0 
+      /tuio2/alv 0 1 
 ```
 
-Tuio20Processor.cs
-```csharp
-public Tuio20Processor(TuioClient client)
-{
-    client.AddMessageListeners(new List<MessageListener>()
-    {
-        new MessageListener("/tuio2/frm", OnFrm),
-        new MessageListener("/tuio2/alv", OnAlv),
-        new MessageListener("/tuio2/tok", OnOther),
-        new MessageListener("/tuio2/ptr", OnOther),
-        new MessageListener("/tuio2/bnd", OnOther),
-        new MessageListener("/tuio2/sym", OnOther),
-    });
-    
-    TuioTime.Init();
-    _currentTime = TuioTime.GetCurrentTime();
-}
+### TuioNet.ClientDemo
+
+First run the TuioNet.ServerDemo. Then start the TuioNet.ClientDemo with the same parameters in order to receive Tuio messages.
+
+```shell
+❯ ./TuioNet.ClientDemo --help
+TuioNet.ClientDemo 1.0.0+f92ea0876914d47908d2f57c8c3265504e935f1f
+Copyright (C) 2026 TuioNet.ClientDemo
+
+  -i, --ip             (Default: 127.0.0.1) Set the ip address of the tuio sender.
+
+  -p, --port           (Default: 3333) Set the port.
+
+  -l, --logLevel       (Default: Information) Set the minimum log level [Trace, Debug, Information, Warning, Error, Critical, None].
+
+  -v, --tuioVersion    (Default: Tuio11) Set the tuio version [Tuio11, Tuio20].
+
+  -c, --connection     (Default: UDP) Set the connection type [UDP, Websocket].
+
+  --help               Display this help screen.
+
+  --version            Display version information.
 ```
 
-#### Add/Remove Message Listeners
-The TUIO Specification ([1.1](http://tuio.org/?specification) and [2.0](http://www.tuio.org/?tuio20)) defines different kinds of
-TUIO message profiles:</br>
+Example (for Tuio 2.0 over Websocket)
+```shell
+❯ ./TuioNet.ClientDemo -l Debug -c Websocket -v Tuio20
+info: TuioNet.ClientDemo.Program[0]
+      [WebsocketClient] Try to connect to: ws://127.0.0.1:3333/
+info: TuioNet.ClientDemo.Program[0]
+      [TuioSession] Session initialized!
+Connect...
+info: TuioNet.ClientDemo.Program[0]
+      [WebsocketClient] Connected to ws://127.0.0.1:3333/.
+[Tuio 2.0] Pointer added -> SessionId: 0
+[Tuio 2.0] Token added -> SessionId: 1, ComponentId: 5
+[Tuio 2.0] Pointer 0 -> Position: <0.40796626, 0.11073172>
+[Tuio 2.0] Token 5 -> Position: <0.5814245, 0.1083751>, Angle: 11.200568
+[Tuio 2.0] Pointer 0 -> Position: <0.42360643, 0.10736272>
+[Tuio 2.0] Token 5 -> Position: <0.6201151, 0.118460536>, Angle: 11.300569
+[Tuio 2.0] Pointer 0 -> Position: <0.43936884, 0.10462189>
+[Tuio 2.0] Token 5 -> Position: <0.6576055, 0.1323582>, Angle: 11.400569
+```
 
-TUIO 1.1 Examples:
-```
-/tuio/2Dobj set s i x y a X Y A m r
-/tuio/2Dcur set s x y X Y m
-/tuio/2Dblb set s x y a w h f X Y A m r
-```
-
-TUIO 2.0 Examples:
-```
-/tuio2/tok s_id tu_id c_id x_pos y_pos angle [x_vel y_vel m_acc r_vel r_acc]
-/tuio2/ptr s_id tu_id c_id x_pos y_pos angle shear radius press [x_vel y_vel p_vel m_acc p_acc]
-/tuio2/bnd s_id x_pos y_pos angle width height area [x_vel y_vel a_vel m_acc r_acc]
-/tuio2/sym s_id tu_id c_id t_des data
 ```
 
 ## Events
@@ -269,63 +292,6 @@ private void OnObjectRemoved(object sender, Tuio20Object tuioObject)
     if(tuioObject.ContainsTuioSymbol())
     {
         Console.WriteLine($"Symbol {tuioObject.Symbol.ComponentId} removed");
-    }
-}
-```
-
-## Demo Console Application
-A simple console application which demonstrates a simple setup for a TUIO 1.1 connection via UDP. 
-- First create a `TuioSession` (the default port is 3333)
-- Get the `ITuioDispatcher` from the session object and cast it to the appropriate type based on the TUIO version (`Tuio11Dispatcher` or `Tuio20Dispatcher`).
-- Register methods for the desired events on the dispatcher object.
-- The connecting and disconnecting is handled by the session object. As soon as the session gets disposed it disconnects from the sender.
-- The application runs and prints to the console when TUIO objects/cursors appear, move or get removed.
-- By pressing the ```Q``` button you can stop the application.
-
-Program.cs
-```csharp
-using TuioNet.Common;
-using TuioNet.Tuio11;
-
-namespace TuioNet.Demo;
-
-class Program
-{
-    private static void Main(string[] args)
-    {
-        using (var tuioSession = new TuioSession(TuioVersion.Tuio11, TuioConnectionType.UDP))
-        {
-            var dispatcher = (Tuio11Dispatcher)tuioSession.TuioDispatcher;
-            dispatcher.OnCursorAdd += CursorAdded;
-            dispatcher.OnCursorUpdate += UpdateCursor;
-            dispatcher.OnCursorRemove += RemoveCursor;
-            Console.WriteLine("Connect...");
-            while (true)
-            {
-                if (!Console.KeyAvailable) continue;
-                var pressedKey = Console.ReadKey().Key;
-                if (pressedKey == ConsoleKey.Q) break;
-            }
-            Console.WriteLine("Disconnect...");
-            dispatcher.OnCursorAdd -= CursorAdded;
-            dispatcher.OnCursorUpdate -= UpdateCursor;
-            dispatcher.OnCursorRemove -= RemoveCursor;
-        }
-    }
-
-    private static void RemoveCursor(object? sender, Tuio11Cursor cursor)
-    {
-        Console.WriteLine($"Cursor {cursor.CursorId} removed");
-    }
-
-    private static void UpdateCursor(object? sender, Tuio11Cursor cursor)
-    {
-        Console.WriteLine($"Cursor {cursor.CursorId} -> Position: {cursor.Position}");
-    }
-
-    private static void CursorAdded(object? sender, Tuio11Cursor cursor)
-    {
-        Console.WriteLine($"New cursor added -> ID: {cursor.CursorId}");
     }
 }
 ```
