@@ -4,7 +4,7 @@ namespace TuioNet.Server
 {
     public interface ITuioManager
     {
-        public OSCBundle FrameBundle { get; }
+        public OSCBundle[] FrameBundles { get; }
         public void Update();
         public void Quit();
     }

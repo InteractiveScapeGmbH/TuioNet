@@ -27,7 +27,7 @@ public class TestTuio11Send
     {
         var cursor = new Tuio11Cursor(TuioTime.GetSystemTime(), 1234, 6543, Vector2.One, Vector2.Zero, 0f);
         _manager.AddCursor(cursor);
-        var bundle = _manager.FrameBundle;
+        var bundle = _manager.FrameBundles[0];
         var byteBundle = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteBundle);
         var targetSourceMessage = (OSCMessage)packet.Values[0];
@@ -55,7 +55,7 @@ public class TestTuio11Send
             0f, 0f, 0f);
 
         _manager.AddObject(tuioObject);
-        var bundle = _manager.FrameBundle;
+        var bundle = _manager.FrameBundles[1];
         var byteBundle = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteBundle);
         var targetSourceMessage = (OSCMessage)packet.Values[3];
@@ -84,7 +84,7 @@ public class TestTuio11Send
             Vector2.Zero, 0f, 0f, 0f);
 
         _manager.AddBlob(blob);
-        var bundle = _manager.FrameBundle;
+        var bundle = _manager.FrameBundles[2];
         var byteBundle = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteBundle);
         var targetSourceMessage = (OSCMessage)packet.Values[6];

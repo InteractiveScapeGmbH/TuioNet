@@ -61,8 +61,9 @@ public class Tuio20Repository
         _entities.Remove(entity);
     }
 
-    public OSCBundle UpdateBundle(OSCBundle bundle)
+    public OSCBundle Bundle()
     {
+        var bundle = new OSCBundle(OscTimeTag.Immediate);
         bundle.Append(FrameMessage);
         foreach (var entity in _entities) bundle.Append(entity.OscMessage);
         bundle.Append(AliveMessage);

@@ -31,8 +31,11 @@ public class TuioTransmitter
         _manager.Update();
         try
         {
-            _logger.LogDebug(_manager.FrameBundle.ToString());
-            _server.Send(_manager.FrameBundle.BinaryData);
+            foreach(var bundle in _manager.FrameBundles)
+            {
+                _logger.LogDebug(bundle.ToString());
+                _server.Send(bundle.BinaryData);
+            }
         }
         catch (Exception exception)
         {
@@ -46,7 +49,10 @@ public class TuioTransmitter
         _manager.Quit();
         try
         {
-            _server.Send(_manager.FrameBundle.BinaryData);
+            foreach (var bundle in _manager.FrameBundles) 
+            {
+                _server.Send(bundle.BinaryData);
+            }
         }
         catch (Exception exception)
         {

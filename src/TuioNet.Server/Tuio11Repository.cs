@@ -75,8 +75,9 @@ public class Tuio11Repository
         _entities.Clear();
     }
 
-    public OSCBundle UpdateBundle(OSCBundle bundle)
+    public OSCBundle Bundle()
     {
+        var bundle = new OSCBundle(OscTimeTag.Immediate);
         bundle.Append(SourceMessage);
         bundle.Append(AliveMessage);
         foreach (var entity in _entities) bundle.Append(entity.OscMessage);

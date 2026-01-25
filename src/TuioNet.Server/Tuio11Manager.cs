@@ -10,7 +10,7 @@ public class Tuio11Manager : ITuioManager
     private readonly Tuio11Repository _cursorRepository;
     private readonly Tuio11Repository _objectRepository;
 
-    private OSCBundle _frameBundle;
+    private readonly OSCBundle[] _frameBundle = new OSCBundle[3];
     private uint _frameId = 1;
 
     public Tuio11Manager(string sourceName)
@@ -22,7 +22,7 @@ public class Tuio11Manager : ITuioManager
 
     public uint CurrentSessionId { get; private set; }
 
-    public OSCBundle FrameBundle
+    public OSCBundle[] FrameBundles
     {
         get
         {
@@ -83,10 +83,10 @@ public class Tuio11Manager : ITuioManager
 
     private void UpdateFrameBundle()
     {
-        _frameBundle = new OSCBundle(OscTimeTag.Immediate);
-        _cursorRepository.UpdateBundle(_frameBundle);
-        _objectRepository.UpdateBundle(_frameBundle);
-        _blobRepository.UpdateBundle(_frameBundle);
+        
+        _frameBundle[0] = _cursorRepository.Bundle();
+        _frameBundle[1] = _objectRepository.Bundle();
+        _frameBundle[2] = _blobRepository.Bundle();
     }
 }
 }

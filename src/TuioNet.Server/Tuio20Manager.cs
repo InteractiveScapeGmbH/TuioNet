@@ -9,7 +9,7 @@ public class Tuio20Manager : ITuioManager
 {
     private readonly Tuio20Repository _repository;
 
-    private OSCBundle _frameBundle;
+    private readonly OSCBundle[] _frameBundle = new OSCBundle[1];
     private uint _frameId;
 
     public Tuio20Manager(string sourceName, Vector2 screenResolution)
@@ -19,7 +19,7 @@ public class Tuio20Manager : ITuioManager
 
     public uint CurrentSessionId { get; private set; }
 
-    public OSCBundle FrameBundle
+    public OSCBundle[] FrameBundles
     {
         get
         {
@@ -53,8 +53,7 @@ public class Tuio20Manager : ITuioManager
 
     private void UpdateFrameBundle()
     {
-        _frameBundle = new OSCBundle(OscTimeTag.Immediate);
-        _repository.UpdateBundle(_frameBundle);
+        _frameBundle[0] = _repository.Bundle();
     }
 }
 }

@@ -30,7 +30,7 @@ public class TestTuio20Send
             Vector2.One, 0f, 0f, 0f);
         manager.AddEntity(token);
 
-        var bundle = manager.FrameBundle;
+        var bundle = manager.FrameBundles[0];
         var byteBundle = bundle.BinaryData;
         var packet = OSCPacket.Unpack(byteBundle);
         var targetFrameMessage = (OSCMessage)packet.Values[0];
