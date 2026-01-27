@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using TuioNet.Common;
 using TuioNet.OSC;
 
@@ -9,7 +10,7 @@ public class Tuio20Manager : ITuioManager
 {
     private readonly Tuio20Repository _repository;
 
-    private readonly OSCBundle[] _frameBundle = new OSCBundle[1];
+    private readonly List<OSCBundle> _frameBundle = new (1);
     private uint _frameId;
 
     public Tuio20Manager(string sourceName, Vector2 screenResolution)
@@ -19,7 +20,7 @@ public class Tuio20Manager : ITuioManager
 
     public uint CurrentSessionId { get; private set; }
 
-    public OSCBundle[] FrameBundles
+    public IList<OSCBundle> FrameBundles
     {
         get
         {
@@ -53,7 +54,8 @@ public class Tuio20Manager : ITuioManager
 
     private void UpdateFrameBundle()
     {
-        _frameBundle[0] = _repository.Bundle();
+        _frameBundle.Clear();
+        _frameBundle.Add(_repository.Bundle());
     }
 }
 }

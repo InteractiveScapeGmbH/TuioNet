@@ -1,4 +1,5 @@
-﻿using TuioNet.OSC;
+﻿using System.Collections.Generic;
+using TuioNet.OSC;
 using TuioNet.Tuio11;
 
 namespace TuioNet.Server
@@ -10,7 +11,7 @@ public class Tuio11Manager : ITuioManager
     private readonly Tuio11Repository _cursorRepository;
     private readonly Tuio11Repository _objectRepository;
 
-    private readonly OSCBundle[] _frameBundle = new OSCBundle[3];
+    private readonly List<OSCBundle> _frameBundle = new(3);
     private uint _frameId = 1;
 
     public Tuio11Manager(string sourceName)
@@ -22,7 +23,7 @@ public class Tuio11Manager : ITuioManager
 
     public uint CurrentSessionId { get; private set; }
 
-    public OSCBundle[] FrameBundles
+    public IList<OSCBundle> FrameBundles
     {
         get
         {
@@ -83,10 +84,10 @@ public class Tuio11Manager : ITuioManager
 
     private void UpdateFrameBundle()
     {
-        
-        _frameBundle[0] = _cursorRepository.Bundle();
-        _frameBundle[1] = _objectRepository.Bundle();
-        _frameBundle[2] = _blobRepository.Bundle();
+        _frameBundle.Clear();
+        _frameBundle.Add(_cursorRepository.Bundle());
+        _frameBundle.Add(_objectRepository.Bundle());
+        _frameBundle.Add(_blobRepository.Bundle());
     }
 }
 }
