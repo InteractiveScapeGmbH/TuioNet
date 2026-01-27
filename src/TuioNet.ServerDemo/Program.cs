@@ -53,12 +53,12 @@ class Program
             {
                 case TuioVersion.Tuio11:
                     var manager11 = new Tuio11Manager(option.SourceName);
-                    dataGenerator = new Tuio11DataGenerator(manager11);
+                    dataGenerator = new Tuio11DataGenerator(manager11, logger);
                     tuioManager = manager11;
                     break;
                 case TuioVersion.Tuio20:
                     var manager20 = new Tuio20Manager(option.SourceName, resolution);
-                    dataGenerator = new Tuio20DataGenerator(manager20);
+                    dataGenerator = new Tuio20DataGenerator(manager20, logger);
                     tuioManager = manager20;
                     break;
                 default:
