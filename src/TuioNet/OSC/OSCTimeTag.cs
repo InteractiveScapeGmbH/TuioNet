@@ -131,8 +131,9 @@ namespace TuioNet.OSC
                 mTimeStamp = Epoch;
                 return;
             }
-
-            DateTime timeStamp = Epoch.AddSeconds(secondsSinceEpoch).AddMilliseconds(fractionalSecond);
+            
+            var fractionalSeconds = fractionalSecond * (1.0 / (1UL << 32));
+            DateTime timeStamp = Epoch.AddSeconds(secondsSinceEpoch + fractionalSeconds);
             if (!IsValidTime(timeStamp)) throw new Exception("Not a valid OSC Timetag discovered.");
             mTimeStamp = timeStamp;
         }
