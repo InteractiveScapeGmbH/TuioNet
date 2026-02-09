@@ -377,7 +377,7 @@ namespace TuioNet.Client.Tuio20
                     OnObjectRemoved?.Invoke(this, tuioObject);
                 }
 
-                OnRefreshed?.Invoke(this, _currentTime);
+                OnRefreshed?.Invoke(this, currentFrameTime);
             }
             _currentTime = currentFrameTime;
             _prevFrameId = frameId;
