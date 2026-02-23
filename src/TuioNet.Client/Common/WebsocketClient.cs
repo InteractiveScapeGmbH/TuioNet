@@ -28,12 +28,11 @@ public class WebsocketClient
     public void Connect()
     {
         _token = _tokenSource.Token;
-        _token.ThrowIfCancellationRequested();
+        if (_token.IsCancellationRequested) return;
         Task.Run(async () =>
         {
-            while (_socket is not { State: WebSocketState.Open })
+            while (!_token.IsCancellationRequested)
             {
-                if (_token.IsCancellationRequested) break;
                 using(_socket = new ClientWebSocket())
                 {
                     try
@@ -46,18 +45,25 @@ public class WebsocketClient
                     }
                     catch (OperationCanceledException)
                     {
-                        _logger.LogError("[WebsocketClient] There was a problem while receiving messages from: {BoxUrl}", _boxUrl);
+                        _logger.LogError(
+                            "[WebsocketClient] There was a problem while receiving messages from: {BoxUrl}", _boxUrl);
                         break;
                     }
                     catch (WebSocketException exception)
                     {
-                        _logger.LogError("[WebsocketClient] Could not connect to {BoxUrl} -> {ExceptionMessage}", _boxUrl, exception.Message);
+                        _logger.LogError("[WebsocketClient] Could not connect to {BoxUrl} -> {ExceptionMessage}",
+                            _boxUrl, exception.Message);
                         _logger.LogError("[WebsocketClient] Try to establish connection again.");
                     }
+                    finally
+                    {
+                        IsConnected = false;
+                    }
                 }
+
+                if (!_token.IsCancellationRequested) await Task.Delay(1000);
             }
             _logger.LogInformation("[WebsocketClient] Shutdown websocket to {BoxUrl}.", _boxUrl);
-            IsConnected = false;
         }, _token);
     }
 
@@ -140,7 +146,7 @@ public class WebsocketClient
 
     public async void Disconnect()
     {
+        _tokenSource.Cancel();
         await Close();
-        await _tokenSource.CancelAsync();
     }
 }
