@@ -8,12 +8,13 @@ namespace TuioNet.Server
     public class UdpServer : ITuioServer
     {
         private UdpClient _server;
+        private IPEndPoint _endpoint;
         
         public void Start(IPAddress address, int port)
         {
             if (_server != null) Stop();
             _server = new UdpClient();
-            _server.Connect(address, port);
+            _endpoint = new IPEndPoint(address, port);
         }
 
         public void Stop()
@@ -30,7 +31,7 @@ namespace TuioNet.Server
 
         public void Send(byte[] data)
         {
-            _server.Send(data, data.Length);
+            _server.Send(data, data.Length, _endpoint);
         }
     }
 }
