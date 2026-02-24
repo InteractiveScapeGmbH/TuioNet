@@ -4,7 +4,7 @@ using TuioNet.OSC;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Cursor : Tuio11Container, ITuioEntity, ITouchDrawer
+    public class Tuio11Cursor : Tuio11Container, ITuioEntity
     {
         /// <summary>
         /// Individual cursor ID assigned to each TuioCursor.
@@ -30,12 +30,6 @@ namespace TuioNet.Tuio11
         {
             UpdateContainer(currentTime, position);
         }
-        
-        /// <summary>
-        /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
-        /// </summary>
-        public string DebugText =>
-            $"Id: {SessionId}\nPosition: {Position:f2}";
         
         public OSCMessage OscMessage
         {

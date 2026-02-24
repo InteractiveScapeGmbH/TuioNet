@@ -5,7 +5,7 @@ using TuioNet.OSC;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Blob : Tuio11Container, ITuioEntity, IBoundsDrawer
+    public class Tuio11Blob : Tuio11Container, ITuioEntity
     {
         /// <summary>
         /// The individual blob ID that is assigned to each TuioBlob.
@@ -16,11 +16,6 @@ namespace TuioNet.Tuio11
         /// The rotation angle ob the TuioBlob in radians.
         /// </summary>
         public float Angle { get; protected set; }
-
-        /// <summary>
-        /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
-        /// </summary>
-        public string DebugText => $"s_Id: {SessionId}\nAngle: {(Angle * 180f / Math.PI):f2}\nPosition: {Position:f2}Size: {Size:f2}";
 
         /// <summary>
         /// The normalized size of the TuioBlob. [0..1]

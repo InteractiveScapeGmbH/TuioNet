@@ -5,7 +5,7 @@ using TuioNet.OSC;
 
 namespace TuioNet.Tuio11
 {
-    public class Tuio11Object : Tuio11Container, ITuioEntity, IObjectDrawer
+    public class Tuio11Object : Tuio11Container, ITuioEntity
     {
         /// <summary>
         /// The individual symbol ID which is assigned to each TuioObject.
@@ -16,12 +16,6 @@ namespace TuioNet.Tuio11
         /// The rotation angle of the TuioObject in radians.
         /// </summary>
         public float Angle { get; protected set; }
-
-        /// <summary>
-        /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
-        /// </summary>
-        public string DebugText => $"s_Id: {SessionId}\nId: {SymbolId}\nAngle: {(Angle * 180f / Math.PI):f2}\nPosition: {Position:f2}";
-
 
         /// <summary>
         /// The speed of the rotation.

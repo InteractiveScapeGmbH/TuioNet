@@ -5,17 +5,12 @@ using TuioNet.OSC;
 
 namespace TuioNet.Tuio20
 {
-    public class Tuio20Bounds: Tuio20Component, ITuioEntity, IBoundsDrawer
+    public class Tuio20Bounds: Tuio20Component, ITuioEntity
     {
         /// <summary>
         /// Dimensions of the major and minor axis.
         /// </summary>
         public Vector2 Size { get; private set; }
-
-        /// <summary>
-        /// Returns a debug string with which one can display basic properties of the recognized TUIO object.
-        /// </summary>
-        public string DebugText => $"s_Id: {SessionId}\nAngle: {(Angle * 180f / Math.PI):f2}\nPosition: {Position:f2}Size: {Size:f2}";
 
         /// <summary>
         /// The region area of the bounds.
