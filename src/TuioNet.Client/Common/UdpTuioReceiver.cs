@@ -5,6 +5,7 @@ namespace TuioNet.Client.Common
     public class UdpTuioReceiver : TuioReceiver
     {
         private readonly int _port;
+        private UdpClient _client;
 
         internal UdpTuioReceiver(int port, bool isAutoProcess) : base(isAutoProcess)
         {
@@ -19,14 +20,14 @@ namespace TuioNet.Client.Common
             CancellationToken cancellationToken = CancellationTokenSource.Token;
             Task.Run(async () =>
             {
-                using (var udpClient = new UdpClient(_port))
+                using (_client = new UdpClient(_port))
                 {
                     IsConnected = true;
                     while (true)
                     {
                         try
                         {
-                            var receivedResults = await udpClient.ReceiveAsync();
+                            var receivedResults = await _client.ReceiveAsync();
                             OnBuffer(receivedResults.Buffer, receivedResults.Buffer.Length);
                         }
                         catch (Exception)
@@ -43,6 +44,7 @@ namespace TuioNet.Client.Common
         internal override void Disconnect()
         {
             CancellationTokenSource.Cancel();
+            _client?.Close();
         }
     }
 }
