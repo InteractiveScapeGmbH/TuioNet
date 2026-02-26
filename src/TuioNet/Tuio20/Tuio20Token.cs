@@ -18,7 +18,7 @@ namespace TuioNet.Tuio20
         /// </summary>
         public uint ComponentId { get; private set; }
         
-        public Tuio20Token(TuioTime startTime, Tuio20Object container, uint typeUserId, uint componentId, Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, container, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration)
+        public Tuio20Token(TuioTime startTime, Tuio20Object container, uint typeUserId, uint componentId, Vector2 position, float angle, Vector2? velocity = null, float rotationSpeed = 0f, float acceleration = 0f, float rotationAcceleration = 0f) : base(startTime, container, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration)
         {
             TypeUserId = typeUserId;
             ComponentId = componentId;

@@ -11,7 +11,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         public uint CursorId { get; }
         
-        public Tuio11Cursor(TuioTime startTime, uint sessionId, uint cursorId, Vector2 position, Vector2 velocity, float acceleration) : base(startTime, sessionId, position, velocity, acceleration)
+        public Tuio11Cursor(TuioTime startTime, uint sessionId, uint cursorId, Vector2 position, Vector2? velocity = null, float acceleration = 0f) : base(startTime, sessionId, position, velocity, acceleration)
         {
             CursorId = cursorId;
         }

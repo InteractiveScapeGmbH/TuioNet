@@ -29,7 +29,7 @@ namespace TuioNet.Tuio11
         public float RotationSpeed { get; protected set; }
         public float RotationAcceleration { get; protected set; }
         
-        public Tuio11Blob(TuioTime startTime, uint sessionId, uint blobId, Vector2 position, float angle, Vector2 size, float area, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, sessionId, position, velocity, acceleration)
+        public Tuio11Blob(TuioTime startTime, uint sessionId, uint blobId, Vector2 position, float angle, Vector2 size, float area, Vector2? velocity = null, float rotationSpeed = 0f, float acceleration = 0f, float rotationAcceleration = 0f) : base(startTime, sessionId, position, velocity, acceleration)
         {
             BlobId = blobId;
             Angle = angle;

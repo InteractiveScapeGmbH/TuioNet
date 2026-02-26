@@ -27,7 +27,7 @@ namespace TuioNet.Tuio11
         /// </summary>
         public float RotationAcceleration { get; protected set; }
         
-        public Tuio11Object(TuioTime startTime, uint sessionId, uint symbolId, Vector2 position, float angle, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, sessionId, position, velocity, acceleration)
+        public Tuio11Object(TuioTime startTime, uint sessionId, uint symbolId, Vector2 position, float angle, Vector2? velocity = null, float rotationSpeed = 0f, float acceleration = 0f, float rotationAcceleration = 0f) : base(startTime, sessionId, position, velocity, acceleration)
         {
             SymbolId = symbolId;
             Angle = angle;

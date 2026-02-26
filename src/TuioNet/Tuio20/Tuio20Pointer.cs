@@ -41,7 +41,7 @@ namespace TuioNet.Tuio20
         /// </summary>
         public float PressureAcceleration { get; private set; }
         
-        public Tuio20Pointer(TuioTime startTime, Tuio20Object container, uint typeUserId, uint componentId, Vector2 position, float angle, float shear, float radius, float pressure, Vector2 velocity, float pressureSpeed, float acceleration, float pressureAcceleration) : base(startTime, container, position, angle, velocity, 0, acceleration, 0)
+        public Tuio20Pointer(TuioTime startTime, Tuio20Object container, uint typeUserId, uint componentId, Vector2 position, float angle = 0f, float shear = 0f, float radius = 0f, float pressure = 0f, Vector2? velocity = null, float pressureSpeed = 0f, float acceleration = 0f, float pressureAcceleration = 0f) : base(startTime, container, position, angle, velocity, 0, acceleration, 0)
         {
             TypeUserId = typeUserId;
             ComponentId = componentId;

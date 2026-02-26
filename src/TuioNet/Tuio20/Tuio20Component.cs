@@ -53,13 +53,13 @@ namespace TuioNet.Tuio20
         protected readonly Queue<Tuio20Point> PrevPoints = new Queue<Tuio20Point>();
 
         public Tuio20Component(TuioTime startTime, Tuio20Object container, Vector2 position, float angle,
-            Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, position)
+            Vector2? velocity = null, float rotationSpeed = 0f, float acceleration = 0f, float rotationAcceleration = 0f) : base(startTime, position)
         {
             CurrentTime = startTime;
             Container = container;
             Position = position;
             Angle = angle;
-            Velocity = velocity;
+            Velocity = velocity ?? Vector2.Zero;
             Speed = Velocity.Length();
             RotationSpeed = rotationSpeed;
             Acceleration = acceleration;

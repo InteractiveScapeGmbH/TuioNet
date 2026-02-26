@@ -41,11 +41,11 @@ namespace TuioNet.Tuio11
         
         protected readonly List<Tuio11Point> PrevPoints = new List<Tuio11Point>();
 
-        public Tuio11Container(TuioTime startTime, uint sessionId, Vector2 position, Vector2 velocity, float acceleration) : base(startTime, position)
+        public Tuio11Container(TuioTime startTime, uint sessionId, Vector2 position, Vector2? velocity = null, float acceleration = 0f) : base(startTime, position)
         {
             CurrentTime = startTime;
             SessionId = sessionId;
-            Velocity = velocity;
+            Velocity = velocity ?? Vector2.Zero;
             Acceleration = acceleration;
             Speed = Velocity.Length();
             PrevPoints.Add(new Tuio11Point(CurrentTime, position));

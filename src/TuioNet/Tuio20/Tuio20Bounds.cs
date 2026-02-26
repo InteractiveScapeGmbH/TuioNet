@@ -17,7 +17,7 @@ namespace TuioNet.Tuio20
         /// </summary>
         public float Area { get; private set; }
         
-        public Tuio20Bounds(TuioTime startTime, Tuio20Object container, Vector2 position, float angle, Vector2 size, float area, Vector2 velocity, float rotationSpeed, float acceleration, float rotationAcceleration) : base(startTime, container, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration)
+        public Tuio20Bounds(TuioTime startTime, Tuio20Object container, Vector2 position, float angle, Vector2 size, float area, Vector2? velocity = null, float rotationSpeed = 0f, float acceleration = 0f, float rotationAcceleration = 0f) : base(startTime, container, position, angle, velocity, rotationSpeed, acceleration, rotationAcceleration)
         {
             Size = size;
             Area = area;
